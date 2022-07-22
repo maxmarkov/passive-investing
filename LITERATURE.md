@@ -9,14 +9,32 @@ __Introduction__. The active management strategy tend to systematically underper
 
 A large positive skewness in returns creates a problem for activemanagement. The non-symmetric shape of the distribution of returns means that random selection will deliver a median return that is worse than the average of the full index of the securities. In reality, the histogram of returns to the securities in an index will change year-to-year. **Missing (or underweighting) the securities that significantly outperform other securities is a strong headwind for an active manager to overcome.** 
 
-__A simple model of stock selection from an index__. We assume that the benchmark index contains $N$ stocks $S^{i}, 1 \leq i \leq N$. The dynamics of stock $S^{i}$ over time $t \in [0,T]$ follows a geometric Brownian motion with stock drifts being distrubuted as $\mu_i = \mathscr{N} (\bar{\mu}, \bar{\sigma}^2)$ . We assume that individual stocks maintain their drift $\mu_i$ over time and that the starting value is $S^i_0 = 1$ for all stocks. At time $t = T$ the stock value is 
+__A simple model of stock selection from an index__. We assume that the benchmark index contains $N$ stocks $S^{i}, 1 \leq i \leq N$. The dynamics of stock $S^{i}$ over time $t \in [0,T]$ follows a [geometric Brownian motion](https://en.wikipedia.org/wiki/Geometric_Brownian_motion) with stock drifts being distrubuted as $\mu_i = \mathscr{N} (\bar{\mu}, \bar{\sigma}^2)$ . We assume that individual stocks maintain their drift $\mu_i$ over time and that the starting value is $S^i_0 = 1$ for all stocks. The geometric Brownian motion, has [the following solution](https://en.wikipedia.org/wiki/Geometric_Brownian_motion#Solving_the_SDE) at time $t = T$: 
 
 $$
-S^i_{T} \sim e^{\bar{\mu}T - \frac{1}{2}\sigma^2T + \sqrt{\sigma^2T + \bar{\sigma}^2 T^2} Z} 
+S^i_{T} = S_{0}  \exp{\left(\mu T - \frac{1}{2}\sigma^2 T\right)} \exp{\left(\sigma W_T\right)} 
 $$
 
-where $Z = \mathscr{N} (0,1)$. An index return by the equally weighted portfolio is 
+where $W_{T}$ is a Wiener process, or Brownian motion. The above solution $S_t$ is a log-normally distributed random variable with expected value:
+
+$$
+E(S_t) = S_0 \exp{\left(\mu t\right)}
+$$
+
+and variance
+
+$$
+Var(S_t) = S_0^2 \exp{(2\mu t)}\left[\exp{(\sigma^2 t)} - 1\right]
+$$
+
+An index return by the equally weighted portfolio is 
 
 $$
 I_t^N = \frac{1}{N}\sum_{i=1}^{N}S_{t}^{i}
 $$
+
+Some conclusions:
+
+- The cumulative return of a stock follows a log-$\mathscr{N}(\bar{\mu}T - \frac{1}{2}\sigma^2T, \sigma^2T + \bar{\sigma}^2T^2)$ distribution which is heavily positively skewed.
+
+- The median of the stock distribution $\exp{\left(\bar{\mu}T - \frac{1}{2}\sigma^2T\right)}$, so that over time T more than half of all stocks in the index will underperform the index return by a factor of $\exp{\left(\frac{1}{2}\sigma^2T, \sigma^2T + \bar{\sigma}^2T^2\right)}$
