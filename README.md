@@ -1,5 +1,10 @@
 # Statistical Analysis of Stock Indexes
 
+Intsall all dependencies
+```
+pip intstall -r requirements.txt
+```
+
 Download data from Yahoo Finance: 
 
 ```
