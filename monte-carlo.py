@@ -49,41 +49,46 @@ def plot_data(rate_p, rate_a, filename=None):
         plt.show()
 
 
-N_MC = 100          # number of Monte Carlo trials, N_MC = 10000 in the paper
-
-T = 5                # period in years
-N = 500              # number of stocks
-sigma = 0.2          # generic annual stock volatility 
-r_median = 0.1       # median index return
-r_mean = 0.5         # mean index return
-
-mu_drift, sigma_drift = drift_distribution(r_median, r_mean, sigma, T)
-
-
-rate_passive = []
-rate_active = []
-
-for n_pfl in range(1,21):
-    print(f'Sub-portfolio size {n_pfl}')
-
-    N_active = 0
-    N_passive = 0
-    for i_MC in range(N_MC):
+def main():
+    """ """
+    N_MC = 100          # number of Monte Carlo trials, N_MC = 10000 in the paper
     
-        # index return by the equally weighted portfolio
-        S_list = [stock_price(T, mu_drift, sigma_drift, sigma) for n in range(N)]
-        I_mean = sum(S_list)/len(S_list)
-        
-        # portfolio
-        S_pfl = random.sample(S_list, n_pfl)
-        I_pfl = sum(S_pfl)/len(S_pfl)
-        
-        if I_pfl > I_mean:
-            N_active += 1
+    T = 5                # period in years
+    N = 500              # number of stocks
+    sigma = 0.2          # generic annual stock volatility 
+    r_median = 0.1       # median index return
+    r_mean = 0.5         # mean index return
     
-    N_passive = N_MC - N_active
+    mu_drift, sigma_drift = drift_distribution(r_median, r_mean, sigma, T)
+    
+    
+    rate_passive = []
+    rate_active = []
+    
+    for n_pfl in range(1,21):
+        print(f'Sub-portfolio size {n_pfl}')
+    
+        N_active = 0
+        N_passive = 0
+        for i_MC in range(N_MC):
+        
+            # index return by the equally weighted portfolio
+            S_list = [stock_price(T, mu_drift, sigma_drift, sigma) for n in range(N)]
+            I_mean = sum(S_list)/len(S_list)
+            
+            # portfolio
+            S_pfl = random.sample(S_list, n_pfl)
+            I_pfl = sum(S_pfl)/len(S_pfl)
+            
+            if I_pfl > I_mean:
+                N_active += 1
+        
+        N_passive = N_MC - N_active
+    
+        rate_passive.append(N_passive/N_MC)
+        rate_active.append(N_active/N_MC)
+    
+    plot_data(rate_p=rate_passive, rate_a=rate_active, filename='figure.png')
 
-    rate_passive.append(N_passive/N_MC)
-    rate_active.append(N_active/N_MC)
-
-plot_data(rate_p=rate_passive, rate_a=rate_active, filename='figure.png')
+if __name__ == "__main__":
+    main()
