@@ -1,0 +1,4 @@
+outs:
+- md5: 62d5c185ff62fab3c8c5d8f885e590e3
+  size: 9674694
+  path: prices_biotech.parquet.gzip

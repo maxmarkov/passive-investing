@@ -1,0 +1,4 @@
+outs:
+- md5: f99b06e272905588fb7dc1c294bd6a01
+  size: 14762088
+  path: prices_venture.parquet.gzip

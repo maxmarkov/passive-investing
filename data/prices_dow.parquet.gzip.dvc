@@ -1,0 +1,4 @@
+outs:
+- md5: 1a5dc41a3f41bb98c1fea8657ac84954
+  size: 3793767
+  path: prices_dow.parquet.gzip

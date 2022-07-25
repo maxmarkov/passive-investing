@@ -1,0 +1,4 @@
+outs:
+- md5: 146a2cf514c9f2373bfc1fa336d5a8eb
+  size: 56175661
+  path: prices_sp500.parquet.gzip
