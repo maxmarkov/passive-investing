@@ -20,6 +20,7 @@ Start with S&P500, Nasdaq should be more interesting because of fatter tails
 
 """
 
+import os 
 import scipy
 import numpy as np
 import pandas as pd
@@ -33,6 +34,7 @@ import yahoo_fin.stock_info as si
 from scipy import stats as st      
 from scipy.stats import lognorm
 
+from alive_progress import alive_bar
 
 class StockIndex:
     """ Class to get Financial Index Data from Yahoo """
@@ -58,7 +60,8 @@ class StockIndex:
         """ get a list of tickers for the given stock market in"""
 
         INDEX_LIST = ['dow', 'ftse100', 'ftse250', 'ibovespa',
-                      'nasdaq', 'nifty50', 'niftybank', 'sp500']
+                      'nasdaq', 'nifty50', 'niftybank', 'sp500',
+                      'venture', 'biotech']
 
         if self.stock_index not in INDEX_LIST:
             raise NameError(f'Stock {self.index_name} is not in the list. Provide a correct stock name from {INDEX_LIST}')
@@ -77,6 +80,20 @@ class StockIndex:
             tickers = si.tickers_nifty50()
         elif self.stock_index == 'ftse100':
             tickers = si.tickers_ftse100()
+        elif self.stock_index == 'venture':
+            path = 'index-tickers/venture.csv'
+            if os.path.isfile(path):
+                index_list = pd.read_csv(path, index_col=0)
+                tickers = index_list.ticker.tolist()
+            else:
+                print('Provide file with venture tickers')
+        elif self.stock_index == 'biotech':
+            path = 'index-tickers/biotech.csv'
+            if os.path.isfile(path):
+                index_list = pd.read_csv(path, index_col=0)
+                tickers = index_list.ticker.tolist()
+            else:
+                print('Provide file with biotech tickers')
         else:
             tickers = si.tickers_sp500()
         
@@ -90,18 +107,24 @@ class StockIndex:
         assert start_d < end_d
 
         prices_list = []
-        for ticker in self.tickers:
-            try:
-                prices_list.append(si.get_data(ticker, self.start_date, self.end_date, index_as_date=False))
-            except:
-                pass
-        prices = pd.concat(prices_list, ignore_index=True)
+        with alive_bar(len(self.tickers), force_tty=True, ctrl_c=True, title=f"Downloading {self.stock_index }") as bar:
+            for ticker in self.tickers:
+                try:
+                    prices_list.append(si.get_data(ticker, self.start_date, self.end_date, index_as_date=False))
+                except:
+                    pass
+                bar()
+
+        if len(prices_list) > 0:
+            prices = pd.concat(prices_list, ignore_index=True)
+        else:
+            prices = pd.DataFrame() # empty dataframe for emtpy list
 
         return prices
 
     def save_prices_parquet(self, filename: str) -> None:
         """ Save Stock Index prices into file """
-        self.prices.to_parquet(filename)
+        self.prices.to_parquet(filename, engine='pyarrow')
 
     def save_prices_csv(self, filename: str) -> None:
         """ Save Stock Index prices into file """
@@ -131,7 +154,7 @@ class StockIndexAnalysis:
         self.log_fit = self.fit_lognormal()
 
 
-    def compute_variation(self) -> pd.DataFrame:
+    def compute_variation(self, years_max : int = 8) -> pd.DataFrame:
         """ compute variation in stock index prices over all years of observation """
         mu_dict = {}
 
@@ -143,17 +166,20 @@ class StockIndexAnalysis:
         for i, ticker in enumerate(self.tickers):
             df = self.prices[self.prices.ticker==ticker].sort_values(by='date')
 
-            n_years = int(df.iloc[-1].date[:4]) - int(df.iloc[0].date[:4])
+            try:
+                n_years = df.iloc[-1].date.year - df.iloc[0].date.year
+            except:
+                n_years = int(df.iloc[-1].date[:4]) - int(df.iloc[0].date[:4])
 
             change_rate = (df.iloc[-1].close-df.iloc[0].close)/df.iloc[0].close
             
             # average annual return of prices , multiply by 100 if need percentage
-            if n_years != 0:
+            if n_years >= years_max:
                 mu = df.iloc[-1].adjclose/df.iloc[0].adjclose/n_years
                 mu_dict[ticker] = mu
 
-            if mu > 2:
-                print(f'Stock {ticker} more than double on average during {n_years} years')
+                if mu > 2:
+                    print(f'Stock {ticker} more than double on average during {n_years} years')
 
         dm = pd.DataFrame(mu_dict.items(), columns=['ticker', 'mu'])
 

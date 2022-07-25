@@ -1,12 +1,12 @@
 from src.indexing import StockIndexAnalysis, read_prices_csv, read_prices_parquet
 
-FORMAT = 'csv'
+FORMAT = 'parquet'
 FOLDER = 'data'
 
-stock_index = 'sp500'
+stock_index = 'biotech'
 
 if FORMAT == 'parquet':
-    prices = read_prices_parquet(f'prices_{stock_index}.parquet.gzip')
+    prices = read_prices_parquet(f'{FOLDER}/prices_{stock_index}.parquet.gzip')
 else:
     prices = read_prices_csv(f'{FOLDER}/prices_{stock_index}.csv')
 
