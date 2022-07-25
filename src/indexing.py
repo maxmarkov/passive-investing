@@ -78,6 +78,8 @@ class StockIndex:
             tickers = si.tickers_nasdaq()
         elif self.stock_index == 'nifty50':
             tickers = si.tickers_nifty50()
+        elif self.stock_index == 'niftybank':
+            tickers = si.tickers_niftybank()
         elif self.stock_index == 'ftse100':
             tickers = si.tickers_ftse100()
         elif self.stock_index == 'venture':
@@ -162,6 +164,8 @@ class StockIndexAnalysis:
         end_date = max(self.prices.date.unique())
         range_date = pd.date_range(start=start_date, end=end_date, freq='D')
 
+        print(f"Total number of stocks: {len(self.tickers)}")
+        counter = 0
 
         for i, ticker in enumerate(self.tickers):
             df = self.prices[self.prices.ticker==ticker].sort_values(by='date')
@@ -172,14 +176,21 @@ class StockIndexAnalysis:
                 n_years = int(df.iloc[-1].date[:4]) - int(df.iloc[0].date[:4])
 
             change_rate = (df.iloc[-1].close-df.iloc[0].close)/df.iloc[0].close
-            
+
             # average annual return of prices , multiply by 100 if need percentage
-            if n_years >= years_max:
+            if n_years >= years_max and not np.isinf(change_rate):
                 mu = df.iloc[-1].adjclose/df.iloc[0].adjclose/n_years
-                mu_dict[ticker] = mu
+                if not np.isnan(mu):
+                    mu_dict[ticker] = mu
+                    counter += 1
 
                 if mu > 2:
                     print(f'Stock {ticker} more than double on average during {n_years} years')
+
+        print(f"Number of stocks with min {years_max} years: {counter}")
+        if len(mu_dict) ==0:
+            import sys
+            sys.exit('Empty list mu')
 
         dm = pd.DataFrame(mu_dict.items(), columns=['ticker', 'mu'])
 
@@ -192,7 +203,7 @@ class StockIndexAnalysis:
         plt.show()
 
 
-    def plot_fit_histogram(self, bins: int = 100) -> None:
+    def plot_fit_histogram(self, bins: int = 100, filename: str = 'distribution.png') -> None:
         """ plot histogram with variations and the lognormal distribution fit """
         x = np.linspace(0.001,15, 1000)
 
@@ -203,7 +214,8 @@ class StockIndexAnalysis:
 
         ax.legend(loc='best', frameon=False)
         plt.grid()
-        plt.show()
+        plt.savefig(filename)
+        #plt.show()
 
 
     def fit_lognormal(self):

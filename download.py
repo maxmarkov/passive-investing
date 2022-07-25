@@ -4,7 +4,7 @@ import os
 FORMAT = 'parquet'
 FOLDER = 'data'
 
-STOCK_INDEX_LIST = ['venture', 'biotech'] #['dow', 'ftse100', 'ftse250', 'ibovespa', 'nasdaq', 'nifty50', 'niftybank', 'sp500']
+STOCK_INDEX_LIST = ['niftybank'] #'venture', 'biotech'] #['dow', 'ftse100', 'ftse250', 'ibovespa', 'nasdaq', 'nifty50', 'niftybank', 'sp500']
 
 for i, stock_index in enumerate(STOCK_INDEX_LIST):
     print(i, stock_index)
