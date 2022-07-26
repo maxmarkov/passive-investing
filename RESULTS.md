@@ -31,3 +31,7 @@
 ## Biotech
 
 ![Biotech](media/distribution_fit_biotech.png)
+
+## Comparison
+
+![Comparison](media/distribution_comparison.png)
