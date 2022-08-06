@@ -27,7 +27,7 @@ import pandas as pd
 
 from datetime import datetime
 import matplotlib.pyplot as plt
-
+import seaborn as sns
 
 import yahoo_fin.stock_info as si
 
@@ -142,13 +142,17 @@ def read_prices_parquet(filename: str) -> pd.DataFrame:
     df = pd.read_parquet(filename)#, index_col=0)
     return df
 
+
+
 class StockIndexAnalysis:
     """ Class to analyze Stock Index Price data """
 
-    def __init__(self, prices):
+    def __init__(self, prices, stock_index):
+
+        self.index_name = stock_index
         self.prices = prices
         self.tickers = self.prices.ticker.unique()
-        self.mu = self.compute_variation()
+        self.mu = self.compute_variation(years_max = 15)
 
         self.median_return = round(self.mu.mu.median()*100., 2) 
         self.mean_return = round(self.mu.mu.mean()*100., 2)
@@ -196,26 +200,68 @@ class StockIndexAnalysis:
 
         return dm
 
-    def plot_var_histogram(self, bins: int = 100) -> None:
+    def plot_var_histogram(self, bins: int = 20) -> None:
         """ plot histogram with variations """
         fig, ax = plt.subplots(1, 1)
         self.mu.hist(column = 'mu', grid = True, bins = bins, ax = ax)    # most of stock are around zero while a few increase in value >2 (double) times per year on average
         plt.show()
 
+    def plot_stock_evolution(self, folder: str) -> None:
+        """ Plot the time evolution of a stock price for all stock in given index """
 
-    def plot_fit_histogram(self, bins: int = 100, filename: str = 'distribution.png') -> None:
+        path = os.path.join(folder, self.index_name)
+        os.makedirs(path, exist_ok=True)
+
+        # start and end date for ploting 
+        start_date = datetime.strptime("01/01/2004", '%m/%d/%Y').date()
+        end_date = datetime.strptime("08/06/2022", '%m/%d/%Y').date()
+        
+        fig, ax = plt.subplots()
+        for ticker in self.tickers:
+
+            #fig, ax = plt.subplots()
+            sns.lineplot(x = 'date', y = 'adjclose', data = self.prices[self.prices['ticker']==ticker], label = f"Index {self.index_name}, stock {ticker}", ax=ax)
+
+            ax.set_xlim(left=start_date, right=end_date)
+            ax.set_ylim(bottom=0)
+
+            ax.tick_params(direction='in', length=6, width=1.0, colors='black', grid_color='grey', grid_alpha=0.5)
+
+            plt.xlabel("time")
+            plt.ylabel("Closing price after adjustments")
+
+            plt.title(f"Evolution of {ticker} price")
+
+            plt.grid(True, linestyle='--', alpha=0.3)
+            plt.legend()
+            plt.savefig(os.path.join(path, f"stock_evolution_{ticker}.png"))
+            plt.cla()
+
+
+    def plot_fit_histogram(self, bins: int = 100, filename: str = 'distribution.png', save: bool = False) -> None:
         """ plot histogram with variations and the lognormal distribution fit """
-        x = np.linspace(0.001,15, 1000)
+        x = np.linspace(0.001, 15, 1000)
 
         fig, ax = plt.subplots(1, 1)
 
-        ax.plot(x, lognorm.pdf(x, self.log_fit[0], self.log_fit[1], self.log_fit[2]), 'r-', lw=3, alpha=0.6, label='lognorm pdf')
+        f_logn = lognorm.pdf(x, self.log_fit[0], self.log_fit[1], self.log_fit[2])
+        ax.plot(x, f_logn, 'r-', lw=3, alpha=0.6, label='lognorm pdf')
         ax.hist(self.mu.mu.values, density=True, histtype='stepfilled', bins=bins, alpha=0.2)
 
+        if save:
+            self.mu.mu.to_csv("histogram.csv")
+
+            import csv
+            with open('lognorm.csv', 'w') as f:
+                writer = csv.writer(f)
+                writer.writerows(zip(x,f_logn))
+    
         ax.legend(loc='best', frameon=False)
         plt.grid()
-        plt.savefig(filename)
-        #plt.show()
+        plt.xlim(0,2)
+        plt.ylim([0,10])
+        #plt.savefig(filename)
+        plt.show()
 
 
     def fit_lognormal(self):
