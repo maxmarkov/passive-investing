@@ -149,9 +149,10 @@ class StockIndexAnalysis:
 
     def __init__(self, prices, stock_index):
 
-        self.index_name = stock_index
+        self.stock_index = stock_index
         self.prices = prices
         self.tickers = self.prices.ticker.unique()
+        self.tickers_select = []
         self.mu = self.compute_variation(years_max = 15)
 
         self.median_return = round(self.mu.mu.median()*100., 2) 
@@ -184,6 +185,9 @@ class StockIndexAnalysis:
             # average annual return of prices , multiply by 100 if need percentage
             if n_years >= years_max and not np.isinf(change_rate):
                 mu = df.iloc[-1].adjclose/df.iloc[0].adjclose/n_years
+
+                self.tickers_select.append(ticker)
+
                 if not np.isnan(mu):
                     mu_dict[ticker] = mu
                     counter += 1
@@ -192,6 +196,7 @@ class StockIndexAnalysis:
                     print(f'Stock {ticker} more than double on average during {n_years} years')
 
         print(f"Number of stocks with min {years_max} years: {counter}")
+
         if len(mu_dict) ==0:
             import sys
             sys.exit('Empty list mu')
@@ -206,21 +211,26 @@ class StockIndexAnalysis:
         self.mu.hist(column = 'mu', grid = True, bins = bins, ax = ax)    # most of stock are around zero while a few increase in value >2 (double) times per year on average
         plt.show()
 
-    def plot_stock_evolution(self, folder: str) -> None:
+    def plot_stock_evolution(self, folder: str, mode: str = "all") -> None:
         """ Plot the time evolution of a stock price for all stock in given index """
 
-        path = os.path.join(folder, self.index_name)
-        os.makedirs(path, exist_ok=True)
+        path = os.path.join(folder, self.stock_index)
+        os.makedirs(path, exist_ok = True)
 
         # start and end date for ploting 
         start_date = datetime.strptime("01/01/2004", '%m/%d/%Y').date()
         end_date = datetime.strptime("08/06/2022", '%m/%d/%Y').date()
         
+        if mode == "selected":
+            tickers = self.tickers_select
+        else:
+            tickers = self.tickers
+
         fig, ax = plt.subplots()
-        for ticker in self.tickers:
+        for ticker in tickers:
 
             #fig, ax = plt.subplots()
-            sns.lineplot(x = 'date', y = 'adjclose', data = self.prices[self.prices['ticker']==ticker], label = f"Index {self.index_name}, stock {ticker}", ax=ax)
+            sns.lineplot(x = 'date', y = 'adjclose', data = self.prices[self.prices['ticker']==ticker], label = f"Index {self.stock_index}, stock {ticker}", ax=ax)
 
             ax.set_xlim(left=start_date, right=end_date)
             ax.set_ylim(bottom=0)

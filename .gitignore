@@ -5,3 +5,5 @@ lognormal.py
 monte-carlo-save.py
 random_downloader.py
 reader.py
+stock_index/
+stock_index_selected/

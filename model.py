@@ -11,7 +11,8 @@ else:
     prices = read_prices_csv(f'{FOLDER}/prices_{stock_index}.csv')
 
 stockind_a = StockIndexAnalysis(prices, stock_index)
-stockind_a.plot_stock_evolution("stock_evolution")
+stockind_a.plot_stock_evolution("stock_evolution")                       #
+stockind_a.plot_stock_evolution("stock_evolution_selected", "selected")  # select stocks with n > n_years 
 
 stockind_a.plot_var_histogram(bins=100)
 print (f"Median annual return, pct {stockind_a.median_return}")   # typical stock has return 25%
