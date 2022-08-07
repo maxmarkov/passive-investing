@@ -34,6 +34,9 @@ import yahoo_fin.stock_info as si
 from scipy import stats as st      
 from scipy.stats import lognorm
 
+import pymc3 as pm3
+import arviz as az
+
 from alive_progress import alive_bar
 
 class StockIndex:
@@ -153,10 +156,10 @@ class StockIndexAnalysis:
         self.prices = prices
         self.tickers = self.prices.ticker.unique()
         self.tickers_select = []
-        self.mu = self.compute_variation(years_max = 15)
+        self.mu = self.compute_variation(years_max = 7)
 
-        self.median_return = round(self.mu.mu.median()*100., 2) 
-        self.mean_return = round(self.mu.mu.mean()*100., 2)
+        self.median_return = self.mu.mu.median() #round(self.mu.mu.median()*100., 2) 
+        self.mean_return = self.mu.mu.mean() #round(self.mu.mu.mean()*100., 2)
 
         self.log_fit = self.fit_lognormal()
 
@@ -184,20 +187,21 @@ class StockIndexAnalysis:
 
             # average annual return of prices , multiply by 100 if need percentage
             if n_years >= years_max and not np.isinf(change_rate):
-                mu = df.iloc[-1].adjclose/df.iloc[0].adjclose/n_years
 
-                self.tickers_select.append(ticker)
+                mu = df.iloc[-1].adjclose/df.iloc[0].adjclose#/n_years
 
                 if not np.isnan(mu):
                     mu_dict[ticker] = mu
                     counter += 1
 
                 if mu > 2:
+                    self.tickers_select.append(ticker)
                     print(f'Stock {ticker} more than double on average during {n_years} years')
 
         print(f"Number of stocks with min {years_max} years: {counter}")
+        print(f"Number of stocks with min {years_max} years doubled: {len(self.tickers_select)}")
 
-        if len(mu_dict) ==0:
+        if len(mu_dict) == 0:
             import sys
             sys.exit('Empty list mu')
 
@@ -205,10 +209,33 @@ class StockIndexAnalysis:
 
         return dm
 
-    def plot_var_histogram(self, bins: int = 20) -> None:
+    def plot_frequency_histogram(self, bins: int = 50) -> None:
         """ plot histogram with variations """
-        fig, ax = plt.subplots(1, 1)
-        self.mu.hist(column = 'mu', grid = True, bins = bins, ax = ax)    # most of stock are around zero while a few increase in value >2 (double) times per year on average
+
+        fig, ax = plt.subplots(1,1)
+
+        ax = plt.gca()
+        self.mu.hist(column = 'mu', grid = True, bins = bins, ax = ax, label=f"{self.stock_index} index")    # most of stock are around zero while a few increase in value >2 (double) times per year on average
+        ax.tick_params(direction='in', length=6, width=1.0, colors='black', grid_color='grey', grid_alpha=0.8)
+
+        yh = 2.
+
+        plt.vlines(x=self.median_return, ymin=0, ymax=yh, color='r', linestyle='--', linewidth=0.8)
+        plt.plot(self.median_return, yh, 'ro', markersize=4, label='median return')
+        plt.text(self.median_return-2, yh+0.2, f"median {round(self.median_return,1)}", color='r', fontsize=8)
+
+        plt.vlines(x=self.mean_return, ymin=0, ymax=yh+1.5, color='k', linestyle='--', linewidth=0.8)
+        plt.plot(self.mean_return, yh+1.5, 'ko', markersize=4, label='mean return')
+        plt.text(self.mean_return-2, yh+1.7, f"mean {round(self.mean_return,1)}", color='k', fontsize=8)
+
+        plt.xlabel(r"Stock price ratio $\frac{X(t=T)}{X(t=0)}$")
+        plt.ylabel("Frequency")
+
+        plt.title("Stock price ratio distribution")
+
+        plt.grid(True, linestyle='--', alpha=0.3)
+        plt.legend()
+        plt.xlim([0,50])
         plt.show()
 
     def plot_stock_evolution(self, folder: str, mode: str = "all") -> None:
@@ -250,13 +277,13 @@ class StockIndexAnalysis:
 
     def plot_fit_histogram(self, bins: int = 100, filename: str = 'distribution.png', save: bool = False) -> None:
         """ plot histogram with variations and the lognormal distribution fit """
-        x = np.linspace(0.001, 15, 1000)
+        x = np.linspace(0.001, 50, 1000)
 
         fig, ax = plt.subplots(1, 1)
 
         f_logn = lognorm.pdf(x, self.log_fit[0], self.log_fit[1], self.log_fit[2])
         ax.plot(x, f_logn, 'r-', lw=3, alpha=0.6, label='lognorm pdf')
-        ax.hist(self.mu.mu.values, density=True, histtype='stepfilled', bins=bins, alpha=0.2)
+        ax.hist(self.mu.mu.values, density=True, histtype='stepfilled', bins=bins, alpha=0.2, label="histogram")
 
         if save:
             self.mu.mu.to_csv("histogram.csv")
@@ -267,9 +294,12 @@ class StockIndexAnalysis:
                 writer.writerows(zip(x,f_logn))
     
         ax.legend(loc='best', frameon=False)
+
+        plt.xlabel(r"Stock price ratio $\frac{X(t=T)}{X(t=0)}$")
+        plt.ylabel("Frequency")
+
         plt.grid()
-        plt.xlim(0,2)
-        plt.ylim([0,10])
+        plt.xlim(0,50)
         #plt.savefig(filename)
         plt.show()
 
@@ -301,9 +331,70 @@ class StockIndexAnalysis:
 
         ### the behaviour of the sum of log normal variable is defined by parameter C 
         C = np.sqrt(np.exp(estimated_sigma**2)-1)
-        print(estimated_sigma**2, C) # moderatly large distribution as estimated_sigma**2>1 but not >>1
+        print(f"Estimated Sigma^2={estimated_sigma**2}, C = {C}") # moderatly large distribution as estimated_sigma**2>1 but not >>1
         
         # compare n and C^2
         print(f"n = {len(self.mu.mu)}, C^2 = {estimated_sigma**2}, n >> C^2") # n>>C^2
         
         print(C**2, 3/2*C**2)
+
+    def pymc3_fit(self) -> None:
+        """ """
+
+        model = pm3.Model()
+
+        with model:
+            # define distribution parameters
+            mu = pm3.Normal("mu", mu = 0, sigma = 10)
+            sgma = pm3.HalfCauchy("sigma", 1)
+            C2 = pm3.Deterministic("C2", np.sqrt(np.exp(sgma*sgma)-1))
+
+            # define distribution
+            x = pm3.LogNormal('x', mu = mu, sigma = sgma, observed = self.mu.mu)
+
+            # instantiate sampler
+            #step = pm3.Metropolis()
+            step = pm3.NUTS() 
+
+            # draw 2000 lognormal posterior samples
+            result = pm3.sample(draws=2000, step=step, tune=4000)
+
+            # pandas object
+            stats = az.summary(result, kind="stats")
+            print('Summary stats', stats)
+            print('Mean values', stats.iloc[0]['mean'])
+            print('Result objects', result.varnames)
+        
+            # plot trace results for mu, sigma and C2
+            fig, axs = plt.subplots(3, 2)
+
+            plt.subplots_adjust(hspace = 0.6)
+            az.plot_trace(result, axes=axs, figsize=(20,20))
+
+            axs[0,0].axvline(x=stats.iloc[0]['mean'], linestyle='--', c='r', alpha=0.5)
+            axs[0,1].axhline(y=stats.iloc[0]['mean'], linestyle='--', c='r', alpha=0.5)
+
+            axs[1,0].axvline(x=stats.iloc[1]['mean'], linestyle='--', c='r', alpha=0.5)
+            axs[1,1].axhline(y=stats.iloc[1]['mean'], linestyle='--', c='r', alpha=0.5)
+
+            axs[2,0].axvline(x=stats.iloc[2]['mean'], linestyle='--', c='r', alpha=0.5)
+            axs[2,1].axhline(y=stats.iloc[2]['mean'], linestyle='--', c='r', alpha=0.5)
+
+            fig.suptitle(f'{self.stock_index} stats', fontsize=12)
+            plt.savefig(f'pymc3_trace_{self.stock_index}.png')
+
+             # plot trace results for mu, sigma and C2
+            fig, axs = plt.subplots(1, 3)       
+            az.plot_posterior(result, ax=axs,
+                            var_names=["mu", "sigma", "C2"],
+                            #ref_val=0,
+                            hdi_prob=0.95,
+                            figsize=(20, 5))
+            fig.suptitle(f'{self.stock_index} log norm fit', fontsize=12)
+            plt.savefig(f'pymc3_posterior_{self.stock_index}.png')
+
+        trc = pm3.trace_to_dataframe(result)
+
+        print('Mean (predicted) value of parameters', trc.mean(axis=0))
+
+        
