@@ -7,3 +7,11 @@ random_downloader.py
 reader.py
 stock_index/
 stock_index_selected/
+stock_evolution/
+stock_evolution_selected_years/
+stock_evolution_selected/
+data/.gitignore
+histogram.csv
+lognorm.csv
+results/
+stock-index.code-workspace
