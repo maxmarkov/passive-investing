@@ -1,18 +1,5 @@
 # Results
 
-|     Index     | N | N > 8 | N doubled |Median | Mean | Std  | C |
-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |------------- |------------- |
-| Dow           |  30 |  29 | 2  | 0.46/0.30  | 0.72/0.96  | 1.20/2.14   |  1.22 | 
-| FTSE100       |  58 |  31 | 0  | 0.12/0.15  | 0.32/0.23  | 3.64/0.33   |  2.56 |
-| FTSE250       | 137 |  42 | 0  | 0.09/0.15  | 0.39/02.0  | 7.54/0.23   |  4.09 |
-| IBOVESPA      | -   | -   | -  | -          |  -         | -           |  -    |  
-| NASDAQ        |4718 |1825 |44  | 0.07/0.14  | 3.58/0.37  | 338.83/1.08 | 48.93 |
-| NIFTY50       |  29 |  28 | 8  | 1.15/1.05  | 2.80/3.58  |  2.90/8.69  |  2.21 |
-| NIFTYBANK     |  -  |  -  | -  | -          | -          | -           |  -    |
-| S&P500        | 500 | 474 | 33 | 0.46/0.46  | 0.79/0.86  | 1.46/1.76   |  1.40 |
-| Venture       | 152 | 134 | 18 | 0.57/0.52  | 1.18/1.36  | 2.13/2.95   |  1.80 |
-| Biotech       | 365 |  99 |  4 | 0.07/0.09  | 1.18/0.38  | 60.84/0.79  | 15.80 |
-
 |           |$\mu$ scipy |   $\mu$ pymc3     |  $\sigma$ scipy  |   $\sigma$ pymc3    |   $C$ scipy     |   $C$ pymc3      |  best distribution | sum square_error |
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |------------- |------------- |------------- |
 | Biotech   | -0.14   | -0.14+/-0.19   |   2.17        |  2.19+/-0.14     |   10.50       | 11.50+/-4.00   |      lognorm       |    0.011887     |
@@ -27,23 +14,57 @@
 
 ## S&P500
 
-![S&P500](media/distribution_fit_sp500.png)
+![S&P500 trace](media/pymc3_trace_sp500.png)
+
+![S&P500 posterior](media/pymc3_posterior_sp500.png)
+
+![S&P500 qqplot](media/qqplot_sp500.png)
 
 ## Dow
 
-![Dow](media/distribution_fit_dow.png)
+![Dow trace](media/pymc3_trace_dow.png)
+
+![Dow posterior](media/pymc3_posterior_dow.png)
+
+![Dow qqplot](media/qqplot_dow.png)
 
 ## NASDAQ
-![Dow](media/distribution_fit_nasdaq.png)
+
+![Nasdaq trace](media/pymc3_trace_nasdaq.png)
+
+![Nasdaq posterior](media/pymc3_posterior_nasdaq.png)
+
+![Nasdaq qqplot](media/qqplot_nasdaq.png)
 
 ## Venture
 
-![Venture](media/distribution_fit_venture.png)
+![Venture trace](media/pymc3_trace_venture.png)
+
+![Venture posterior](media/pymc3_posterior_venture.png)
+
+![Venture qqplot](media/qqplot_venture.png)
 
 ## Biotech
 
-![Biotech](media/distribution_fit_biotech.png)
+![Biotech trace](media/pymc3_trace_biotech.png)
+
+![Biotech posterior](media/pymc3_posterior_biotech.png)
+
+![Biotech qqplot](media/qqplot_biotech.png)
 
 ## Comparison
 
 ![Comparison](media/distribution_comparison.png)
+
+|     Index     | N | N > 8 | N doubled |Median | Mean | Std  | C |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |------------- |------------- |
+| Dow           |  30 |  29 | 2  | 0.46/0.30  | 0.72/0.96  | 1.20/2.14   |  1.22 | 
+| FTSE100       |  58 |  31 | 0  | 0.12/0.15  | 0.32/0.23  | 3.64/0.33   |  2.56 |
+| FTSE250       | 137 |  42 | 0  | 0.09/0.15  | 0.39/02.0  | 7.54/0.23   |  4.09 |
+| IBOVESPA      | -   | -   | -  | -          |  -         | -           |  -    |  
+| NASDAQ        |4718 |1825 |44  | 0.07/0.14  | 3.58/0.37  | 338.83/1.08 | 48.93 |
+| NIFTY50       |  29 |  28 | 8  | 1.15/1.05  | 2.80/3.58  |  2.90/8.69  |  2.21 |
+| NIFTYBANK     |  -  |  -  | -  | -          | -          | -           |  -    |
+| S&P500        | 500 | 474 | 33 | 0.46/0.46  | 0.79/0.86  | 1.46/1.76   |  1.40 |
+| Venture       | 152 | 134 | 18 | 0.57/0.52  | 1.18/1.36  | 2.13/2.95   |  1.80 |
+| Biotech       | 365 |  99 |  4 | 0.07/0.09  | 1.18/0.38  | 60.84/0.79  | 15.80 |
