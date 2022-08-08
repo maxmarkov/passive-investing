@@ -1,3 +1,15 @@
+
+Table of contents
+=================
+- [Results](#custom-detection)
+- [S&P500](#sp500)
+- [Dow Jones](#dow)
+- [NASDAQ](#nasdaq)
+- [Venture](#venture)
+- [Biotech](#biotech)
+- [Comparison](#comparison)
+
+<a name="results"></a>
 # Results
 
 |           |$\mu$ scipy |   $\mu$ pymc3     |  $\sigma$ scipy  |   $\sigma$ pymc3    |   $C$ scipy     |   $C$ pymc3      |  best distribution | sum square_error |
@@ -11,8 +23,10 @@
 | FTSE250   |  0.25   |  0.25+/-0.28   |   1.77        |  1.82+/-0.20     |    4.68       |  5.66+/-3.15   |       exponpow (lognorm)    |    0.425529 (0.527496)    |
 | NIFTY50   |  2.90   |  2.90+/-0.27   |   1.36        |  1.41+/-0.20     |    2.31       |  2.71+/-1.16   |       expon (lognorm)       |    0.101994 (0.102374)     |
 
-
+<a name="sp500"></a>
 ## S&P500
+
+![S&P500 distribution](media/distribution_sp500_200bins_7years.png)
 
 ![S&P500 trace](media/pymc3_trace_sp500.png)
 
@@ -20,7 +34,10 @@
 
 ![S&P500 qqplot](media/qqplot_sp500.png)
 
+<a name="dow"></a>
 ## Dow
+
+![Dow distribution](media/distribution_dow_200bins_7years.png)
 
 ![Dow trace](media/pymc3_trace_dow.png)
 
@@ -28,6 +45,7 @@
 
 ![Dow qqplot](media/qqplot_dow.png)
 
+<a name="nasdaq"></a>
 ## NASDAQ
 
 ![Nasdaq trace](media/pymc3_trace_nasdaq.png)
@@ -36,7 +54,10 @@
 
 ![Nasdaq qqplot](media/qqplot_nasdaq.png)
 
+<a name="venture"></a>
 ## Venture
+
+![Venture distribution](media/distribution_venture_200bins_7years.png)
 
 ![Venture trace](media/pymc3_trace_venture.png)
 
@@ -44,7 +65,10 @@
 
 ![Venture qqplot](media/qqplot_venture.png)
 
+<a name="biotech"></a>
 ## Biotech
+
+![Biotech distribution](media/distribution_biotech_200bins_7years.png)
 
 ![Biotech trace](media/pymc3_trace_biotech.png)
 
@@ -52,6 +76,7 @@
 
 ![Biotech qqplot](media/qqplot_biotech.png)
 
+<a name="comparison"></a>
 ## Comparison
 
 ![Comparison](media/distribution_comparison.png)
