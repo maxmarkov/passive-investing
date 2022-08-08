@@ -31,11 +31,14 @@ import seaborn as sns
 
 import yahoo_fin.stock_info as si
 
+# stat analysis
 from scipy import stats as st      
 from scipy.stats import lognorm
 
 import pymc3 as pm3
 import arviz as az
+from fitter import Fitter, get_common_distributions, get_distributions
+import statsmodels.api as sm
 
 from alive_progress import alive_bar
 
@@ -315,6 +318,7 @@ class StockIndexAnalysis:
         """ compare distribution parameters: fit vs experiment """
         estimated_mu = np.log(self.log_fit[2])
         estimated_sigma = self.log_fit[0]
+        print('Estimated mu', estimated_mu, 'Estimated sigma', estimated_sigma)
 
         # let's check fitted values with empirical ones see https://en.wikipedia.org/wiki/Log-normal_distribution
         mean_fit=np.exp(estimated_mu+estimated_sigma**2/2)
@@ -362,8 +366,6 @@ class StockIndexAnalysis:
             # pandas object
             stats = az.summary(result, kind="stats")
             print('Summary stats', stats)
-            print('Mean values', stats.iloc[0]['mean'])
-            print('Result objects', result.varnames)
         
             # plot trace results for mu, sigma and C2
             fig, axs = plt.subplots(3, 2)
@@ -396,5 +398,29 @@ class StockIndexAnalysis:
         trc = pm3.trace_to_dataframe(result)
 
         print('Mean (predicted) value of parameters', trc.mean(axis=0))
-
         
+    def find_best_distribution(self) -> None:
+        """ 
+        Find best distribution fit.
+        Read more: https://medium.com/the-researchers-guide/finding-the-best-distribution-that-fits-your-data-using-pythons-fitter-library-319a5a0972e9
+        """
+        
+        fig, ax = plt.subplots(1, 1)
+
+        dists = get_common_distributions()
+        f = Fitter(self.mu.mu,  distributions=dists, xmin=0, xmax=100)
+        f.fit()
+
+        summary = f.summary(10)
+        print(summary.sort_values('sumsquare_error'))
+
+        #plt.show()
+        #plt.savefig(f'distributions_{self.stock_index}.png')
+
+    def plot_qq(self) -> None:
+        """ Q-Q plot of the quantiles of x versus the quantiles/ppf of a distribution """
+        fig, ax = plt.subplots(1, 1)
+
+        sm.qqplot(np.log(self.mu.mu), line ='s', ax=ax)  # it is good that the right tail is underestimated
+        plt.grid()
+        plt.savefig(f'qqplot_{self.stock_index}.png')

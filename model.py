@@ -3,7 +3,7 @@ from src.indexing import StockIndexAnalysis, read_prices_csv, read_prices_parque
 FORMAT = 'parquet'
 FOLDER = 'data'
 
-stock_index = 'venture'
+stock_index = 'nifty50'
 
 if FORMAT == 'parquet':
     prices = read_prices_parquet(f'{FOLDER}/prices_{stock_index}.parquet.gzip')
@@ -22,3 +22,7 @@ print (f"Mean annual return, pct {stockind_a.mean_return}")       # average inde
 stockind_a.compare_stats()
 
 stockind_a.pymc3_fit()
+
+stockind_a.find_best_distribution()
+
+stockind_a.plot_qq()
