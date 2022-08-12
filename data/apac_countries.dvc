@@ -1,0 +1,5 @@
+outs:
+- md5: 550691dbfbc9718784665d448ffce53d.dir
+  size: 11201840
+  nfiles: 8
+  path: apac_countries
