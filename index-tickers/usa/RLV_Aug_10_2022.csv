@@ -1,0 +1,858 @@
+Ticker,Name,Weight,Shares,Price
+BRK/B UN Equity,Berkshire Hathaway Inc,2.781214,1802.348,295.11
+JNJ UN Equity,Johnson & Johnson,2.34635,2629.201,170.67
+XOM UN Equity,Exxon Mobil Corp,2.01393,4211.618,91.45
+JPM UN Equity,JPMorgan Chase & Co,1.803881,2913.944,118.39
+META UW Equity,Meta Platforms Inc,1.681134,1802.776,178.34
+CVX UN Equity,Chevron Corp,1.59962,1963.278,155.82
+PFE UN Equity,Pfizer Inc,1.474752,5646.402,49.95
+BAC UN Equity,Bank of America Corp,1.28667,7016.488,35.07
+TMO UN Equity,Thermo Fisher Scientific Inc,1.063004,343.198,592.35
+PG UN Equity,Procter & Gamble Co/The,1.04843,1370.514,146.3
+CSCO UW Equity,Cisco Systems Inc,0.99952,4153.681,46.02
+DIS UN Equity,Walt Disney Co/The,0.998411,1698.303,112.43
+VZ UN Equity,Verizon Communications Inc,0.984489,4198.879,44.84
+WMT UN Equity,Walmart Inc,0.972483,1440.156,129.14
+NEE UN Equity,NextEra Energy Inc,0.920766,1961.362,89.78
+DHR UN Equity,Danaher Corp,0.917552,602.722,291.14
+CMCSA UW Equity,Comcast Corp,0.905022,4442.51,38.96
+WFC UN Equity,Wells Fargo & Co,0.878226,3788.756,44.33
+ABT UN Equity,Abbott Laboratories,0.857355,1486.934,110.27
+BMY UN Equity,Bristol-Myers Squibb Co,0.832824,2127.607,74.86
+PM UN Equity,Philip Morris International Inc,0.794321,1548.042,98.13
+MCD UN Equity,McDonald's Corp,0.763783,558.881,261.36
+INTC UW Equity,Intel Corp,0.756091,4088.153,35.37
+CRM UN Equity,Salesforce Inc,0.745286,755.695,188.61
+RTX UN Equity,Raytheon Technologies Corp,0.725671,1485.552,93.42
+CVS UN Equity,CVS Health Corp,0.712476,1309.532,104.05
+HD UN Equity,Home Depot Inc/The,0.706336,433.541,311.58
+SPGI UN Equity,S&P Global Inc,0.697619,339.307,393.2
+MRK UN Equity,Merck & Co Inc,0.684774,1468.316,89.19
+T UN Equity,AT&T Inc,0.673584,7152.635,18.01
+MDT UN Equity,Medtronic PLC,0.657489,1335.254,94.17
+COP UN Equity,ConocoPhillips,0.648693,1292.548,95.98
+LIN UN Equity,Linde PLC,0.641476,396.505,309.4
+GS UN Equity,Goldman Sachs Group Inc/The,0.604538,332.311,347.91
+MS UN Equity,Morgan Stanley,0.592489,1274.722,88.89
+BLK UN Equity,BlackRock Inc,0.568442,149.903,725.21
+C UN Equity,Citigroup Inc,0.547766,1969.489,53.19
+PLD UN Equity,Prologis Inc,0.518537,737.796,134.41
+HON UW Equity,Honeywell International Inc,0.49533,480.297,197.23
+GOOGL UW Equity,Alphabet Inc,0.488964,781.216,119.7
+AXP UN Equity,American Express Co,0.478669,563.547,162.44
+MDLZ UW Equity,Mondelez International Inc,0.465303,1380.276,64.47
+TMUS UW Equity,T-Mobile US Inc,0.450736,595.144,144.84
+GOOG UW Equity,Alphabet Inc,0.4501,713.46,120.65
+MMM UN Equity,3M Co,0.442833,566.938,149.38
+DUK UN Equity,Duke Energy Corp,0.442642,769.151,110.06
+SO UN Equity,Southern Co/The,0.433997,1060.153,78.29
+MO UN Equity,Altria Group Inc,0.423284,1809.358,44.74
+CB UN Equity,Chubb Ltd,0.421978,421.194,191.6
+ELV UN Equity,Elevance Health Inc,0.421837,167.606,481.33
+GE UN Equity,General Electric Co,0.416555,1032.717,77.14
+GILD UW Equity,Gilead Sciences Inc,0.414027,1254.043,63.14
+PYPL UW Equity,PayPal Holdings Inc,0.413929,800.339,98.91
+CI UN Equity,Cigna Corp,0.393889,262.406,287.07
+BDX UN Equity,Becton Dickinson and Co,0.383475,283.638,258.56
+ADI UW Equity,Analog Devices Inc,0.381434,416.65,175.08
+CME UW Equity,CME Group Inc,0.371645,358.241,198.4
+PNC UN Equity,PNC Financial Services Group Inc/The,0.365395,412.367,169.46
+TFC UN Equity,Truist Financial Corp,0.353419,1327.885,50.9
+D UN Equity,Dominion Energy Inc,0.347936,810.09,82.14
+USB UN Equity,US Bancorp,0.335524,1340.445,47.87
+BA UN Equity,Boeing Co/The,0.333347,377.178,169.02
+SBUX UW Equity,Starbucks Corp,0.331567,733.151,86.49
+ATVI UW Equity,Activision Blizzard Inc,0.328218,775.798,80.91
+KO UN Equity,Coca-Cola Co/The,0.324557,975.17,63.65
+NSC UN Equity,Norfolk Southern Corp,0.319915,237.535,257.57
+NOC UN Equity,Northrop Grumman Corp,0.319461,129.127,473.14
+F UN Equity,Ford Motor Co,0.31906,3936.671,15.5
+FIS UN Equity,Fidelity National Information Services I,0.318215,609.299,99.88
+BSX UN Equity,Boston Scientific Corp,0.311984,1425.351,41.86
+ETN UN Equity,Eaton Corp PLC,0.311338,398.698,149.34
+APD UN Equity,Air Products and Chemicals Inc,0.307176,221.156,265.63
+NFLX UW Equity,Netflix Inc,0.306462,240.093,244.11
+ICE UN Equity,Intercontinental Exchange Inc,0.305647,551.185,106.05
+FISV UW Equity,Fiserv Inc,0.300962,540.24,106.54
+REGN UW Equity,Regeneron Pharmaceuticals Inc,0.296611,88.427,641.49
+GD UN Equity,General Dynamics Corp,0.296494,246.042,230.46
+MRNA UW Equity,Moderna Inc,0.293946,322.577,174.27
+FDX UN Equity,FedEx Corp,0.291443,239.78,232.45
+MU UW Equity,Micron Technology Inc,0.290074,903.502,61.4
+CSX UW Equity,CSX Corp,0.289047,1622.973,34.06
+GM UN Equity,General Motors Co,0.288245,1452.575,37.95
+CNC UN Equity,Centene Corp,0.287948,580.768,94.82
+TXN UW Equity,Texas Instruments Inc,0.277823,290.149,183.12
+AEP UW Equity,American Electric Power Co Inc,0.272093,513.481,101.34
+SRE UN Equity,Sempra Energy,0.268562,314.173,163.48
+MPC UN Equity,Marathon Petroleum Corp,0.268482,539.459,95.18
+SLB UN Equity,Schlumberger NV,0.257624,1410.915,34.92
+LLY UN Equity,Eli Lilly & Co,0.24938,156.569,304.61
+SCHW UN Equity,Charles Schwab Corp/The,0.247112,675.704,69.94
+ADM UN Equity,Archer-Daniels-Midland Co,0.244467,559.244,83.6
+GIS UN Equity,General Mills Inc,0.243986,601.456,77.58
+MRVL UW Equity,Marvell Technology Inc,0.243582,847.129,54.99
+ROP UN Equity,Roper Technologies Inc,0.241831,105.427,438.68
+SQ UN Equity,Block Inc,0.240005,516.655,88.84
+HCA UN Equity,HCA Healthcare Inc,0.239682,211.507,216.72
+VLO UN Equity,Valero Energy Corp,0.237623,406.621,111.76
+FCX UN Equity,Freeport-McMoRan Inc,0.237007,1443.508,31.4
+UNH UN Equity,UnitedHealth Group Inc,0.236463,84.1,537.72
+MET UN Equity,MetLife Inc,0.236107,684.88,65.93
+LHX UN Equity,L3Harris Technologies Inc,0.235805,192.161,234.68
+COF UN Equity,Capital One Financial Corp,0.23295,395.16,112.74
+O UN Equity,Realty Income Corp,0.232927,600.916,74.13
+EXC UW Equity,Exelon Corp,0.232896,978.258,45.53
+CTVA UN Equity,Corteva Inc,0.227268,723.31,60.09
+AIG UN Equity,American International Group Inc,0.227249,791.335,54.92
+MCK UN Equity,McKesson Corp,0.219063,116.5,359.61
+MSI UN Equity,Motorola Solutions Inc,0.217423,164.351,253
+PSX UN Equity,Phillips 66,0.215075,480.343,85.63
+XEL UW Equity,Xcel Energy Inc,0.213803,544.382,75.11
+WMB UN Equity,Williams Cos Inc/The,0.209925,1215.835,33.02
+TRV UN Equity,Travelers Cos Inc/The,0.206387,239.2,165.01
+AFL UN Equity,Aflac Inc,0.205747,637.626,61.71
+DOW UN Equity,Dow Inc,0.205542,727.399,54.04
+IBM UN Equity,International Business Machines Corp,0.205235,298.479,131.5
+JCI UN Equity,Johnson Controls International plc,0.201383,694.56,55.45
+PRU UN Equity,Prudential Financial Inc,0.199092,374.571,101.65
+WELL UN Equity,Welltower Inc,0.197618,453.646,83.31
+PEP UW Equity,PepsiCo Inc,0.196937,214.068,175.94
+DLR UN Equity,Digital Realty Trust Inc,0.196429,283.516,132.5
+NUE UN Equity,Nucor Corp,0.196328,265.366,141.49
+STZ UN Equity,Constellation Brands Inc,0.195628,154.515,242.13
+GPN UN Equity,Global Payments Inc,0.193369,278.889,132.6
+ORCL UN Equity,Oracle Corp,0.19178,473.004,77.54
+NEM UN Equity,Newmont Corp,0.189749,793.363,45.74
+CARR UN Equity,Carrier Global Corp,0.189641,846.189,42.86
+KMI UN Equity,Kinder Morgan Inc,0.188164,1983.757,18.14
+CTSH UW Equity,Cognizant Technology Solutions Corp,0.187543,519.503,69.04
+SYK UN Equity,Stryker Corp,0.187058,163.201,219.2
+ILMN UW Equity,Illumina Inc,0.186489,156.907,227.3
+TGT UN Equity,Target Corp,0.184291,207.724,169.67
+EMR UN Equity,Emerson Electric Co,0.183843,401.632,87.54
+ED UN Equity,Consolidated Edison Inc,0.183359,354.242,98.99
+EA UW Equity,Electronic Arts Inc,0.17998,262.429,131.16
+AJG UN Equity,Arthur J Gallagher & Co,0.178384,183.997,185.41
+KDP UW Equity,Keurig Dr Pepper Inc,0.177709,856.068,39.7
+AMD UW Equity,Advanced Micro Devices Inc,0.17717,342.077,99.05
+ALL UN Equity,Allstate Corp/The,0.177074,273.563,123.79
+VICI UN Equity,VICI Properties Inc,0.17476,960.122,34.81
+WEC UN Equity,WEC Energy Group Inc,0.173229,315.005,105.17
+PEG UN Equity,Public Service Enterprise Group Inc,0.173061,497.024,66.59
+MTB UN Equity,M&T Bank Corp,0.172359,178.35,184.82
+BK UN Equity,Bank of New York Mellon Corp/The,0.168653,733.212,43.99
+BIIB UW Equity,Biogen Inc,0.168187,145.516,221.04
+PCAR UW Equity,PACCAR Inc,0.16605,340.548,93.25
+KKR UN Equity,KKR & Co Inc,0.165667,570.863,55.5
+ES UN Equity,Eversource Energy,0.164845,343.979,91.65
+IFF UN Equity,International Flavors & Fragrances Inc,0.163669,254.374,123.05
+CMI UN Equity,Cummins Inc,0.163221,140.678,221.89
+DD UN Equity,DuPont de Nemours Inc,0.161403,508.189,60.74
+KR UN Equity,Kroger Co/The,0.160134,654.513,46.79
+DFS UN Equity,Discover Financial Services,0.158162,280.121,107.98
+YUM UN Equity,Yum! Brands Inc,0.157612,252.915,119.18
+AMT UN Equity,American Tower Corp,0.15687,107.997,277.79
+AVB UN Equity,AvalonBay Communities Inc,0.155792,139.408,213.72
+OTIS UN Equity,Otis Worldwide Corp,0.154927,370.824,79.9
+PH UN Equity,Parker-Hannifin Corp,0.154747,98.75,299.69
+AME UN Equity,AMETEK Inc,0.152798,229.983,127.06
+EQR UN Equity,Equity Residential,0.151965,369.61,78.63
+FRC UN Equity,First Republic Bank/CA,0.151915,178.425,162.83
+TROW UW Equity,T Rowe Price Group Inc,0.151684,223.367,129.87
+SBAC UW Equity,SBA Communications Corp,0.150543,82.174,350.36
+WBA UW Equity,Walgreens Boots Alliance Inc,0.149415,716.158,39.9
+AWK UN Equity,American Water Works Co Inc,0.148863,181.599,156.77
+ORLY UW Equity,O'Reilly Automotive Inc,0.145292,38.601,719.83
+RSG UN Equity,Republic Services Inc,0.144004,192.668,142.94
+KHC UW Equity,Kraft Heinz Co/The,0.140918,697.639,38.63
+ARE UN Equity,Alexandria Real Estate Equities Inc,0.140813,161.682,166.56
+WY UN Equity,Weyerhaeuser Co,0.140178,743.022,36.08
+STT UN Equity,State Street Corp,0.138858,366.186,72.52
+GLW UN Equity,Corning Inc,0.13646,709.164,36.8
+CL UN Equity,Colgate-Palmolive Co,0.133751,318.386,80.34
+EIX UN Equity,Edison International,0.133653,375.28,68.11
+DTE UN Equity,DTE Energy Co,0.133164,192.552,132.26
+BAX UN Equity,Baxter International Inc,0.132833,424.1,59.9
+CEG UW Equity,Constellation Energy Corp,0.131439,325.946,77.12
+CSGP UW Equity,CoStar Group Inc,0.131342,336.122,74.73
+FITB UW Equity,Fifth Third Bancorp,0.128574,680.006,36.16
+OKE UN Equity,ONEOK Inc,0.12812,393.546,62.26
+DRE UN Equity,Duke Realty Corp,0.127071,382.763,63.49
+DLTR UW Equity,Dollar Tree Inc,0.126997,146.336,165.97
+AEE UN Equity,Ameren Corp,0.126198,256.889,93.95
+EXR UN Equity,Extra Space Storage Inc,0.126004,116.503,206.84
+ZBH UN Equity,Zimmer Biomet Holdings Inc,0.125882,209.396,114.97
+LH UN Equity,Laboratory Corp of America Holdings,0.125282,92.468,259.11
+ETR UN Equity,Entergy Corp,0.125252,202.62,118.22
+FTV UN Equity,Fortive Corp,0.12478,358.041,66.65
+WTW UW Equity,Willis Towers Watson PLC,0.124629,110.668,215.37
+INVH UN Equity,Invitation Homes Inc,0.124011,609.05,38.94
+EBAY UW Equity,eBay Inc,0.123358,486.422,48.5
+PXD UN Equity,Pioneer Natural Resources Co,0.123312,108.277,217.8
+LUV UN Equity,Southwest Airlines Co,0.121398,591.054,39.28
+LYB UN Equity,LyondellBasell Industries NV,0.119362,256.486,89
+TSN UN Equity,Tyson Foods Inc,0.117981,284.315,79.36
+BKR UW Equity,Baker Hughes Co,0.117666,924.149,24.35
+MKC UN Equity,McCormick & Co Inc/MD,0.117491,250.189,89.81
+LEN UN Equity,Lennar Corp,0.115852,253.85,87.28
+HIG UN Equity,Hartford Financial Services Group Inc/Th,0.114464,327.605,66.82
+AMGN UW Equity,Amgen Inc,0.112506,85.351,252.09
+FE UN Equity,FirstEnergy Corp,0.112032,542.005,39.53
+TDG UN Equity,TransDigm Group Inc,0.111912,32.133,666.06
+NDAQ UW Equity,Nasdaq Inc,0.111605,114.383,186.6
+PPL UN Equity,PPL Corp,0.111542,735.577,29
+APTV UN Equity,Aptiv PLC,0.111314,202.11,105.33
+MAA UN Equity,Mid-America Apartment Communities Inc,0.110681,114.578,184.74
+NTRS UW Equity,Northern Trust Corp,0.109432,205.138,102.02
+IR UN Equity,Ingersoll Rand Inc,0.108773,405.423,51.31
+RF UN Equity,Regions Financial Corp,0.108383,932.839,22.22
+MLM UN Equity,Martin Marietta Materials Inc,0.108138,56.607,365.34
+VTR UN Equity,Ventas Inc,0.107299,398.452,51.5
+SUI UN Equity,Sun Communities Inc,0.10585,119.725,169.08
+CNP UN Equity,CenterPoint Energy Inc,0.105458,628.882,32.07
+DVN UN Equity,Devon Energy Corp,0.105365,335.56,60.05
+HBAN UW Equity,Huntington Bancshares Inc/OH,0.10455,1432.276,13.96
+PKI UN Equity,PerkinElmer Inc,0.104168,125.878,158.26
+CMS UN Equity,CMS Energy Corp,0.103893,288.961,68.76
+GPC UN Equity,Genuine Parts Co,0.103181,127.341,154.96
+DOV UN Equity,Dover Corp,0.101985,143.591,135.83
+HPQ UN Equity,HP Inc,0.101115,569.09,33.98
+AMCR UN Equity,Amcor PLC,0.099487,1496.955,12.71
+PFG UW Equity,Principal Financial Group Inc,0.099386,249.566,76.16
+RJF UN Equity,Raymond James Financial Inc,0.0991,178.694,106.06
+ESS UN Equity,Essex Property Trust Inc,0.098758,64.859,291.2
+CTRA UN Equity,Coterra Energy Inc,0.098361,663.992,28.33
+HPE UN Equity,Hewlett Packard Enterprise Co,0.098351,1296.283,14.51
+CFG UN Equity,Citizens Financial Group Inc,0.09787,487.298,38.41
+SPG UN Equity,Simon Property Group Inc,0.09766,167.686,111.38
+KMB UN Equity,Kimberly-Clark Corp,0.09701,136.758,135.66
+TDY UN Equity,Teledyne Technologies Inc,0.095523,46.216,395.28
+LOW UN Equity,Lowe's Cos Inc,0.095347,90.526,201.43
+HUM UN Equity,Humana Inc,0.094339,37.123,486
+STE UN Equity,STERIS PLC,0.093521,85.063,210.26
+PCG UN Equity,PG&E Corp,0.093421,1548.203,11.54
+SWKS UW Equity,Skyworks Solutions Inc,0.09316,160.492,111.01
+SYF UN Equity,Synchrony Financial,0.092997,498.74,35.66
+HOLX UW Equity,Hologic Inc,0.092732,245.494,72.24
+BMRN UW Equity,BioMarin Pharmaceutical Inc,0.092447,184.166,96
+KEY UN Equity,KeyCorp,0.091497,927.311,18.87
+TRMB UW Equity,Trimble Inc,0.091211,249.193,70
+EOG UN Equity,EOG Resources Inc,0.089556,157.144,108.99
+ROST UW Equity,Ross Stores Inc,0.089433,198.463,86.18
+MOS UN Equity,Mosaic Co/The,0.089336,316.449,53.99
+VRSN UW Equity,VeriSign Inc,0.089289,85.444,199.85
+CAH UN Equity,Cardinal Health Inc,0.08922,271.916,62.75
+WAB UN Equity,Westinghouse Air Brake Technologies Corp,0.089174,180.657,94.4
+DGX UN Equity,Quest Diagnostics Inc,0.086055,116.737,140.98
+WPC UN Equity,WP Carey Inc,0.08588,188.651,87.06
+J UN Equity,Jacobs Engineering Group Inc,0.084904,127.552,127.3
+LNG UA Equity,Cheniere Energy Inc,0.084695,107.431,150.77
+CAG UN Equity,Conagra Brands Inc,0.084526,469.78,34.41
+COO UN Equity,Cooper Cos Inc/The,0.084229,48.484,332.24
+VFC UN Equity,VF Corp,0.084186,348.866,46.15
+RPRX UW Equity,Royalty Pharma PLC,0.084123,366.301,43.92
+UPS UN Equity,United Parcel Service Inc,0.083926,79.312,202.37
+IP UN Equity,International Paper Co,0.083837,369.347,43.41
+EQT UN Equity,EQT Corp,0.083669,367.761,43.51
+EQIX UW Equity,Equinix Inc,0.082804,22.321,709.46
+BILL UN Equity,Bill.com Holdings Inc,0.082739,97.369,162.51
+ATO UN Equity,Atmos Energy Corp,0.082431,137.717,114.47
+MRO UN Equity,Marathon Oil Corp,0.082242,704.045,22.34
+CINF UW Equity,Cincinnati Financial Corp,0.081645,156.079,100.04
+UDR UN Equity,UDR Inc,0.08142,316.613,49.18
+LNT UW Equity,Alliant Energy Corp,0.081021,250.159,61.94
+XYL UN Equity,Xylem Inc/NY,0.080775,153.739,100.48
+EVRG UN Equity,Evergy Inc,0.080706,221.856,69.57
+TT UN Equity,Trane Technologies PLC,0.0806,97.584,157.96
+AKAM UW Equity,Akamai Technologies Inc,0.079395,158.181,95.99
+PEAK UN Equity,Healthpeak Properties Inc,0.079295,538.134,28.18
+GRMN UN Equity,Garmin Ltd,0.079097,153.854,98.32
+WDC UW Equity,Western Digital Corp,0.077993,312.829,47.68
+STLD UW Equity,Steel Dynamics Inc,0.0775,178.55,83.01
+PPG UN Equity,PPG Industries Inc,0.077026,110.31,133.54
+ALB UN Equity,Albemarle Corp,0.076815,56.654,259.3
+OMC UN Equity,Omnicom Group Inc,0.076276,203.053,71.84
+COIN UW Equity,Coinbase Global Inc,0.076139,154.676,94.14
+LKQ UW Equity,LKQ Corp,0.075878,264.079,54.95
+BRO UN Equity,Brown & Brown Inc,0.07565,217.984,66.37
+PARA UW Equity,Paramount Global,0.075505,575.527,25.09
+CBRE UN Equity,CBRE Group Inc,0.075174,168.581,85.28
+TXT UN Equity,Textron Inc,0.075119,214.386,67.01
+SWK UN Equity,Stanley Black & Decker Inc,0.074706,150.501,94.93
+HRL UN Equity,Hormel Foods Corp,0.074579,286.113,49.85
+KMX UN Equity,CarMax Inc,0.074004,141.501,100.02
+SJM UN Equity,J M Smucker Co/The,0.073409,104.706,134.08
+ZM UW Equity,Zoom Video Communications Inc,0.073221,125.016,112.01
+HAL UN Equity,Halliburton Co,0.072873,490.551,28.41
+SSNC UW Equity,SS&C Technologies Holdings Inc,0.072647,222.685,62.39
+BXP UN Equity,Boston Properties Inc,0.071768,156.394,87.76
+BG UN Equity,Bunge Ltd,0.071541,139.824,97.85
+KIM UN Equity,Kimco Realty Corp,0.071289,602.725,22.62
+CPT UN Equity,Camden Property Trust,0.071029,94.76,143.35
+LDOS UN Equity,Leidos Holdings Inc,0.070112,135.933,98.64
+AES UN Equity,AES Corp/The,0.069744,545.975,24.43
+IEX UN Equity,IDEX Corp,0.069643,62.319,213.72
+EFX UN Equity,Equifax Inc,0.069636,60.655,219.56
+HST UW Equity,Host Hotels & Resorts Inc,0.069224,706.435,18.74
+WRB UN Equity,W R Berkley Corp,0.068848,205.443,64.09
+CAT UN Equity,Caterpillar Inc,0.068544,68.732,190.72
+CTLT UN Equity,Catalent Inc,0.068444,116,112.84
+VTRS UW Equity,Viatris Inc,0.0681,1209.264,10.77
+PKG UN Equity,Packaging Corp of America,0.068072,92.211,141.18
+VMW UN Equity,VMware Inc,0.067137,106.969,120.03
+HWM UN Equity,Howmet Aerospace Inc,0.066891,337.446,37.91
+URI UN Equity,United Rentals Inc,0.066161,38.582,327.95
+UAL UW Equity,United Airlines Holdings Inc,0.065853,325.511,38.69
+EMN UN Equity,Eastman Chemical Co,0.065639,128.184,97.93
+CBOE UF Equity,Cboe Global Markets Inc,0.065441,105.65,118.46
+EXPD UW Equity,Expeditors International of Washington I,0.064679,115.129,107.44
+FWONK UW Equity,Liberty Media Corp-Liberty Formula One,0.064611,177.817,69.49
+MKL UN Equity,Markel Corp,0.064479,10.279,1199.66
+NI UN Equity,NiSource Inc,0.064476,405.213,30.43
+CE UN Equity,Celanese Corp,0.064347,108.071,113.87
+MGM UN Equity,MGM Resorts International,0.064027,355.13,34.48
+GLPI UW Equity,Gaming and Leisure Properties Inc,0.063844,236.074,51.72
+AMC UN Equity,AMC Entertainment Holdings Inc,0.063827,515.699,23.67
+FSLR UW Equity,First Solar Inc,0.063474,106.009,114.51
+FHN UN Equity,First Horizon Corp,0.063422,528.043,22.97
+DHI UN Equity,DR Horton Inc,0.06291,153.42,78.42
+MAS UN Equity,Masco Corp,0.062553,222.982,53.65
+CHK UW Equity,Chesapeake Energy Corp,0.062551,127.261,94
+RS UN Equity,Reliance Steel & Aluminum Co,0.062369,61.505,193.93
+SNA UN Equity,Snap-on Inc,0.062222,52.47,226.79
+WTRG UN Equity,Essential Utilities Inc,0.062207,230.916,51.52
+TFX UN Equity,Teleflex Inc,0.062199,46.822,254.05
+VMC UN Equity,Vulcan Materials Co,0.061737,67.653,174.52
+ANSS UW Equity,ANSYS Inc,0.061663,41.061,287.2
+QRVO UW Equity,Qorvo Inc,0.061511,107.913,109.01
+BLDR UN Equity,Builders FirstSource Inc,0.06133,171.552,68.37
+BIO UN Equity,Bio-Rad Laboratories Inc,0.061186,21.334,548.49
+IPG UN Equity,Interpublic Group of Cos Inc/The,0.061075,392.35,29.77
+CHD UN Equity,Church & Dwight Co Inc,0.06106,132.561,88.09
+HUBB UN Equity,Hubbell Inc,0.060939,53.433,218.11
+L UN Equity,Loews Corp,0.060556,203.21,56.99
+SBNY UW Equity,Signature Bank/New York NY,0.060482,58.673,197.14
+AMH UN Equity,American Homes 4 Rent,0.059916,302.657,37.86
+EQH UN Equity,Equitable Holdings Inc,0.059263,382.118,29.66
+OKTA UW Equity,Okta Inc,0.059175,107.076,105.69
+GDDY UN Equity,GoDaddy Inc,0.059097,139.238,81.17
+QGEN UN Equity,QIAGEN NV,0.059001,226.35,49.85
+APH UN Equity,Amphenol Corp,0.058901,143.807,78.33
+ALLY UN Equity,Ally Financial Inc,0.058709,322.08,34.86
+APA UW Equity,APA Corp,0.058422,336.331,33.22
+LUMN UN Equity,Lumen Technologies Inc,0.058375,1025.158,10.89
+AMP UN Equity,Ameriprise Financial Inc,0.058262,39.666,280.9
+REG UW Equity,Regency Centers Corp,0.058225,170.994,65.12
+PSA UN Equity,Public Storage,0.058166,32.151,345.99
+LSI UN Equity,Life Storage Inc,0.058131,83.942,132.44
+RPM UN Equity,RPM International Inc,0.057982,120.857,91.75
+NLY UN Equity,Annaly Capital Management Inc,0.057878,1654.537,6.69
+CUBE UN Equity,CubeSmart,0.057719,223.044,49.49
+REXR UN Equity,Rexford Industrial Realty Inc,0.05757,164.819,66.8
+DAR UN Equity,Darling Ingredients Inc,0.057499,148.64,73.98
+ACGL UW Equity,Arch Capital Group Ltd,0.057425,242.809,45.23
+AAP UN Equity,Advance Auto Parts Inc,0.057134,56.123,194.69
+GME UN Equity,GameStop Corp,0.05677,267.872,40.53
+BALL UN Equity,Ball Corp,0.056658,188.51,57.48
+BBY UN Equity,Best Buy Co Inc,0.056576,137.814,78.51
+FOXA UW Equity,Fox Corp,0.056468,309.611,34.88
+DOX UW Equity,Amdocs Ltd,0.056378,122.287,88.17
+ON UW Equity,ON Semiconductor Corp,0.056361,162.821,66.2
+CMA UN Equity,Comerica Inc,0.055855,130.348,81.95
+DELL UN Equity,Dell Technologies Inc,0.05583,226.066,47.23
+FNF UN Equity,Fidelity National Financial Inc,0.055641,267.362,39.8
+CHRW UW Equity,CH Robinson Worldwide Inc,0.055329,91.534,115.6
+WRK UN Equity,Westrock Co,0.055105,252.902,41.67
+NDSN UW Equity,Nordson Corp,0.055072,44.277,237.87
+EWBC UW Equity,East West Bancorp Inc,0.054529,141.114,73.9
+HSIC UW Equity,Henry Schein Inc,0.054397,136.829,76.03
+PINS UN Equity,Pinterest Inc,0.054135,452.1,22.9
+HAS UW Equity,Hasbro Inc,0.05378,131.103,78.45
+FFIV UW Equity,F5 Inc,0.053719,60.319,170.32
+SCI UN Equity,Service Corp International/US,0.053561,154.033,66.5
+CLF UN Equity,Cleveland-Cliffs Inc,0.053416,517.241,19.75
+ZBRA UW Equity,Zebra Technologies Corp,0.052978,30.808,328.87
+HLT UN Equity,Hilton Worldwide Holdings Inc,0.052976,75.8,133.66
+WOLF UN Equity,Wolfspeed Inc,0.052651,115.3,87.33
+MSCI UN Equity,MSCI Inc,0.052038,19.433,512.12
+HR UN Equity,Healthcare Realty Trust Inc,0.051969,378.329,26.27
+CCL UN Equity,Carnival Corp,0.051648,955.258,10.34
+UTHR UW Equity,United Therapeutics Corp,0.051547,44.508,221.49
+NLSN UN Equity,Nielsen Holdings PLC,0.051209,357.424,27.4
+AA UN Equity,Alcoa Corp,0.050915,183.893,52.95
+TAP UN Equity,Molson Coors Beverage Co,0.050891,174.671,55.72
+AAL UW Equity,American Airlines Group Inc,0.050786,644.5,15.07
+CPB UN Equity,Campbell Soup Co,0.050515,193.447,49.94
+MPW UN Equity,Medical Properties Trust Inc,0.050261,592.612,16.22
+SIVB UW Equity,SVB Financial Group,0.050142,21.204,452.24
+JAZZ UW Equity,Jazz Pharmaceuticals PLC,0.050048,60.798,157.43
+ROK UN Equity,Rockwell Automation Inc,0.050021,37.72,253.61
+FANG UW Equity,Diamondback Energy Inc,0.049971,75.822,126.04
+RRX UN Equity,Regal Rexnord Corp,0.049773,66.869,142.35
+ACM UN Equity,AECOM,0.048792,124.882,74.72
+BWA UN Equity,BorgWarner Inc,0.048777,238.27,39.15
+Y UN Equity,Alleghany Corp,0.048668,11.112,837.6
+NRG UN Equity,NRG Energy Inc,0.048315,235.471,39.24
+BKI UN Equity,Black Knight Inc,0.048286,139.874,66.02
+TWLO UN Equity,Twilio Inc,0.048007,106.472,86.23
+GL UN Equity,Globe Life Inc,0.047967,90.298,101.59
+PGR UN Equity,Progressive Corp/The,0.047924,75.815,120.89
+RCL UN Equity,Royal Caribbean Cruises Ltd,0.047907,219.815,41.68
+JNPR UN Equity,Juniper Networks Inc,0.04789,318.895,28.72
+WHR UN Equity,Whirlpool Corp,0.047811,54.87,166.64
+MMC UN Equity,Marsh & McLennan Cos Inc,0.047533,53.574,169.68
+PWR UN Equity,Quanta Services Inc,0.04728,64.471,140.25
+FMC UN Equity,FMC Corp,0.04724,82.709,109.23
+OXY UN Equity,Occidental Petroleum Corp,0.046732,142.177,62.86
+BBWI UN Equity,Bath & Body Works Inc,0.04656,238.464,37.34
+JLL UN Equity,Jones Lang LaSalle Inc,0.046464,49.312,180.2
+NLOK UW Equity,NortonLifeLock Inc,0.046032,361.683,24.34
+LEA UN Equity,Lear Corp,0.045819,59.376,147.58
+KNX UN Equity,Knight-Swift Transportation Holdings Inc,0.04571,158.48,55.16
+AFG UN Equity,American Financial Group Inc/OH,0.045488,67.14,129.57
+ELAN UN Equity,Elanco Animal Health Inc,0.045374,444.318,19.53
+COLD UN Equity,Americold Realty Trust Inc,0.045157,268.199,32.2
+ADP UW Equity,Automatic Data Processing Inc,0.045154,34.204,252.47
+PNW UN Equity,Pinnacle West Capital Corp,0.045031,112.648,76.45
+FRT UN Equity,Federal Realty OP LP,0.04496,78.617,109.37
+K UN Equity,Kellogg Co,0.044958,113.864,75.51
+WBS UN Equity,Webster Financial Corp,0.04471,177.989,48.04
+RGA UN Equity,Reinsurance Group of America Inc,0.04452,66.674,127.7
+OC UN Equity,Owens Corning,0.044359,96.687,87.74
+UGI UN Equity,UGI Corp,0.044163,208.902,40.43
+ARMK UN Equity,Aramark,0.044004,231.32,36.38
+NNN UN Equity,National Retail Properties Inc,0.043938,175.059,48
+ZION UW Equity,Zions Bancorp NA,0.043819,148.609,56.39
+UBER UN Equity,Uber Technologies Inc,0.043376,252.906,32.8
+WBD UW Equity,Warner Bros Discovery Inc,0.042903,626.329,13.1
+AIZ UN Equity,Assurant Inc,0.042902,50.675,161.91
+PNR UN Equity,Pentair PLC,0.042813,164.182,49.87
+OGE UN Equity,OGE Energy Corp,0.042801,199.256,41.08
+CIEN UN Equity,Ciena Corp,0.042607,150.978,53.97
+BEN UN Equity,Franklin Resources Inc,0.042268,284.734,28.39
+LII UN Equity,Lennox International Inc,0.042151,32.308,249.51
+LBRDK UW Equity,Liberty Broadband Corp,0.041806,68.841,116.14
+OGN UN Equity,Organon & Co,0.041791,253.565,31.52
+XRAY UW Equity,DENTSPLY SIRONA Inc,0.041411,213.812,37.04
+CBSH UW Equity,Commerce Bancshares Inc/MO,0.041327,109.287,72.32
+TPR UN Equity,Tapestry Inc,0.041049,227.942,34.44
+OHI UN Equity,Omega Healthcare Investors Inc,0.040745,234.497,33.23
+CFR UN Equity,Cullen/Frost Bankers Inc,0.040606,58.2,133.43
+NWL UW Equity,Newell Brands Inc,0.040398,376.691,20.51
+OLN UN Equity,Olin Corp,0.040122,139.611,54.96
+LAD UN Equity,Lithia Motors Inc,0.039994,28.437,268.97
+MIDD UW Equity,Middleby Corp/The,0.039827,50.508,150.8
+CASY UW Equity,Casey's General Stores Inc,0.039746,36.985,205.52
+LVS UN Equity,Las Vegas Sands Corp,0.039665,206.978,36.65
+RUN UW Equity,Sunrun Inc,0.039664,204.905,37.02
+CDAY UN Equity,Ceridian HCM Holding Inc,0.039508,110.609,68.31
+LYV UN Equity,Live Nation Entertainment Inc,0.039334,76.861,97.87
+PLUG UR Equity,Plug Power Inc,0.039232,260.696,28.78
+FCNCA UW Equity,First Citizens BancShares Inc/NC,0.0392,9.155,818.88
+DINO UN Equity,HF Sinclair Corp,0.038995,149.692,49.82
+UNM UN Equity,Unum Group,0.03899,199.856,37.31
+PATH UN Equity,UiPath Inc,0.038572,338.067,21.82
+CG UW Equity,Carlyle Group Inc/The,0.038186,206.585,35.35
+UHS UN Equity,Universal Health Services Inc,0.038152,64.776,112.64
+STOR UN Equity,STORE Capital Corp,0.037991,253.508,28.66
+ACHC UW Equity,Acadia Healthcare Co Inc,0.037703,88.854,81.15
+CPRI UN Equity,Capri Holdings Ltd,0.037584,143.61,50.05
+USFD UN Equity,US Foods Holding Corp,0.03751,222.089,32.3
+ATR UN Equity,AptarGroup Inc,0.037501,65.336,109.77
+EGP UN Equity,EastGroup Properties Inc,0.037435,41.044,174.43
+SWN UN Equity,Southwestern Energy Co,0.037383,1031.645,6.93
+JEF UN Equity,Jefferies Financial Group Inc,0.03731,209.062,34.13
+FR UN Equity,First Industrial Realty Trust Inc,0.037253,131.446,54.2
+NWSA UW Equity,News Corp,0.037153,385.108,18.45
+RE UN Equity,Everest Re Group Ltd,0.037086,26.834,264.31
+NXST UW Equity,Nexstar Media Group Inc,0.036493,35.248,198
+STWD UN Equity,Starwood Property Trust Inc,0.036482,291.434,23.94
+BRX UN Equity,Brixmor Property Group Inc,0.036447,297.618,23.42
+THC UN Equity,Tenet Healthcare Corp,0.036403,106.062,65.64
+HII UN Equity,Huntington Ingalls Industries Inc,0.036363,30.633,227.02
+ROKU UW Equity,Roku Inc,0.03633,85.691,81.08
+ARW UN Equity,Arrow Electronics Inc,0.036322,62.344,111.42
+ST UN Equity,Sensata Technologies Holding PLC,0.036306,154.779,44.86
+NOV UN Equity,NOV Inc,0.036289,390.547,17.77
+IVZ UN Equity,Invesco Ltd,0.035809,372.598,18.38
+CTXS UW Equity,Citrix Systems Inc,0.035779,66.64,102.68
+GWRE UN Equity,Guidewire Software Inc,0.035736,83.448,81.9
+ITT UN Equity,ITT Inc,0.035494,83.298,81.49
+ISRG UW Equity,Intuitive Surgical Inc,0.035122,28.24,237.85
+ITW UN Equity,Illinois Tool Works Inc,0.034887,31.258,213.45
+RIVN UW Equity,Rivian Automotive Inc,0.034775,177.821,37.4
+NVST UN Equity,Envista Holdings Corp,0.034654,162.396,40.81
+FYBR UW Equity,Frontier Communications Parent Inc,0.03449,244.387,26.99
+GNTX UW Equity,Gentex Corp,0.034361,234.439,28.03
+LNC UN Equity,Lincoln National Corp,0.034329,135.616,48.41
+HES UN Equity,Hess Corp,0.034312,60.991,107.59
+PB UN Equity,Prosperity Bancshares Inc,0.034302,88.292,74.3
+APO UN Equity,Apollo Global Management Inc,0.034219,109.088,59.99
+AGNC UW Equity,AGNC Investment Corp,0.034172,521.15,12.54
+MHK UN Equity,Mohawk Industries Inc,0.03411,52.48,124.3
+AIRC UN Equity,Apartment Income REIT Corp,0.034102,143.842,45.34
+CACI UN Equity,CACI International Inc,0.034089,23.116,282.03
+ORI UN Equity,Old Republic International Corp,0.03408,282.144,23.1
+SF UN Equity,Stifel Financial Corp,0.033855,103.083,62.81
+X UN Equity,United States Steel Corp,0.033766,257.684,25.06
+EXAS UR Equity,Exact Sciences Corp,0.033714,142.869,45.13
+AFRM UW Equity,Affirm Holdings Inc,0.033691,175.181,36.78
+DXC UN Equity,DXC Technology Co,0.033609,244.112,26.33
+MKSI UW Equity,MKS Instruments Inc,0.033593,55.378,116.01
+CLVT UN Equity,Clarivate PLC,0.033447,478.071,13.38
+RGLD UW Equity,Royal Gold Inc,0.033274,61.14,104.08
+LITE UW Equity,Lumentum Holdings Inc,0.033155,68.793,92.17
+PHM UN Equity,PulteGroup Inc,0.033155,143.681,44.13
+VOYA UN Equity,Voya Financial Inc,0.032832,101.337,61.96
+PNFP UW Equity,Pinnacle Financial Partners Inc,0.032497,74.779,83.11
+MDU UN Equity,MDU Resources Group Inc,0.032397,201.55,30.74
+SOFI UW Equity,SoFi Technologies Inc,0.032396,793.293,7.81
+AVY UN Equity,Avery Dennison Corp,0.032274,31.282,197.31
+AYI UN Equity,Acuity Brands Inc,0.032255,34.394,179.35
+INGR UN Equity,Ingredion Inc,0.03218,66.096,93.11
+SON UN Equity,Sonoco Products Co,0.032081,97.094,63.19
+KRC UN Equity,Kilroy Realty Corp,0.031901,115.965,52.61
+WYNN UW Equity,Wynn Resorts Ltd,0.031658,92.647,65.35
+LFUS UW Equity,Littelfuse Inc,0.031656,24.119,251.01
+SNV UN Equity,Synovus Financial Corp,0.031631,143.653,42.11
+Z UW Equity,Zillow Group Inc,0.031537,153.583,39.27
+FAF UN Equity,First American Financial Corp,0.031343,103.795,57.75
+AOS UN Equity,A O Smith Corp,0.031331,97.114,61.7
+AGCO UN Equity,AGCO Corp,0.031005,53.759,110.3
+SEIC UW Equity,SEI Investments Co,0.031,103.955,57.03
+PENN UW Equity,Penn Entertainment Inc,0.030975,165.748,35.74
+SYNH UW Equity,Syneos Health Inc,0.030844,84.351,69.93
+WWD UW Equity,Woodward Inc,0.030816,58.728,100.35
+VAC UN Equity,Marriott Vacations Worldwide Corp,0.030809,40.649,144.95
+BPOP UW Equity,Popular Inc,0.030754,74.782,78.65
+NVT UN Equity,nVent Electric PLC,0.030675,164.831,35.59
+HOOD UW Equity,Robinhood Markets Inc,0.030673,554.451,10.58
+SRC UN Equity,Spirit Realty Capital Inc,0.03052,133.533,43.71
+FBHS UN Equity,Fortune Brands Home & Security Inc,0.030293,85.348,67.88
+HUN UN Equity,Huntsman Corp,0.030197,198.661,29.07
+CNXC UW Equity,Concentrix Corp,0.03017,43.071,133.96
+IBKR UW Equity,Interactive Brokers Group Inc,0.030106,92.654,62.14
+ALK UN Equity,Alaska Air Group Inc,0.030084,123.438,46.61
+BF/B UN Equity,Brown-Forman Corp,0.02996,75.461,75.93
+CLH UN Equity,Clean Harbors Inc,0.029959,50.861,112.65
+DCI UN Equity,Donaldson Co Inc,0.029888,102.398,55.82
+IAC UW Equity,IAC/InterActiveCorp,0.029876,77.621,73.61
+CHNG UW Equity,Change Healthcare Inc,0.029722,230.972,24.61
+NFG UN Equity,National Fuel Gas Co,0.029633,80.373,70.51
+DKS UN Equity,Dick's Sporting Goods Inc,0.029529,55.382,101.97
+IDA UN Equity,IDACORP Inc,0.029528,50.214,112.46
+ALGN UW Equity,Align Technology Inc,0.029461,19.576,287.81
+PRGO UN Equity,Perrigo Co PLC,0.029274,134.001,41.78
+IIVI UW Equity,II-VI Inc,0.029225,107.172,52.15
+OSK UN Equity,Oshkosh Corp,0.029141,65.519,85.06
+MCHP UW Equity,Microchip Technology Inc,0.028985,78.415,70.69
+TMX UN Equity,Terminix Global Holdings Inc,0.02895,121.257,45.66
+CAR UW Equity,Avis Budget Group Inc,0.028891,29.672,186.21
+CW UN Equity,Curtiss-Wright Corp,0.028776,38.207,144.04
+DTM UN Equity,DT Midstream Inc,0.028649,96.698,56.66
+TDOC UN Equity,Teladoc Health Inc,0.028623,144.853,37.79
+LEG UN Equity,Leggett & Platt Inc,0.028435,132.763,40.96
+XPO UN Equity,XPO Logistics Inc,0.028197,94.374,57.14
+ASH UN Equity,Ashland Inc,0.028123,50.539,106.42
+HXL UN Equity,Hexcel Corp,0.02812,83.611,64.32
+BEPC UN Equity,Brookfield Renewable Corp,0.028095,127.413,42.17
+RYN UN Equity,Rayonier Inc,0.028089,145.381,36.95
+PFGC UN Equity,Performance Food Group Co,0.027787,104.856,50.68
+MNDT UW Equity,Mandiant Inc,0.027428,229.159,22.89
+NCLH UN Equity,Norwegian Cruise Line Holdings Ltd,0.0274,386.434,13.56
+SAIC UN Equity,Science Applications International Corp,0.027289,55.537,93.97
+HOG UN Equity,Harley-Davidson Inc,0.027282,134.23,38.87
+ELS UN Equity,Equity LifeStyle Properties Inc,0.027281,68.586,76.07
+NYT UN Equity,New York Times Co/The,0.027188,164.075,31.69
+M UN Equity,Macy's Inc,0.027174,283.98,18.3
+EHC UN Equity,Encompass Health Corp,0.027105,97.714,53.05
+AMG UN Equity,Affiliated Managers Group Inc,0.027083,38.296,135.25
+WTFC UW Equity,Wintrust Financial Corp,0.027064,59.78,86.58
+VNO UN Equity,Vornado Realty Trust,0.026982,176.054,29.31
+FLO UN Equity,Flowers Foods Inc,0.02697,187.014,27.58
+BC UN Equity,Brunswick Corp/DE,0.026905,62.919,81.78
+PRI UN Equity,Primerica Inc,0.026791,38.151,134.3
+HTZ UW Equity,Hertz Global Holdings Inc,0.026621,232.469,21.9
+DLB UN Equity,Dolby Laboratories Inc,0.026496,64.068,79.09
+UHAL UW Equity,AMERCO,0.026458,8.977,563.66
+VMI UN Equity,Valmont Industries Inc,0.026425,18.05,279.98
+ECL UN Equity,Ecolab Inc,0.025866,28.979,170.7
+AN UN Equity,AutoNation Inc,0.025505,39.576,123.25
+NYCB UN Equity,New York Community Bancorp Inc,0.025429,459.648,10.58
+OZK UW Equity,Bank OZK,0.025392,116.931,41.53
+CRUS UW Equity,Cirrus Logic Inc,0.025339,56.878,85.2
+DISH UW Equity,DISH Network Corp,0.025296,250.008,19.35
+NSA UN Equity,National Storage Affiliates Trust,0.025039,84.707,56.53
+SRCL UW Equity,Stericycle Inc,0.02501,91.453,52.3
+MTZ UN Equity,MasTec Inc,0.024997,59.349,80.55
+SIRI UW Equity,Sirius XM Holdings Inc,0.024945,707.788,6.74
+POST UN Equity,Post Holdings Inc,0.024942,55.478,85.98
+GMED UN Equity,Globus Medical Inc,0.024935,73.185,65.16
+CR UN Equity,Crane Holdings Co,0.024859,46.935,101.29
+LSXMK UW Equity,Liberty Media Corp-Liberty SiriusXM,0.024853,111.495,42.63
+TPX UN Equity,Tempur Sealy International Inc,0.024812,170.934,27.76
+FOX UW Equity,Fox Corp,0.024497,144.73,32.37
+THO UN Equity,Thor Industries Inc,0.024352,52.803,88.2
+GXO UN Equity,GXO Logistics Inc,0.024199,93.909,49.28
+THG UN Equity,Hanover Insurance Group Inc/The,0.02414,35.317,130.72
+ACI UN Equity,Albertsons Cos Inc,0.024106,160.24,28.77
+HE UN Equity,Hawaiian Electric Industries Inc,0.024013,108.542,42.31
+TTEK UW Equity,Tetra Tech Inc,0.023973,31.314,146.41
+AZTA UW Equity,Azenta Inc,0.023918,73.896,61.9
+NATI UW Equity,National Instruments Corp,0.023874,113.519,40.22
+CHE UN Equity,Chemed Corp,0.023787,9.387,484.62
+ESI UN Equity,Element Solutions Inc,0.02371,230.293,19.69
+VST UN Equity,Vistra Corp,0.023683,179.943,25.17
+PINC UW Equity,Premier Inc,0.023666,117.466,38.53
+WSO UN Equity,Watsco Inc,0.023645,15.482,292.08
+MTG UN Equity,MGIC Investment Corp,0.02361,307.164,14.7
+BYD UN Equity,Boyd Gaming Corp,0.023517,79.984,56.23
+AVT UW Equity,Avnet Inc,0.023513,96.851,46.43
+QDEL UW Equity,QuidelOrtho Corp,0.023456,49.294,91
+FLS UN Equity,Flowserve Corp,0.023288,129.92,34.28
+SKX UN Equity,Skechers USA Inc,0.023259,113.331,39.25
+WM UN Equity,Waste Management Inc,0.023221,26.112,170.07
+CUZ UN Equity,Cousins Properties Inc,0.023215,148.038,29.99
+H UN Equity,Hyatt Hotels Corp,0.023193,50.352,88.09
+OMF UN Equity,OneMain Holdings Inc,0.023113,117.339,37.67
+PVH UN Equity,PVH Corp,0.023001,67.014,65.64
+HSY UN Equity,Hershey Co/The,0.022944,19.376,226.46
+DRI UN Equity,Darden Restaurants Inc,0.022796,33.566,129.88
+UNVR UN Equity,Univar Solutions Inc,0.022786,167.027,26.09
+AXTA UN Equity,Axalta Coating Systems Ltd,0.02277,166.777,26.11
+RL UN Equity,Ralph Lauren Corp,0.022758,45.565,95.52
+FNB UN Equity,FNB Corp/PA,0.022485,348.189,12.35
+SNX UN Equity,TD SYNNEX Corp,0.022389,42.528,100.68
+MOH UN Equity,Molina Healthcare Inc,0.022306,12.936,329.77
+SLM UW Equity,SLM Corp,0.022231,269.082,15.8
+RITM UN Equity,Rithm Capital Corp,0.02219,425.65,9.97
+WSC UR Equity,WillScot Mobile Mini Holdings Corp,0.022177,101.176,41.92
+TRU UN Equity,TransUnion,0.022171,51.277,82.69
+VRTX UW Equity,Vertex Pharmaceuticals Inc,0.022122,14.304,295.77
+LPX UN Equity,Louisiana-Pacific Corp,0.022042,73.348,57.47
+WU UN Equity,Western Union Co/The,0.021995,254.938,16.5
+MAN UN Equity,ManpowerGroup Inc,0.021881,52.302,80.01
+MAT UW Equity,Mattel Inc,0.021728,181.693,22.87
+TKR UN Equity,Timken Co/The,0.021704,62.185,66.75
+NCR UN Equity,NCR Corp,0.02166,120.24,34.45
+RGEN UW Equity,Repligen Corp,0.021291,15.892,256.21
+G UN Equity,Genpact Ltd,0.021251,85.025,47.8
+AXS UN Equity,Axis Capital Holdings Ltd,0.021219,77.635,52.27
+A UN Equity,Agilent Technologies Inc,0.021166,30.532,132.58
+AZO UN Equity,AutoZone Inc,0.021158,1.82,2223.27
+IART UW Equity,Integra LifeSciences Holdings Corp,0.021144,72.261,55.96
+R UN Equity,Ryder System Inc,0.021095,49.326,81.79
+HBI UN Equity,Hanesbrands Inc,0.02102,347.752,11.56
+DNB UN Equity,Dun & Bradstreet Holdings Inc,0.021014,250.865,16.02
+EPR UN Equity,EPR Properties,0.020943,73.869,54.22
+KSS UN Equity,Kohl's Corp,0.020917,127.683,31.33
+AL UN Equity,Air Lease Corp,0.020851,103.658,38.47
+BERY UN Equity,Berry Global Group Inc,0.020735,67.281,58.94
+UMPQ UW Equity,Umpqua Holdings Corp,0.020662,215.578,18.33
+IRM UN Equity,Iron Mountain Inc,0.020465,72.305,54.13
+DPZ UN Equity,Domino's Pizza Inc,0.020457,9.642,405.75
+KEX UN Equity,Kirby Corp,0.020449,59.561,65.66
+AMED UW Equity,Amedisys Inc,0.020408,31.904,122.33
+MSM UN Equity,MSC Industrial Direct Co Inc,0.020285,46.101,84.15
+AR UN Equity,Antero Resources Corp,0.020232,102.362,37.8
+EVR UN Equity,Evercore Inc,0.020172,37.726,102.26
+SLGN UN Equity,Silgan Holdings Inc,0.020067,83.903,45.74
+U UN Equity,Unity Software Inc,0.019749,67.967,55.57
+OLLI UQ Equity,Ollie's Bargain Outlet Holdings Inc,0.019691,59.091,63.73
+DEI UN Equity,Douglas Emmett Inc,0.019445,168.647,22.05
+NVR UN Equity,NVR Inc,0.019231,0.837,4393.9902
+LAZ UN Equity,Lazard Ltd,0.019118,94.113,38.85
+AON UN Equity,Aon PLC,0.018972,12.187,297.72
+GGG UN Equity,Graco Inc,0.018855,52.588,68.57
+BHF UW Equity,Brighthouse Financial Inc,0.018835,74.81,48.15
+WTM UN Equity,White Mountains Insurance Group Ltd,0.018818,2.885,1247.4
+OVV UN Equity,Ovintiv Inc,0.018788,74.253,48.39
+PK UN Equity,Park Hotels & Resorts Inc,0.018721,230.832,15.51
+HIW UN Equity,Highwoods Properties Inc,0.018688,103.653,34.48
+MRTX UW Equity,Mirati Therapeutics Inc,0.018645,42.935,83.05
+IPGP UW Equity,IPG Photonics Corp,0.018621,34.641,102.8
+MANH UW Equity,Manhattan Associates Inc,0.0186,23.984,148.31
+JHG UN Equity,Janus Henderson Group PLC,0.018543,137.45,25.8
+PTON UW Equity,Peloton Interactive Inc,0.018524,297.198,11.92
+AGR UN Equity,Avangrid Inc,0.018456,70.721,49.91
+BJ UN Equity,BJ's Wholesale Club Holdings Inc,0.018267,49.336,70.81
+CACC UW Equity,Credit Acceptance Corp,0.018134,6.236,556.13
+OSH UN Equity,Oak Street Health Inc,0.018015,116.234,29.64
+GO UW Equity,Grocery Outlet Holding Corp,0.017925,81.505,42.06
+FHB UW Equity,First Hawaiian Inc,0.017773,127.445,26.67
+PACW UW Equity,PacWest Bancorp,0.017693,115.956,29.18
+AM UN Equity,Antero Midstream Corp,0.017683,335.493,10.08
+TTWO UW Equity,Take-Two Interactive Software Inc,0.017597,27.185,123.79
+SSRM UW Equity,SSR Mining Inc,0.017587,211.538,15.9
+WAL UN Equity,Western Alliance Bancorp,0.017493,40.933,81.73
+AGO UN Equity,Assured Guaranty Ltd,0.017425,61.429,54.25
+VRT UN Equity,Vertiv Holdings Co,0.017283,255.042,12.96
+BFAM UN Equity,Bright Horizons Family Solutions Inc,0.017202,42.334,77.71
+WLK UN Equity,Westlake Corp,0.017143,32.929,99.56
+RH UN Equity,RH,0.017003,10.865,299.29
+BOH UN Equity,Bank of Hawaii Corp,0.016823,39.457,81.54
+PAG UN Equity,Penske Automotive Group Inc,0.016804,27.39,117.33
+CRI UN Equity,Carter's Inc,0.016722,39.296,81.38
+FCN UN Equity,FTI Consulting Inc,0.016522,19.504,162
+CZR UW Equity,Caesars Entertainment Inc,0.016269,64.283,48.4
+QS UN Equity,QuantumScape Corp,0.016191,244.393,12.67
+CABO UN Equity,Cable One Inc,0.016169,2.291,1349.72
+SLG UN Equity,SL Green Realty Corp,0.016071,62.761,48.97
+BWXT UN Equity,BWX Technologies Inc,0.016057,55.571,55.26
+CLX UN Equity,Clorox Co/The,0.015955,21.03,145.09
+MCO UN Equity,Moody's Corp,0.015344,9.098,322.54
+ENOV UN Equity,Enovis Corp,0.015286,50.515,57.87
+RRC UN Equity,Range Resources Corp,0.015253,89.204,32.7
+KMPR UN Equity,Kemper Corp,0.015038,63.375,45.38
+MSA UN Equity,MSA Safety Inc,0.015018,22.617,126.99
+WCC UN Equity,WESCO International Inc,0.014824,20.936,135.41
+TW UW Equity,Tradeweb Markets Inc,0.014819,39.542,71.67
+MRCY UW Equity,Mercury Systems Inc,0.014799,55.845,50.68
+JBLU UW Equity,JetBlue Airways Corp,0.014776,320.031,8.83
+ICUI UW Equity,ICU Medical Inc,0.014674,16.381,171.32
+HHC UN Equity,Howard Hughes Corp/The,0.014591,38.424,72.62
+SPB UN Equity,Spectrum Brands Holdings Inc,0.014497,39.759,69.73
+JBGS UN Equity,JBG SMITH Properties,0.014461,115.135,24.02
+COLM UW Equity,Columbia Sportswear Co,0.014408,36.385,75.73
+GFS UW Equity,GLOBALFOUNDRIES Inc,0.014258,47.256,57.7
+VSAT UW Equity,Viasat Inc,0.014196,70.589,38.46
+BOKF UW Equity,BOK Financial Corp,0.014046,29.325,91.6
+LOPE UW Equity,Grand Canyon Education Inc,0.013778,31.734,83.03
+TOL UN Equity,Toll Brothers Inc,0.013531,52.852,48.96
+RNR UN Equity,RenaissanceRe Holdings Ltd,0.013469,19.675,130.92
+COTY UN Equity,Coty Inc,0.013459,345.95,7.44
+COUP UW Equity,Coupa Software Inc,0.013442,33.333,77.12
+PDCE UW Equity,PDC Energy Inc,0.01341,43.803,58.55
+CTAS UW Equity,Cintas Corp,0.013217,5.854,431.78
+KBR UN Equity,KBR Inc,0.013147,48.688,51.64
+MNST UW Equity,Monster Beverage Corp,0.013073,27.836,89.82
+CSL UN Equity,Carlisle Cos Inc,0.012937,8.056,307.11
+TWTR UN Equity,Twitter Inc,0.012801,55.099,44.43
+TRIP UW Equity,TripAdvisor Inc,0.012766,93.648,26.07
+SITE UN Equity,SiteOne Landscape Supply Inc,0.012683,17.402,139.38
+VIRT UW Equity,Virtu Financial Inc,0.012531,99.354,24.12
+AZEK UN Equity,AZEK Co Inc/The,0.012343,113.107,20.87
+DASH UN Equity,DoorDash Inc,0.012088,28.681,80.6
+LSXMA UW Equity,Liberty Media Corp-Liberty SiriusXM,0.012055,54.068,42.64
+ATUS UN Equity,Altice USA Inc,0.011952,208.752,10.95
+CPA UN Equity,Copa Holdings SA,0.011882,30.838,73.69
+NWS UW Equity,News Corp,0.011759,120.519,18.66
+WSM UN Equity,Williams-Sonoma Inc,0.011718,14.505,154.5
+ESAB UN Equity,Esab Corp,0.011702,50.576,44.25
+KEYS UN Equity,Keysight Technologies Inc,0.011658,13.386,166.56
+SNOW UN Equity,Snowflake Inc,0.011421,12.524,174.4
+TYL UN Equity,Tyler Technologies Inc,0.011332,5.215,415.56
+CC UN Equity,Chemours Co/The,0.011312,61.144,35.38
+ZG UW Equity,Zillow Group Inc,0.011222,54.538,39.35
+SMG UN Equity,Scotts Miracle-Gro Co/The,0.011204,26.498,80.86
+HPP UN Equity,Hudson Pacific Properties Inc,0.01089,140.147,14.86
+WEX UN Equity,WEX Inc,0.010737,12.369,166.01
+DNA UN Equity,Ginkgo Bioworks Holdings Inc,0.010695,653.443,3.13
+KD UN Equity,Kyndryl Holdings Inc,0.010682,179.831,11.36
+DOCS UN Equity,Doximity Inc,0.010671,51.098,39.94
+SWCH UN Equity,Switch Inc,0.010434,58.862,33.9
+UPST UW Equity,Upstart Holdings Inc,0.010377,59.239,33.5
+OPEN UW Equity,Opendoor Technologies Inc,0.010345,333.065,5.94
+GPS UN Equity,Gap Inc/The,0.010154,197.343,9.84
+AXON UW Equity,Axon Enterprise Inc,0.010042,15.233,126.07
+UA UN Equity,Under Armour Inc,0.009957,217.627,8.75
+WH UN Equity,Wyndham Hotels & Resorts Inc,0.009955,27.636,68.89
+MASI UW Equity,Masimo Corp,0.009696,11.753,157.78
+ALLE UN Equity,Allegion plc,0.009688,18.187,101.87
+NEU UN Equity,NewMarket Corp,0.009624,6.041,304.67
+UAA UN Equity,Under Armour Inc,0.009595,188.006,9.76
+BR UN Equity,Broadridge Financial Solutions Inc,0.009552,10.713,170.52
+W UN Equity,Wayfair Inc,0.009541,28.06,65.03
+INCY UW Equity,Incyte Corp,0.00953,24.586,74.13
+AWI UN Equity,Armstrong World Industries Inc,0.009231,19.614,90.01
+NCNO UW Equity,nCino Inc,0.00921,45.072,39.08
+NTNX UW Equity,Nutanix Inc,0.009124,100.634,17.34
+JBHT UW Equity,JB Hunt Transport Services Inc,0.009057,9.072,190.92
+PII UN Equity,Polaris Inc,0.009043,14.601,118.44
+PLNT UN Equity,Planet Fitness Inc,0.00893,22.148,77.11
+TDC UN Equity,Teradata Corp,0.008886,47.629,35.68
+ADT UN Equity,ADT Inc,0.008658,208.539,7.94
+DRVN UW Equity,Driven Brands Holdings Inc,0.008532,51.864,31.46
+GPK UN Equity,Graphic Packaging Holding Co,0.008445,69.882,23.11
+REYN UW Equity,Reynolds Consumer Products Inc,0.008094,54.183,28.57
+JBL UN Equity,Jabil Inc,0.008082,25.31,61.07
+SGFY UN Equity,Signify Health Inc,0.008048,66.917,23
+PYCR UW Equity,Paycor HCM Inc,0.007811,47.109,31.71
+VNT UN Equity,Vontier Corp,0.007752,60.534,24.49
+MSGS UN Equity,Madison Square Garden Sports Corp,0.007732,9.419,156.99
+TER UW Equity,Teradyne Inc,0.007698,14.852,99.12
+S UN Equity,SentinelOne Inc,0.007468,50.806,28.11
+ERIE UW Equity,Erie Indemnity Co,0.007411,6.504,217.92
+SCCO UN Equity,Southern Copper Corp,0.007362,29.148,48.3
+BF/A UN Equity,Brown-Forman Corp,0.007213,18.699,73.77
+CCK UN Equity,Crown Holdings Inc,0.007092,14.008,96.82
+GTES UN Equity,Gates Industrial Corp PLC,0.007052,110.458,12.21
+UI UN Equity,Ubiquiti Inc,0.007028,4.239,317.05
+SNDR UN Equity,Schneider National Inc,0.006977,53.892,24.76
+HRB UN Equity,H&R Block Inc,0.006786,28.542,45.47
+LBRDA UW Equity,Liberty Broadband Corp,0.006722,11.12,115.61
+PCOR UN Equity,Procore Technologies Inc,0.006675,19.514,65.42
+AVTR UN Equity,Avantor Inc,0.006439,43.209,28.5
+WOOF UW Equity,Petco Health & Wellness Co Inc,0.006415,80.292,15.28
+EEFT UW Equity,Euronet Worldwide Inc,0.006256,11.913,100.43
+LYFT UW Equity,Lyft Inc,0.006205,61.17,19.4
+MTCH UW Equity,Match Group Inc,0.006186,17.912,66.05
+FWONA UW Equity,Liberty Media Corp-Liberty Formula One,0.006043,18.625,62.05
+CNA UN Equity,CNA Financial Corp,0.005793,27.22,40.7
+LAMR UW Equity,Lamar Advertising Co,0.005655,10.353,104.47
+HZNP UW Equity,Horizon Therapeutics Plc,0.005611,15.687,68.41
+TNL UN Equity,Travel + Leisure Co,0.005525,23.498,44.97
+DECK UN Equity,Deckers Outdoor Corp,0.0054,3.156,327.23
+LEN/B UN Equity,Lennar Corp,0.005369,14.956,68.65
+SEB UA Equity,Seaboard Corp,0.005361,0.253,4052.48
+CCCS UN Equity,CCC Intelligent Solutions Holdings Inc,0.005313,103.261,9.84
+RHI UN Equity,Robert Half International Inc,0.005305,12.675,80.05
+BLD UN Equity,TopBuild Corp,0.005302,5.089,199.26
+SIX UN Equity,Six Flags Entertainment Corp,0.005194,38.483,25.81
+FRPT UQ Equity,Freshpet Inc,0.004942,20.001,47.25
+CNM UN Equity,Core & Main Inc,0.004912,39.554,23.75
+WIX UW Equity,Wix.com Ltd,0.004785,11.892,76.95
+VSCO UN Equity,Victoria's Secret & Co,0.004717,23.516,38.36
+EXP UN Equity,Eagle Materials Inc,0.004546,6.646,130.81
+CERT UW Equity,Certara Inc,0.00437,41.052,20.36
+IAA UN Equity,IAA Inc,0.004332,22.836,36.28
+EXEL UW Equity,Exelixis Inc,0.004308,42.248,19.5
+HAYW UN Equity,Hayward Holdings Inc,0.004204,69.487,11.57
+ALSN UN Equity,Allison Transmission Holdings Inc,0.00406,20.158,38.52
+RARE UW Equity,Ultragenyx Pharmaceutical Inc,0.004016,14.724,52.16
+CRL UN Equity,Charles River Laboratories International,0.003993,3.371,226.52
+TFSL UW Equity,TFS Financial Corp,0.003951,49.972,15.12
+INFA UN Equity,Informatica Inc,0.003686,30.013,23.49
+PPC UW Equity,Pilgrim's Pride Corp,0.003538,22.609,29.93
+WE UN Equity,WeWork Inc,0.003465,129.681,5.11
+AMBP UN Equity,Ardagh Metal Packaging SA,0.00343,100.14,6.55
+EHAB UN Equity,Enhabit Inc,0.003426,48.856,13.41
+BURL UN Equity,Burlington Stores Inc,0.003398,4.139,156.99
+HEI/A UN Equity,HEICO Corp,0.003377,4.962,130.14
+ROL UN Equity,Rollins Inc,0.003339,17.108,37.33
+LSTR UW Equity,Landstar System Inc,0.003253,4.008,155.22
+MORN UW Equity,Morningstar Inc,0.003142,2.332,257.7
+CLR UN Equity,Continental Resources Inc/OK,0.003142,8.884,67.63
+LCID UW Equity,Lucid Group Inc,0.003083,32.359,18.22
+CGNX UW Equity,Cognex Corp,0.002998,11.963,47.93
+RKT UN Equity,Rocket Cos Inc,0.002821,51.98,10.38
+IONS UW Equity,Ionis Pharmaceuticals Inc,0.002752,11.415,46.11
+MTN UN Equity,Vail Resorts Inc,0.002732,2.167,241.1
+DBX UW Equity,Dropbox Inc,0.002455,19.018,24.69
+HEI UN Equity,HEICO Corp,0.002382,2.826,161.18
+TXG UW Equity,10X Genomics Inc,0.002316,9.437,46.94
+JWN UN Equity,Nordstrom Inc,0.001953,16.186,23.08
+DH UW Equity,Definitive Healthcare Corp,0.001916,15.553,23.56
+NTRA UW Equity,Natera Inc,0.001767,6.112,55.29
+AGL UN Equity,agilon health Inc,0.00174,12.323,27.01
+LESL UW Equity,Leslie's Inc,0.00143,17.385,15.73
+MCW UN Equity,Mister Car Wash Inc,0.001392,21.799,12.21
+PARAA UW Equity,Paramount Global,0.001352,9.154,28.25
+JAMF UW Equity,Jamf Holding Corp,0.001294,9.24,26.78
+TNDM UQ Equity,Tandem Diabetes Care Inc,0.0012,4.138,55.46
+DV UN Equity,DoubleVerify Holdings Inc,0.001181,8.211,27.5
+SAM UN Equity,Boston Beer Co Inc/The,0.00096,0.48,382.67
+SPR UN Equity,Spirit AeroSystems Holdings Inc,0.000907,5.31,32.67
+PLTK UW Equity,Playtika Holding Corp,0.000557,8.87,12.02
+UWMC UN Equity,UWM Holdings Corp,0.000178,8.51,4

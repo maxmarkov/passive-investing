@@ -1,0 +1,67 @@
+Ticker,Name,Weight,Shares,Price
+BRK/B UN Equity,Berkshire Hathaway Inc,14.051333,1809.17584,295.11
+JPM UN Equity,JPMorgan Chase & Co,9.151224,2937.05,118.39
+BAC UN Equity,Bank of America Corp,6.543924,7090.05528,35.07
+WFC UN Equity,Wells Fargo & Co,4.422116,3790.352,44.33
+SPGI UN Equity,S&P Global Inc,3.591873,347.1,393.2
+MS UN Equity,Morgan Stanley,3.27383,1399.4272,88.89
+GS UN Equity,Goldman Sachs Group Inc/The,3.144702,343.447,347.91
+SCHW UN Equity,Charles Schwab Corp/The,2.776036,1508.15731,69.94
+C UN Equity,Citigroup Inc,2.718406,1941.921,53.19
+BLK UN Equity,BlackRock Inc,2.718102,142.41282,725.21
+AXP UN Equity,American Express Co,2.607717,609.9786,162.44
+MMC UN Equity,Marsh & McLennan Cos Inc,2.241366,501.914,169.68
+CB UN Equity,Chubb Ltd,2.136575,423.711,191.6
+CME UW Equity,CME Group Inc,1.876698,359.418,198.4
+PGR UN Equity,Progressive Corp/The,1.860835,584.877,120.89
+PNC UN Equity,PNC Financial Services Group Inc/The,1.844508,413.581,169.46
+TFC UN Equity,Truist Financial Corp,1.783544,1331.414,50.9
+USB UN Equity,US Bancorp,1.703337,1352.0234,47.87
+AON UN Equity,Aon PLC,1.664112,212.384,297.72
+ICE UN Equity,Intercontinental Exchange Inc,1.558134,558.266,106.05
+MCO UN Equity,Moody's Corp,1.362549,160.515,322.54
+MET UN Equity,MetLife Inc,1.199376,691.2251,65.93
+COF UN Equity,Capital One Financial Corp,1.166218,393.051,112.74
+AIG UN Equity,American International Group Inc,1.145022,792.192,54.92
+MSCI UN Equity,MSCI Inc,1.093374,81.123,512.12
+TRV UN Equity,Travelers Cos Inc/The,1.042086,239.961,165.01
+AJG UN Equity,Arthur J Gallagher & Co,1.025052,210.068,185.41
+PRU UN Equity,Prudential Financial Inc,1.003209,375,101.65
+AFL UN Equity,Aflac Inc,0.962484,592.6318,61.71
+ALL UN Equity,Allstate Corp/The,0.895868,274.983,123.79
+MTB UN Equity,M&T Bank Corp,0.872701,179.417,184.82
+BK UN Equity,Bank of New York Mellon Corp/The,0.860394,743.17416,43.99
+AMP UN Equity,Ameriprise Financial Inc,0.81249,109.904,280.9
+DFS UN Equity,Discover Financial Services,0.798451,280.965,107.98
+TROW UW Equity,T Rowe Price Group Inc,0.776883,227.297,129.87
+FRC UN Equity,First Republic Bank/CA,0.769106,179.473,162.83
+STT UN Equity,State Street Corp,0.700669,367.115,72.52
+SIVB UW Equity,SVB Financial Group,0.700448,58.851,452.24
+FITB UW Equity,Fifth Third Bancorp,0.652921,686.087,36.16
+WTW UW Equity,Willis Towers Watson PLC,0.631926,111.488,215.37
+HIG UN Equity,Hartford Financial Services Group Inc/Th,0.578332,328.865,66.82
+NDAQ UW Equity,Nasdaq Inc,0.566106,115.2746,186.6
+NTRS UW Equity,Northern Trust Corp,0.559492,208.38,102.02
+RF UN Equity,Regions Financial Corp,0.546482,934.5,22.22
+RJF UN Equity,Raymond James Financial Inc,0.542619,194.3973,106.06
+HBAN UW Equity,Huntington Bancshares Inc/OH,0.528752,1439.175,13.96
+CFG UN Equity,Citizens Financial Group Inc,0.495825,490.49154,38.41
+PFG UW Equity,Principal Financial Group Inc,0.471021,234.99612,76.16
+SYF UN Equity,Synchrony Financial,0.470647,501.489,35.66
+KEY UN Equity,KeyCorp,0.463084,932.471,18.87
+FDS UN Equity,FactSet Research Systems Inc,0.433758,37.897,434.9
+BRO UN Equity,Brown & Brown Inc,0.409234,234.28659,66.37
+CINF UW Equity,Cincinnati Financial Corp,0.392638,149.13015,100.04
+WRB UN Equity,W R Berkley Corp,0.353372,209.50247,64.09
+CBOE UF Equity,Cboe Global Markets Inc,0.331058,106.189,118.46
+SBNY UW Equity,Signature Bank/New York NY,0.326491,62.928,197.14
+L UN Equity,Loews Corp,0.291611,194.42532,56.99
+CMA UN Equity,Comerica Inc,0.282018,130.76,81.95
+RE UN Equity,Everest Re Group Ltd,0.274335,39.438,264.31
+MKTX UW Equity,MarketAxess Holdings Inc,0.267921,37.742,269.73
+GL UN Equity,Globe Life Inc,0.242532,90.712,101.59
+AIZ UN Equity,Assurant Inc,0.230464,54.085,161.91
+ZION UW Equity,Zions Bancorp NA,0.224628,151.359,56.39
+BEN UN Equity,Franklin Resources Inc,0.209175,279.95744,28.39
+LNC UN Equity,Lincoln National Corp,0.205926,161.63018,48.41
+IVZ UN Equity,Invesco Ltd,0.162879,336.7185,18.38

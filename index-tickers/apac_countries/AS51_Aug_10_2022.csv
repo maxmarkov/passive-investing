@@ -1,0 +1,201 @@
+Ticker,Name,Weight,Shares,Price
+BHP AT Equity,BHP Group Ltd,9.396794,5062.323,38.3
+CBA AT Equity,Commonwealth Bank of Australia,8.352784,1706.392,101
+CSL AT Equity,CSL Ltd,6.825213,481.706,292.35
+NAB AT Equity,National Australia Bank Ltd,4.708245,3214.649,30.22
+WBC AT Equity,Westpac Banking Corp,3.766969,3501.128,22.2
+ANZ AT Equity,Australia & New Zealand Banking Group Lt,3.388678,2980.3776,23.46
+MQG AT Equity,Macquarie Group Ltd,3.07945,360.62912,176.19
+WDS AT Equity,Woodside Energy Group Ltd,2.903317,1884.399,31.79
+WES AT Equity,Wesfarmers Ltd,2.584938,1133.84,47.04
+TLS AT Equity,Telstra Corp Ltd,2.254984,11602.941,4.01
+WOW AT Equity,Woolworths Group Ltd,2.237975,1213.902,38.04
+TCL AT Equity,Transurban Group,2.166866,3070.715,14.56
+RIO AT Equity,Rio Tinto Ltd,1.784357,371.216,99.18
+GMG AT Equity,Goodman Group,1.645429,1700.08293,19.97
+FMG AT Equity,Fortescue Metals Group Ltd,1.545428,1693.43075,18.83
+COL AT Equity,Coles Group Ltd,1.213565,1336.172,18.74
+ALL AT Equity,Aristocrat Leisure Ltd,1.106989,669.623,34.11
+STO AT Equity,Santos Ltd,1.028225,3048.2298,6.96
+S32 AT Equity,South32 Ltd,0.873338,4644.293,3.88
+QBE AT Equity,QBE Insurance Group Ltd,0.872703,1483.258,12.14
+NCM AT Equity,Newcrest Mining Ltd,0.842336,893.123,19.46
+BXB AT Equity,Brambles Ltd,0.80851,1435.648,11.62
+SHL AT Equity,Sonic Healthcare Ltd,0.787617,480.093,33.85
+ASX AT Equity,ASX Ltd,0.787391,193.595,83.92
+JHX AT Equity,James Hardie Industries PLC,0.755871,445.349,35.02
+SCG AT Equity,Scentre Group,0.726989,5190.378,2.89
+SUN AT Equity,Suncorp Group Ltd,0.700655,1262.605,11.45
+APA AT Equity,APA Group,0.695929,1179.894,12.17
+COH AT Equity,Cochlear Ltd,0.695388,65.775,218.14
+CPU AT Equity,Computershare Ltd,0.672963,573.54255,24.21
+AMC AT Equity,Amcor PLC,0.657919,759.231,17.88
+RMD AT Equity,ResMed Inc,0.646919,390.866,34.15
+RHC AT Equity,Ramsay Health Care Ltd,0.641903,185.39442,71.44
+XRO AT Equity,Xero Ltd,0.591531,130.10589,93.81
+IAG AT Equity,Insurance Australia Group Ltd,0.548376,2465.1,4.59
+ORG AT Equity,Origin Energy Ltd,0.522389,1761.211,6.12
+TLC AT Equity,Lottery Corp Ltd/The,0.487585,2225.772,4.52
+EDV AT Equity,Endeavour Group Ltd/Australia,0.486864,1271.5958,7.9
+DXS AT Equity,Dexus,0.478531,1075.565,9.18
+MIN AT Equity,Mineral Resources Ltd,0.473911,166.49688,58.73
+NST AT Equity,Northern Star Resources Ltd,0.467557,1165.126,8.28
+MPL AT Equity,Medibank Pvt Ltd,0.460484,2754.003,3.45
+SGP AT Equity,Stockland,0.439641,2387.172,3.8
+TWE AT Equity,Treasury Wine Estates Ltd,0.43066,721.848,12.31
+LYC AT Equity,Lynas Rare Earths Ltd,0.42861,902.412,9.8
+QAN AT Equity,Qantas Airways Ltd,0.424132,1886.045,4.64
+WTC AT Equity,WiseTech Global Ltd,0.422379,163.173,53.41
+OZL AT Equity,OZ Minerals Ltd,0.412077,334.745,25.4
+GPT AT Equity,GPT Group/The,0.401065,1915.577,4.32
+SEK AT Equity,SEEK Ltd,0.400862,353.92,23.37
+MGR AT Equity,Mirvac Group,0.399403,3943.069,2.09
+BSL AT Equity,BlueScope Steel Ltd,0.398001,481.365,17.06
+VCX AT Equity,Vicinity Centres,0.395695,3869.43375,2.11
+IGO AT Equity,IGO Ltd,0.385436,673.96852,11.8
+ALD AT Equity,Ampol Ltd,0.377087,238.302,32.65
+PLS AT Equity,Pilbara Minerals Ltd,0.374043,2589.84558,2.98
+ALX AT Equity,Atlas Arteria Ltd,0.371368,959.018,7.99
+CAR AT Equity,carsales.com Ltd,0.365381,350.8155,21.49
+IPL AT Equity,Incitec Pivot Ltd,0.349224,1942.225,3.71
+AKE AT Equity,Allkem Ltd,0.347766,593.02194,12.1
+AZJ AT Equity,Aurizon Holdings Ltd,0.347028,1840.704,3.89
+LLC AT Equity,Lendlease Corp Ltd,0.339891,688.907,10.18
+REA AT Equity,REA Group Ltd,0.317919,51.52563,127.31
+ORI AT Equity,Orica Ltd,0.305336,408.831,15.41
+SOL AT Equity,Washington H Soul Pattinson & Co Ltd,0.301959,245.38888,25.39
+WHC AT Equity,Whitehaven Coal Ltd,0.291671,944.76375,6.37
+BEN AT Equity,Bendigo & Adelaide Bank Ltd,0.289993,565.016,10.59
+CHC AT Equity,Charter Hall Group,0.283111,472.997,12.35
+AGL AT Equity,AGL Energy Ltd,0.27975,672.747,8.58
+IEL AT Equity,IDP Education Ltd,0.279337,208.752,27.61
+ALQ AT Equity,ALS Ltd,0.275458,483.711,11.75
+CWY AT Equity,Cleanaway Waste Management Ltd,0.272902,2062.588,2.73
+WOR AT Equity,Worley Ltd,0.255888,371.81848,14.2
+SDF AT Equity,Steadfast Group Ltd,0.255375,977.594,5.39
+NXT AT Equity,NEXTDC Ltd,0.253445,457.516,11.43
+SQ2 AT Equity,Block Inc,0.245954,43.531,116.58
+EVN AT Equity,Evolution Mining Ltd,0.242526,1833.008,2.73
+JBH AT Equity,JB Hi-Fi Ltd,0.237603,109.334,44.84
+BOQ AT Equity,Bank of Queensland Ltd,0.234522,642.626,7.53
+QUB AT Equity,Qube Holdings Ltd,0.233629,1765.763,2.73
+DMP AT Equity,Domino's Pizza Enterprises Ltd,0.217604,63.18442,71.06
+REH AT Equity,Reece Ltd,0.212968,284.23296,15.46
+ILU AT Equity,Iluka Resources Ltd,0.204785,424.236,9.96
+CGF AT Equity,Challenger Ltd,0.200667,576.65955,7.18
+MTS AT Equity,Metcash Ltd,0.193265,965.542,4.13
+AMP AT Equity,AMP Ltd,0.184411,3266.106,1.165
+DOW AT Equity,Downer EDI Ltd,0.182811,675.984,5.58
+ALU AT Equity,Altium Ltd,0.181681,122.26617,30.66
+AWC AT Equity,Alumina Ltd,0.174853,2350.36161,1.535
+A2M AT Equity,a2 Milk Co Ltd/The,0.171558,743.657,4.76
+RWC AT Equity,Reliance Worldwide Corp Ltd,0.169634,790.095,4.43
+TNE AT Equity,Technology One Ltd,0.163361,277.87976,12.13
+VUK AT Equity,Virgin Money UK PLC,0.163049,1255.3143,2.68
+ANN AT Equity,Ansell Ltd,0.162009,127.782,26.16
+SCP AT Equity,Shopping Centres Australasia Property Gr,0.160139,1116.286,2.96
+NHF AT Equity,nib holdings Ltd/Australia,0.159982,459.105,7.19
+CNU AT Equity,Chorus Ltd,0.153692,446.645,7.1
+LTR AT Equity,Liontown Resources Ltd,0.153505,1841.469,1.72
+NEC AT Equity,Nine Entertainment Co Holdings Ltd,0.145427,1449.58405,2.07
+BPT AT Equity,Beach Energy Ltd,0.141248,1596.9338,1.825
+ORA AT Equity,Orora Ltd,0.140729,849.039,3.42
+HVN AT Equity,Harvey Norman Holdings Ltd,0.136912,647.92364,4.36
+SVW AT Equity,Seven Group Holdings Ltd,0.134526,156.20223,17.77
+CLW AT Equity,Charter Hall Long Wale REIT,0.131937,614.51175,4.43
+FLT AT Equity,Flight Centre Travel Group Ltd,0.131505,153.81982,17.64
+NSR AT Equity,National Storage REIT,0.130232,1087.90318,2.47
+FPH AT Equity,Fisher & Paykel Healthcare Corp Ltd,0.125219,133.455,19.36
+PME AT Equity,Pro Medicus Ltd,0.123166,48.00376,52.94
+SGR AT Equity,Star Entertainment Grp Ltd/The,0.119594,856.8126,2.88
+ARB AT Equity,ARB Corp Ltd,0.119576,76.12608,32.41
+SGM AT Equity,Sims Ltd,0.119468,161.74625,15.24
+CTD AT Equity,Corporate Travel Management Ltd,0.118113,121.79234,20.01
+TPG AT Equity,TPG Telecom Ltd,0.115706,371.8684,6.42
+AVZ AT Equity,AVZ Minerals Ltd,0.113533,3003.29481,0.78
+CXO AT Equity,Core Lithium Ltd,0.113022,1613.85498,1.445
+LNK AT Equity,Link Administration Holdings Ltd,0.110885,512.987,4.46
+APE AT Equity,Eagers Automotive Ltd,0.110128,172.14511,13.2
+BAP AT Equity,Bapcor Ltd,0.109884,339.413,6.68
+HLS AT Equity,Healius Ltd,0.108011,578.865,3.85
+PRU AT Equity,Perseus Mining Ltd,0.107932,1302.33312,1.71
+CSR AT Equity,CSR Ltd,0.106094,485.383,4.51
+IRE AT Equity,IRESS Ltd,0.104738,188.906,11.44
+TAH AT Equity,Tabcorp Holdings Ltd,0.104097,2225.772,0.965
+MFG AT Equity,Magellan Financial Group Ltd,0.103905,144.85848,14.8
+BRG AT Equity,Breville Group Ltd,0.103833,96.1584,22.28
+CQR AT Equity,Charter Hall Retail REIT,0.102678,523.107,4.05
+NHC AT Equity,New Hope Corp Ltd,0.101174,499.4142,4.18
+IFL AT Equity,Insignia Financial Ltd,0.10109,653.861,3.19
+PMV AT Equity,Premier Investments Ltd,0.100441,100.16559,20.69
+NIC AT Equity,Nickel Industries Ltd,0.098644,1884.57837,1.08
+BWP AT Equity,BWP Trust,0.096202,481.788,4.12
+NUF AT Equity,Nufarm Ltd/Australia,0.096141,380.019,5.22
+HDN AT Equity,HomeCo Daily Needs REIT,0.094575,1467.21642,1.33
+DRR AT Equity,Deterra Royalties Ltd,0.093854,422.8208,4.58
+VEA AT Equity,Viva Energy Group Ltd,0.093736,713.6854,2.71
+WEB AT Equity,Webjet Ltd,0.093683,380.51,5.08
+ELD AT Equity,Elders Ltd,0.093355,156.477,12.31
+PDN AT Equity,Paladin Energy Ltd,0.092465,2560.88994,0.745
+SFR AT Equity,Sandfire Resources Ltd,0.092196,409.982,4.64
+HUB AT Equity,HUB24 Ltd,0.091867,78.45684,24.16
+CIA AT Equity,Champion Iron Ltd,0.091713,382.29288,4.95
+WPR AT Equity,Waypoint REIT Ltd,0.089351,711.817,2.59
+TLX AT Equity,Telix Pharmaceuticals Ltd,0.089323,234.18375,7.87
+IPH AT Equity,IPH Ltd,0.089083,218.819,8.4
+GNC AT Equity,GrainCorp Ltd,0.089065,228.856,8.03
+INA AT Equity,Ingenia Communities Group,0.085336,366.8247,4.8
+LKE AT Equity,Lake Resources NL,0.084698,1323.938,1.32
+BKW AT Equity,Brickworks Ltd,0.084596,83.4768,20.91
+AUB AT Equity,AUB Group Ltd,0.084547,88.778,19.65
+PNI AT Equity,Pinnacle Investment Management Group Ltd,0.083825,161.6436,10.7
+PDL AT Equity,Pendal Group Ltd,0.083412,356.32857,4.83
+PPT AT Equity,Perpetual Ltd,0.083036,56.713,30.21
+ARF AT Equity,Arena REIT,0.080985,346.678,4.82
+SUL AT Equity,Super Retail Group Ltd,0.080972,160.33717,10.42
+CIP AT Equity,Centuria Industrial REIT,0.078731,539.69135,3.01
+IMU AT Equity,Imugene Ltd,0.077768,5439.38214,0.295
+LIC AT Equity,Lifestyle Communities Ltd,0.077369,95.13595,16.78
+CHN AT Equity,Chalice Mining Ltd,0.074271,315.97047,4.85
+EVT AT Equity,EVENT Hospitality and Entertainment Ltd,0.072312,104.7774,14.24
+CCP AT Equity,Credit Corp Group Ltd,0.0717,67.832,21.81
+IVC AT Equity,InvoCare Ltd,0.070553,135.41734,10.75
+BRN AT Equity,BrainChip Holdings Ltd,0.069777,1302.91512,1.105
+WAF AT Equity,West African Resources Ltd,0.069278,1021.03,1.4
+AIA AT Equity,Auckland International Airport Ltd,0.068913,205.476,6.92
+SLR AT Equity,Silver Lake Resources Ltd,0.067621,930.169,1.5
+RRL AT Equity,Regis Resources Ltd,0.067125,754.776,1.835
+NWS AT Equity,News Corp,0.066946,52.402,26.36
+CRN AT Equity,Coronado Global Resources Inc,0.0663,804.69792,1.7
+NAN AT Equity,Nanosonics Ltd,0.065137,265.61304,5.06
+FBU AT Equity,Fletcher Building Ltd,0.06233,266.266,4.83
+GOR AT Equity,Gold Road Resources Ltd,0.061763,881.918,1.445
+MP1 AT Equity,Megaport Ltd,0.061596,148.47206,8.56
+BKL AT Equity,Blackmores Ltd,0.059884,15.7383,78.51
+NWL AT Equity,Netwealth Group Ltd,0.059679,95.08707,12.95
+CGC AT Equity,Costa Group Holdings Ltd,0.059438,464.546,2.64
+CNI AT Equity,Centuria Capital Group,0.058864,634.2296,1.915
+GUD AT Equity,GUD Holdings Ltd,0.058384,140.895,8.55
+DEG AT Equity,De Grey Mining Ltd,0.057068,1183.42896,0.995
+ABP AT Equity,Abacus Property Group,0.056703,410.51734,2.85
+CMW AT Equity,Cromwell Property Group,0.055174,1414.18818,0.805
+ING AT Equity,Inghams Group Ltd,0.05368,371.68,2.98
+BGA AT Equity,Bega Cheese Ltd,0.05365,303.283,3.65
+CKF AT Equity,Collins Foods Ltd,0.052792,109.69424,9.93
+GOZ AT Equity,Growthpoint Properties Australia Ltd,0.052007,293.19204,3.66
+DHG AT Equity,Domain Holdings Australia Ltd,0.048951,258.97937,3.9
+BLD AT Equity,Boral Ltd,0.046512,330.9264,2.9
+ABC AT Equity,Adbri Ltd,0.046335,371.99796,2.57
+HMC AT Equity,Home Consortium Ltd,0.045924,188.75934,5.02
+NVX AT Equity,Novonix Ltd,0.045847,320.67024,2.95
+KLS AT Equity,Kelsian Group Ltd,0.045355,150.69531,6.21
+RMS AT Equity,Ramelius Resources Ltd,0.04372,867.385,1.04
+PBH AT Equity,PointsBet Holdings Ltd,0.043078,248.97592,3.57
+CUV AT Equity,Clinuvel Pharmaceuticals Ltd,0.042753,43.9749,20.06
+360 AT Equity,Life360 Inc,0.042717,185.558,4.75
+UMG AT Equity,United Malt Grp Ltd,0.042687,275.24468,3.2
+SBM AT Equity,St Barbara Ltd,0.042302,815.735,1.07
+JHG AT Equity,Janus Henderson Group PLC,0.037489,21.661,35.71
+ZIP AT Equity,Zip Co Ltd,0.033595,563.55566,1.23
+CCX AT Equity,City Chic Collective Ltd,0.024129,239.361,2.08
+EML AT Equity,EML Payments Ltd,0.020362,373.46,1.125
