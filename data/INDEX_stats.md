@@ -1,6 +1,6 @@
 ## Europe
 
-| stock-name | N_total | N_stocks | (N_stocks & 7 years)  | (N_stocks & 7 years & 2x)  |    nbins   |  median  | mean  | mean/median |  mode  | reliable? |
+| stock-name | $N$ total | $N$ stocks | ($N$ stocks & 7 years)  | ($N$ stocks & 7 years & 2x)  |    nbins   |  median  | mean  | mean/median |  mode  | reliable? |
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |------------- |------------- | ------------- |------------- | ------------- |
 | BEL20      |   20  |    14    |            3  |        2      |      10       |   -           |        -     |       -      |    -    | no |
 | CAC        |   40  |    34    |           14  |        9      |      10       |   2.77        |      4.70    |     1.70     |  0.38  | yes |
@@ -14,16 +14,18 @@
 
 ## USA
 
-RIY downloaded 1010 from 1018
-RTY downloaded 1945 from 1977
-RLV downloaded 849 from 857
-RAY downloaded 2960 from 2995
-PEALL downloaded 0 from 574
-SPX downloaded 500 from 503
-PEVC downloaded 0 from 27
-NBI downloaded 368 from 368
-CCMP downloaded 3568 from 3765
-RLG downloaded 516 from 519
+| stock-name | $N$ total | $N$ stocks | ($N$ stocks & 7 years)  | ($N$ stocks & 7 years & 2x)  |    nbins   |  median |  mean |  mean/median |  mode  | reliable? |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |------------- |------------- | ------------- |------------- | ------------- |
+| CCMP      |  3765    | 3568     |        1746           |           802              |     100    |   1.63  |   5.29   |  3.25   |    0.11  | yes |
+| RIY       |  1018    | 1010     |         823           |           721              |     100    |   6.02  |  10.64   |  1.77   |    0.07  | yes |    
+| RTY       |  1977    | 1945     |        1177           |           676              |     100    |   2.40  |   5.05   |  2.10   |    0.00  | yes |     
+| RLV       |   857    |  849     |         707           |           606              |     100    |   5.26  |   8.39   |  1.60   |    0.07  | yes |
+| RAY       |  2960    | 2995     |        2002           |          1397              |     100    |   3.45  |   7.35   |  2.13   |    0.00  | yes |
+| PEALL     |   574    |    0     |           -           |             -              |      -     |      -  |    -     |   -     |      -   | no  |
+| SPX       |   503    |  500     |         479           |           434              |     100    |   7.07  |  13.00   |  1.84   |    0.07  | yes |
+| PEVC      |    27    |    0     |           -           |             -              |      -     |      -  |    -     |   -     |      -   | no  |
+| NBI       |   368    |  368     |         129           |            46              |     100    |   0.97  |   4.12   |  4.25   |    0.00  | yes | 
+| RLG       |   519    |  516     |         394           |           367              |     100    |   9.25  |  16.00   |  1.73   |    0.34  | yes |
 
 ## Dev countries
 
