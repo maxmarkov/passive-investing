@@ -1,6 +1,6 @@
 ## Europe
 
-| stock-name | $N$ total | $N$ stocks | ($N$ stocks & 7 years)  | ($N$ stocks & 7 years & 2x)  |    nbins   |  median  | mean  | mean/median |  mode  | reliable? |
+| stock-name | $N$ total | $N$ stocks | ( $N$ stocks & 7 years)  | ( $N$ stocks & 7 years & 2x)  |    nbins   |  median  | mean  | mean/median |  mode  | reliable? |
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |------------- |------------- | ------------- |------------- | ------------- |
 | BEL20      |   20  |    14    |            3  |        2      |      10       |   -           |        -     |       -      |    -    | no |
 | CAC        |   40  |    34    |           14  |        9      |      10       |   2.77        |      4.70    |     1.70     |  0.38  | yes |
@@ -14,7 +14,7 @@
 
 ## USA
 
-| stock-name | $N$ total | $N$ stocks | ($N$ stocks & 7 years)  | ($N$ stocks & 7 years & 2x)  |    nbins   |  median |  mean |  mean/median |  mode  | reliable? |
+| stock-name | $N$ total | $N$ stocks | ( $N$ stocks & 7 years)  | ( $N$ stocks & 7 years & 2x)  |    nbins   |  median |  mean |  mean/median |  mode  | reliable? |
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |------------- |------------- | ------------- |------------- | ------------- |
 | CCMP      |  3765    | 3568     |        1746           |           802              |     100    |   1.63  |   5.29   |  3.25   |    0.11  | yes |
 | RIY       |  1018    | 1010     |         823           |           721              |     100    |   6.02  |  10.64   |  1.77   |    0.07  | yes |    
@@ -34,7 +34,7 @@ RTSI downloaded 10 from 43
 
 ## Apac countries
 
-| stock-name | N_total  | N_stocks | (N_stocks & 7 years)  | (N_stocks & 7 years & 2x)  |    nbins   |  median |  mean |  mean/median |  mode  | reliable? |
+| stock-name | $N$ total  | $N$ stocks | ( $N$ stocks & 7 years)  | ( $N$ stocks & 7 years & 2x)  |    nbins   |  median |  mean |  mean/median |  mode  | reliable? |
 |----------- |--------- |--------- |------------ |-----------  |----------- |-------- |------------------ | ------------- |------------- |------------- |
 | AS51       |  200     | 163      |  62         |    41       |     100    |   2.54  |   4.40 | -   | 0.06  | yes |
 | SHCOMP     | 1926     |   0      |  -          |    -        |     -      |   -     |   -    | -   |   -  | no  |
@@ -47,7 +47,7 @@ RTSI downloaded 10 from 43
 
 ## S&P500
 
-| stock-name | N_total  | N_stocks | (N_stocks & 7 years)  | (N_stocks & 7 years & 2x)  |    nbins   |  median |  mean |  mean/median |  mode  | reliable? |
+| stock-name | $N$ total  | $N$ stocks | ( $N$ stocks & 7 years)  | ( $N$ stocks & 7 years & 2x)  |    nbins   |  median |  mean |  mean/median |  mode  | reliable? |
 |----------- |--------- |--------- |------------ |-----------  |----------- |-------- |------------------ | ------------- |------------- |------------- |
 | S5COND     |  58      | 58       |  57         |    51       |     100    |   8.41  |  17.13 | 2.04 |   0.63  | yes  |
 | S5CONS     |  33      | 32       |  30         |    28       |     100    |   4.86  |  10.46 | 2.15 |   1.77  | yes  |
