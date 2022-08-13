@@ -34,15 +34,16 @@ RTSI downloaded 10 from 43
 
 ## Apac countries
 
-AS51 downloaded 163 from 200
-SHCOMP downloaded 0 from 1926
-NIFTY downloaded 8 from 50
-HSI downloaded 0 from 69
-MXIN downloaded 23 from 109
-NKY downloaded 0 from 225
-STI downloaded 18 from 30
-SHSZ300 downloaded 0 from 300
-
+| stock-name | N_total  | N_stocks | (N_stocks & 7 years)  | (N_stocks & 7 years & 2x)  |    nbins   |  median |  mean |  mean/median |  mode  | reliable? |
+|----------- |--------- |--------- |------------ |-----------  |----------- |-------- |------------------ | ------------- |------------- |------------- |
+| AS51       |  200     | 163      |  62         |    41       |     100    |   2.54  |   4.40 | -   | 0.06  | yes |
+| SHCOMP     | 1926     |   0      |  -          |    -        |     -      |   -     |   -    | -   |   -  | no  |
+| NIFTY      |   50     |   8      |  3          |    2        |     100    |   -     |   -    | -   |   -  | no |
+| HSI        |   69     |   0      |  -          |    -        |     -      |   -     |   -    | -   |   -  | no  |
+| MXIN       |  109     |  23      |  9          |    5        |     100    |   -     |   -    | -   |   -  | no  |
+| NKY        |  225     |   0      |  -          |    -        |     -      |   -     |   -    | -   |   -  | no  |
+| STI        |   30     |  18      |   9         |    5        |     100    |   -     |   -    | -   |   -  | no  |
+| SHSZ300    |  300     |   0      |  -          |    -        |     -      |   -     |   -    | -   |   -  | no  |
 
 ## S&P500
 
