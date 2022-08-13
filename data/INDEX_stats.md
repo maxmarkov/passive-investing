@@ -47,14 +47,16 @@ RTSI downloaded 10 from 43
 
 ## S&P500
 
-S5COND downloaded 58 from 58
-S5CONS downloaded 32 from 33
-S5RLST downloaded 31 from 31
-S5TELS downloaded 26 from 26
-S5ENRS downloaded 21 from 21
-S5MATR downloaded 28 from 28
-S5UTIL downloaded 28 from 29
-S5HLTH downloaded 64 from 64
-SPXL2  downloaded 500 from 503
-S5INFT downloaded 76 from 76
-S5FINL downloaded 65 from 66
+| stock-name | N_total  | N_stocks | (N_stocks & 7 years)  | (N_stocks & 7 years & 2x)  |    nbins   |  median |  mean |  mean/median |  mode  | reliable? |
+|----------- |--------- |--------- |------------ |-----------  |----------- |-------- |------------------ | ------------- |------------- |------------- |
+| S5COND     |  58      | 58       |  57         |    51       |     100    |   8.41  |  17.13 | 2.04 |   0.63  | yes  |
+| S5CONS     |  33      | 32       |  30         |    28       |     100    |   4.86  |  10.46 | 2.15 |   1.77  | yes  |
+| S5ENRS     |  21      | 21       |  21         |    14       |     100    |   3.45  |   3.74 | 1.08 |   0.69  | no   |
+| S5FINL     |  66      | 65       |  65         |    56       |     100    |   4.33  |   6.65 | 1.54 |   0.07  | yes  |
+| S5HLTH     |  64      | 64       |  62         |    58       |     100    |   8.78  |  15.85 | 1.81 |   0.81  | yes  |
+| S5INFT     |  76      | 76       |  71         |    69       |     100    |  10.79  |  21.33 | 1.98 |   1.59  | yes  |
+| S5MATR     |  28      | 28       |  25         |    23       |     100    |   7.63  |   8.96 | 1.17 |   1.92  | no   |
+| S5RLST     |  31      | 31       |  30         |    27       |     100    |   5.97  |   9.89 | 1.66 |   1.51  | no   | 
+| S5TELS     |  26      | 26       |  24         |    18       |     100    |   3.61  |  22.21 | 6.15 |   0.96  | no   |
+| S5UTIL     |  29      | 28       |  28         |    28       |     100    |   5.16  |   5.96 | 1.16 |   2.24  | no   |
+| SPXL2      | 503      | 500      | 479         |   434       |     100    |   7.07  |  13.0  | 1.84 |   0.07  | yes  |
