@@ -27,10 +27,12 @@
 | NBI       |   368    |  368     |         129           |            46              |     100    |   0.97  |   4.12   |  4.25   |    0.00  | yes | 
 | RLG       |   519    |  516     |         394           |           367              |     100    |   9.25  |  16.00   |  1.73   |    0.34  | yes |
 
-## Dev countries
+## Developing countries
 
-IBOV downloaded 0 from 90
-RTSI downloaded 10 from 43
+| stock-name | $N$ total | $N$ stocks | ( $N$ stocks & 7 years)  | ( $N$ stocks & 7 years & 2x)  |    nbins   |  median |  mean |  mean/median |  mode  | reliable? |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |------------- |------------- | ------------- |------------- | ------------- |
+| IBOV       |  90    | 0      |       -          |           -              |     100    |   -  |   -   |  -   |    -  | no |
+| RTSI       |  43    | 10     |       -          |           -              |     100    |   -  |   -   |  -   |    -  | no | 
 
 ## Apac countries
 
