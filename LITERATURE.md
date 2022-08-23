@@ -35,7 +35,11 @@ $$
 
 Some conclusions:
 
-- The cumulative return of a stock follows a log-$\mathscr{N}(\bar{\mu}T - \frac{1}{2}\sigma^2T, \sigma^2T + \bar{\sigma}^2T^2)$ distribution which is heavily positively skewed.
+- The cumulative return of a stock follows a distribution which is heavily positively skewed.
+
+$$ 
+log\mathscr{N}(\bar{\mu}T - \frac{1}{2}\sigma^2T, \sigma^2T + \bar{\sigma}^2T^2)
+$$
 
 - The median of the stock distribution $\exp{\left(\bar{\mu}T - \frac{1}{2}\sigma^2T\right)}$, so that over time T more than half of all stocks in the index will underperform the index return by a factor of $\exp{\left(\frac{1}{2}\sigma^2T, \sigma^2T + \bar{\sigma}^2T^2\right)}$
 
