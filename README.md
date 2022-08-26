@@ -40,6 +40,12 @@ Read summary results in a [separate file](https://github.com/maxmarkov/stock-ind
 
 Read literature review in a [separate file](https://github.com/maxmarkov/stock-index/blob/master/LITERATURE.md)
 
+## TODO list
+
+[ ] Update downloader for index-tickers
+[ ] Fix alive bar downloader
+[ ] Redownload data with 1 month instead of 1 day interval
+
 References:
 
 - [The single big jump principle](https://www.johndcook.com/blog/2011/08/09/single-big-jump-principle/)

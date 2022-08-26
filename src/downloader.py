@@ -1,58 +1,34 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Jul 19 21:31:24 2022
-
-@author: vlad
-
-Inspired by:
-    https://www.johndcook.com/blog/2011/08/09/single-big-jump-principle/
-    https://www.johndcook.com/blog/2018/07/17/attribution/
-
-    https://arxiv.org/abs/1510.03550
-
-    https://www.researchgate.net/publication/2168231_Broad_distribution_effects_in_sums_of_lognormal_random_variables
-
-To get data, see the example:
-    http://theautomatic.net/2018/01/25/coding-yahoo_fin-package/
-
-Start with S&P500, Nasdaq should be more interesting because of fatter tails
-
-"""
-
 import os 
-import scipy
-import numpy as np
 import pandas as pd
-
 from datetime import datetime
-import matplotlib.pyplot as plt
-import seaborn as sns
-
 import yahoo_fin.stock_info as si
-
-# stat analysis
-from scipy import stats as st      
-from scipy.stats import lognorm
-#os.environ["MKL_THREADING_LAYER"] = "GNU"
-#import theano.tensor as tt
-
-import pymc3 as pm3
-import arviz as az
-from fitter import Fitter, get_common_distributions, get_distributions
-import statsmodels.api as sm
-
 from alive_progress import alive_bar
 
-class StockIndex:
-    """ Class to get Financial Index Data from Yahoo """
 
-    def __init__(self, stock_index, start_date = None, end_date = None):
+
+class StockIndexDownloader:
+    """ 
+    Class to get Financial Index Data from Yahoo
+
+    Basic Yahoo Finance data downloader
+
+    To get data, see the example:
+        http://theautomatic.net/2018/01/25/coding-yahoo_fin-package/
+    """
+
+    def __init__(self, stock_index, start_date = None, end_date = None, interval = "1mo"):
+
+        """
+        Arguments: 
+            stock_index (str): stock index name
+            start_date (str): starting date in "DD/MM/YYYY" format
+            end_date (str): end date in "DD/MM/YYYY" format
+            interval (str): Intervalmust be "1d", "1wk", "1mo", or "1m" for daily, weekly, monthly, or minute data. 
+         """
 
         self.stock_index = stock_index
         self.tickers = self.get_tickers()
 
-        # date checker 
         if start_date is None or end_date is None:
             pass
         else:
@@ -61,8 +37,10 @@ class StockIndex:
             assert start_d < end_d
 
         self.start_date = start_date
-        self.end_date = end_date     
-        self.prices = self.get_prices()
+        self.end_date = end_date
+        self.interval = interval  
+
+        self.prices = self.get_prices()   
 
     def get_tickers(self):
         """ get a list of tickers for the given stock market in"""
@@ -71,8 +49,8 @@ class StockIndex:
                       'nasdaq', 'nifty50', 'niftybank', 'sp500',
                       'venture', 'biotech']
 
-        #if self.stock_index not in INDEX_LIST:
-        #    raise NameError(f'Stock {self.index_name} is not in the list. Provide a correct stock name from {INDEX_LIST}')
+        if self.stock_index not in INDEX_LIST:
+            raise NameError(f'Stock {self.index_name} is not in the list. Provide a correct stock name from {INDEX_LIST}')
 
         if self.stock_index == 'sp500':
             tickers = si.tickers_dow()
@@ -107,6 +85,7 @@ class StockIndex:
             else:
                 print('Provide file with biotech tickers')
         else:
+            ### !!! SHOULD BE IMPROVED !!! ###
             path = 'index-tickers/sp500_sectors/'
             filepath = os.path.join(path, self.stock_index+'_Aug_10_2022.csv')
             if os.path.isfile(filepath):
@@ -129,7 +108,7 @@ class StockIndex:
         #with alive_bar(len(self.tickers), ctrl_c=True, title=f"Downloading {self.stock_index }") as bar:
         for ticker in self.tickers:
             try:
-                prices_list.append(si.get_data(ticker, self.start_date, self.end_date, index_as_date=False))
+                prices_list.append(si.get_data(ticker, self.start_date, self.end_date, index_as_date=False, interval=self.interval))
             except:
                 pass
         #    bar()
@@ -157,5 +136,4 @@ def read_prices_csv(filename: str) -> pd.DataFrame:
 
 def read_prices_parquet(filename: str) -> pd.DataFrame:
     """ read file with prices in parquet format"""
-    df = pd.read_parquet(filename)#, index_col=0)
-    return df
+    df = pd.read_parquet(filename)#, index_col=0), interval = "1mo"
