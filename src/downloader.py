@@ -137,3 +137,4 @@ def read_prices_csv(filename: str) -> pd.DataFrame:
 def read_prices_parquet(filename: str) -> pd.DataFrame:
     """ read file with prices in parquet format"""
     df = pd.read_parquet(filename)#, index_col=0), interval = "1mo"
+    return df
