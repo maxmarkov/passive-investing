@@ -244,7 +244,7 @@ class StockIndexAnalyzer:
         print("\n")
 
 
-    def pymc3_fit(self) -> None:
+    def pymc3_fit(self, draws: int = 5000, tune: int = 3000) -> None:
         """ Fit histogram distribution with PyMC3 """
 
         model = pm3.Model()
@@ -256,9 +256,6 @@ class StockIndexAnalyzer:
             sgmah = pm3.HalfNormal('sigmah', 1)                       # Std stock variation: \hat{\sigma}
             sgma = pm3.HalfNormal('sigma', 1)                         # Volatility: \sigma
 
-            #mu_log = muh*self.nyears - 0.5*sgma**2*self.nyears
-            #sigma_log = np.sqrt(sgma**2*self.nyears + sgmah**2*self.nyears**2)
-
             # define distribution
             x = pm3.LogNormal('x', mu = muh * self.nyears - 0.5 * sgma**2 * self.nyears,
                                    sigma = np.sqrt(sgma**2 * self.nyears + sgmah**2 * self.nyears**2),
@@ -267,18 +264,16 @@ class StockIndexAnalyzer:
             # instantiate sampler
             step = pm3.NUTS() 
 
-            # draw 2000 lognormal posterior samples
-            draws = 5000
-            result = pm3.sample(draws=draws, target_accept=0.98, tune=3000)
-
-            # pandas object
+            result = pm3.sample(draws=draws, target_accept=0.98, tune=tune)
             stats = az.summary(result, kind="stats")
+            print("\n")
+            print(" === PYMC3 FIT === ")
             print('Summary stats', stats)
 
-            #### %%%%%%%%%% %%%%%%%%%%%%
             ppc = pm3.sample_posterior_predictive(result, 200)
-            trc = pm3.trace_to_dataframe(result[-1000:])
+            trc = pm3.trace_to_dataframe(result[-2000:])        # select only last 2000
 
+            # internal parameters 
             muh_ = trc['muh'].mean()
             sigh_ = trc['sigmah'].mean()
             sig_ = trc['sigma'].mean()
@@ -291,19 +286,19 @@ class StockIndexAnalyzer:
             mode_log_ = np.exp(mu_log_ - sigma_log_**2)
 
             print("\n")
-            print(" === PYMC3 FIT === ")
-            print('muh_', muh_)
-            print('sigmah_', sigh_)
-            print('sigma', sig_)
+            print("INTERNAL PARAMETERS")
+            print('muh = %0.3f, sigmah = %0.3f, sigma = %0.3f' %(muh_, sigh_, sig_))
 
-            ### check theory vs experiment ################
+            ### LOGNORMAL POSTERIOR DISTRIBUTION PARAMETERS ################
+            print('PYMC3 lognorm median %0.2f' % (np.median(ppc['x'])))
+            print('PYMC3 lognorm mean %0.2f' % (ppc['x'].mean()))
+            print('PYMC3 lognorm std %0.2f' % (np.sqrt(np.var(ppc['x']))))
 
-            print('Avg return for 15 years theory %0.2f'%(ppc['x'].mean()))
-            print('Median return for 15 years theory %0.2f'%(np.median(ppc['x'])))
 
-            ### check contribution to formulae ################
-            print('Mu contributions for %0.0f years : %0.2f' %(self.nyears, mu_log_))
-            print('Sigma contributions for %0.0f years: %0.2f '% (self.nyears, sigma_log_))
+            ### CHECK LOGNORMAL via INTERNAL MODEL PARAMETERS (\hat{mu}, \sigma{mu}, \sigma) ################
+            print("\n")
+            print('Mu contributions %0.2f:' %(mu_log_))
+            print('Sigma contributions : %0.2f '% (sigma_log_))
             #print('Mean and median for %0.0f years: %0.2f %0.2f percents'%(T1, (muh*T1+1/2*sigh**2*T1**2)/T1*100,(muh*T1-1/2*sig**2*T1)/T1*100))
             print('Mean computed: %0.2f' %(mean_log_))
             print('Median computed: %0.2f' %(median_log_))
