@@ -8,3 +8,5 @@ yahoo-fin~=0.8.9.1
 alive-progress~=2.4.1
 dvc~=2.15.0
 dvc[gdrive]
+scikit-learn~=1.1.2
+seaborn~=0.12.0

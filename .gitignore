@@ -15,3 +15,6 @@ histogram.csv
 lognorm.csv
 results/
 stock-index.code-workspace
+data_example/
+download_data_full/
+src/analyzer_yahoo.py
