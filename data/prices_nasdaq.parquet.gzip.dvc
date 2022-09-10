@@ -1,4 +1,0 @@
-outs:
-- md5: 4346f073749589dcc9b6e0a72245b882
-  size: 203893446
-  path: prices_nasdaq.parquet.gzip

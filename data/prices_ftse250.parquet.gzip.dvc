@@ -1,4 +1,0 @@
-outs:
-- md5: 64dbb0cb24067a0bbe8ba53e5cc1432b
-  size: 6109028
-  path: prices_ftse250.parquet.gzip

@@ -1,4 +1,0 @@
-outs:
-- md5: 1225c151023d3276b5a478d91f170e23
-  size: 1388
-  path: prices_ibovespa.parquet.gzip

@@ -1,4 +1,0 @@
-outs:
-- md5: 86c908b91c4815e9046008da0285bb1c
-  size: 56175051
-  path: prices_niftybank.parquet.gzip
