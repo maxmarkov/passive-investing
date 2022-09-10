@@ -21,17 +21,18 @@ import seaborn as sns
 # stat analysis
 from scipy import stats as st      
 from scipy.stats import lognorm
+from sklearn.neighbors import KernelDensity
 
-import pymc3 as pm3
-import arviz as az
-from fitter import Fitter, get_common_distributions
-import statsmodels.api as sm
+#import pymc3 as pm3
+#import arviz as az
+#from fitter import Fitter, get_common_distributions
+#import statsmodels.api as sm
 
 from tqdm import tqdm
 
 class StockIndexAnalyzer:
 
-    def __init__(self, prices, stock_index, start_date="01/01/2005", end_date="01/01/2022"):
+    def __init__(self, prices, stock_index, start_date="2006-12-29", end_date="2021-12-31"):
         """
         Class to analyze Stock Index Price data
 
@@ -40,33 +41,52 @@ class StockIndexAnalyzer:
             stock_index (str): stock index name
         """
 
-        if stock_index[-3:] == 'csv':
-            self.stock_index = stock_index.split('_')[0]
-        else:
-            self.stock_index = stock_index
+        self.stock_index = stock_index
+        self.category = self.get_index_category()
 
-        self.start_date = datetime.strptime(start_date, '%m/%d/%Y').date()
-        self.end_date = datetime.strptime(end_date, '%m/%d/%Y').date()
+        self.start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
+        self.end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
         assert self.start_date < self.end_date
-        self.nyears = self.end_date.year - self.start_date.year
+        self.nyears = self.end_date.year - self.start_date.year + 1
 
         self.prices = prices
-        self.tickers = self.prices.ticker.unique()
-        self.tickers_select = []
+        self.tickers = list(self.prices.keys())
+        self.tickers_select = []                      # tickers stock price ratio being at least doubled
 
         # dataframe with price ratio for all indices
         self.mu = self.compute_stock_price_variation()
-        self.bins = 2*int(len(self.mu.mu))
+
+        n_stocks = len(self.mu.mu)
+        # index with small number of stocks need less bins. Otherwise, we get a uniformal distribution
+        if n_stocks < 30:
+            self.bins = int(n_stocks)
+        else:
+            self.bins = 2*int(n_stocks)
 
         # Statistics: experimental results
         self.median_expt = self.mu.mu.median()
         self.mean_expt = self.mu.mu.mean()
-        self.std_expt = np.sqrt(self.mu.mu.var())
-        #self.C_expt = self.mu.mu.var()
+        self.mode_expt = self.compute_expt_mode(method='kde_sklearn')
 
-        self.mode_expt = self.compute_expt_mode()
+        #self.log_fit = self.scipy_fit_lognormal()
 
-        self.log_fit = self.scipy_fit_lognormal()
+
+    def get_index_category(self) -> str:
+        """ get geographic/sector category for stock index """
+        if self.stock_index in ['SPX','CCMP','RIY','RTY','RAY','RLV','RLG','NBI']:
+            return 'US'
+        elif self.stock_index in ['S5COND','S5CONS','S5ENRS','S5FINL','S5HLTH','S5INFT','S5MATR','S5RLST','S5TELS','S5UTIL','S5INDU']: 
+            return 'S&P500'
+        elif self.stock_index in ['DAX','CAC','UKX','BEL20','IBEX','KFX','OMX','SMI']:
+            return 'EU'
+        elif self.stock_index in ['AS51','HSI','STI']:
+            return 'APAC'
+        elif self.stock_index in ['NKY','TPX']:
+            return 'Japan'
+        elif self.stock_index in ['IBOV','RTSI$','NIFTY','MXIN','SHCOMP','SHSZ300']:
+            return 'BRIC'
+        else:
+            return 'Unknown'
 
 
     def compute_stock_price_variation(self) -> pd.DataFrame:
@@ -79,58 +99,123 @@ class StockIndexAnalyzer:
         Returns:
             dm (pd.DataFrame): dataframe with index 
         """
-        mu_dict = {}
 
-        counter = 0
+        mu_dict = {}
 
         for ticker in tqdm(self.tickers):
 
-            df = self.prices[self.prices.ticker==ticker].sort_values(by='date')
+            df = self.prices[ticker]
+
+            if all(elem in df.columns.tolist() for elem in ['Open', 'Close']):
+
+                # For some index dates day is 29, but not 31.
+                # Here were make it more robust but locating a by year
+                df['year'] = pd.DatetimeIndex(df.index).year
+                # stock_analyzer.start_date.year
+                price_stt = df.loc[df['year']==self.start_date.year, 'Open'].iloc[0]
+                price_end = df.loc[df['year']==self.end_date.year, 'Close'].iloc[0]
+
+                # less robust way requires precise dates everywhere
+                #price_stt = df.loc[self.start_date]['Open']
+                #price_end = df.loc[self.end_date]['Close']
+
+                if not np.isnan(price_stt) and not np.isnan(price_end):
+
+                    # total return and ratio of prices, multiply by 100 if need percentage
+                    return_value = (price_end - price_stt)/price_stt #/n_years
+                    ratio_value = price_end / price_stt #/n_years
             
-            price_stt = df[df['date']==self.start_date.strftime("%Y-%m-%d")]
-            price_end = df[df['date']==self.end_date.strftime("%Y-%m-%d")]
+                    mu_dict[ticker] = ratio_value
 
-            if not price_stt.empty and not price_end.empty:
-
-                # total return and ratio of prices, multiply by 100 if need percentage
-                return_value = (price_end.adjclose.iloc[0] - price_stt.adjclose.iloc[0])/price_stt.adjclose.iloc[0]#/n_years
-                ratio_value = price_end.adjclose.iloc[0] / price_stt.adjclose.iloc[0]#/n_years
-                
-                mu_dict[ticker] = ratio_value
-                counter += 1
-
-                if ratio_value > 2:
-                    self.tickers_select.append(ticker)
-                    #print(f'Stock {ticker} more than double on average during {n_years} years')
+                    if ratio_value > 2:
+                        self.tickers_select.append(ticker)
+                        #print(f'Stock {ticker} more than double on average during {n_years} years')
 
         print(f"Total number of stocks: {len(self.tickers)}")
-        print(f"Number of stocks with data between {self.start_date} and {self.end_date}: {counter}")
-        print(f"Number of stocks with data between {self.start_date} and {self.end_date} with doubled price: {len(self.tickers_select)}")
+        print(f"Number of stocks with data between {self.start_date.year} and {self.end_date.year} ({self.nyears} years): {len(mu_dict)}")
+        print(f"Number of stocks with data between {self.start_date.year} and {self.end_date.year} with at least doubled price ({self.nyears} years): {len(self.tickers_select)}")
 
         if len(mu_dict) == 0:
             raise ValueError(f"No prices found at specified dates for any stock in {self.stock_index}.")
 
         dm = pd.DataFrame(mu_dict.items(), columns=['ticker', 'mu'])
 
-        ## additional filter
-        #dm = dm[dm['mu'] < 50.]
-
         return dm
 
 
-    def compute_expt_mode(self) -> float:
+    def compute_expt_mode(self, method: str = 'kde_sklearn') -> float:
         """ 
-        Compute mode as a number in a histogram that appears the most often.
+        Compute distribution mode with one of three implemented methods:
+
+            Method 1: find x at most frequent histogram bin
+            Method 2: fit histogram with Gaussian KDE [scikit-learn] and find x value at maximum
+            Method 3: fit histogram with Gaussian KDE [seaborn] and find x value at maximum
+
+            Reference: https://stackabuse.com/kernel-density-estimation-in-python-using-scikit-learn/
+
         Arguments:
         Returns:
-            mode (float): histogram mode
+            mode (float): distribution mode
         """
-        plt.figure(1)
-        y, x, _ = plt.hist(self.mu.mu, bins = self.bins)
-        plt.close(1)
-        indx =  np.argmax(y)
-        mode = x[indx]
-        return mode
+
+        def get_mode(x: np.array, y: np.array) -> float:
+            """ Helper function: get mode from x and y arrays """
+            indx =  np.argmax(y)
+            mode = x[indx]
+            return mode
+
+        fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(20,5))
+
+        # Approach 1: get most frequent value from histogram
+        y, x, _ = ax[0].hist(self.mu.mu, bins = self.bins)
+        ax[0].set_xlim([-1,20])
+        ax[0].set_ylim([0,1.1*np.max(y)])
+        ax[0].set_title(label='Index return distribution histogram', fontsize=15)
+        ax[0].tick_params(axis='both', which='major', labelsize=15)
+        ax[0].tick_params(direction='in', length=8, width=1)
+        mode_hist = get_mode(x, y)
+
+        # Approach 2: fit with Gaussian Kernel Density Estimation [scikit-learn]
+        #             large bandwidth parameter is required to smooth the curve 
+        #             and make curve unimodal
+        kde_skln = KernelDensity(kernel="gaussian", bandwidth=5.0)
+        kde_skln.fit(self.mu.mu.to_numpy()[:, np.newaxis])
+
+        x_skln = np.linspace(-1, 20, 10000)[:, np.newaxis]
+        y_skln = np.exp(kde_skln.score_samples(x_skln))
+
+        ax[1].plot(x_skln, y_skln, c='cyan')
+        ax[1].set_xlim([-1,20])
+        ax[1].set_ylim([0,1.1*np.max(y_skln)])
+        ax[1].set_title(label='Kernel Density Estimation [sklearn]', fontsize=15)
+        ax[1].tick_params(axis='both', which='major', labelsize=15)
+        ax[1].tick_params(direction='in', length=8, width=1)
+        mode_skln = get_mode(x_skln, y_skln)[0]
+
+        # Approach 3: fit with iGaussian Kernel Density Estimation [seaborn]
+        #             bandwidth parameter is estimated automatically:
+        #             Ref: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.gaussian_kde.html#scipy.stats.gaussian_kde
+        kde_sbn = sns.kdeplot(data=self.mu.mu, legend=False)
+        x_sbn, y_sbn = kde_sbn.get_lines()[0].get_data()
+        ax[2].set_xlim([-1,20])
+        ax[2].set_ylim([0,1.1*np.max(y_sbn)])
+        ax[2].set_title(label='Kernel Density Estimation [seaborn]', fontsize=15)
+        ax[2].tick_params(axis='both', which='major', labelsize=15)
+        ax[2].set_ylabel('')
+        ax[2].set_xlabel('')
+        ax[2].tick_params(direction='in', length=8, width=1)
+        mode_sbn = get_mode(x_sbn, y_sbn)
+
+        DIR = 'results/kde_mode_fit'
+        os.makedirs(DIR, exist_ok=True)
+        plt.savefig(f'{DIR}/KDE_mode_fit_{self.stock_index}_{self.nyears}years.png')
+
+        if method == 'kde_seaborn':
+            return mode_sbn
+        elif method == 'kde_sklearn':
+            return mode_skln
+        else:
+            return mode_hist
 
 
     def plot_histogram(self) -> None:
