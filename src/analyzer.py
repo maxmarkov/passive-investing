@@ -23,9 +23,9 @@ from scipy import stats as st
 from scipy.stats import lognorm
 from sklearn.neighbors import KernelDensity
 
-#import pymc3 as pm3
-#import arviz as az
-#from fitter import Fitter, get_common_distributions
+import pymc3 as pm3
+import arviz as az
+from fitter import Fitter, get_common_distributions
 #import statsmodels.api as sm
 
 from tqdm import tqdm
@@ -66,9 +66,9 @@ class StockIndexAnalyzer:
         # Statistics: experimental results
         self.median_expt = self.mu.mu.median()
         self.mean_expt = self.mu.mu.mean()
-        self.mode_expt = self.compute_expt_mode(method='kde_sklearn')
+        self.mode_expt = self.compute_expt_mode(method='kde_seaborn')
 
-        #self.log_fit = self.scipy_fit_lognormal()
+        self.log_fit = self.scipy_fit_lognormal()
 
 
     def get_index_category(self) -> str:
@@ -245,11 +245,14 @@ class StockIndexAnalyzer:
         plt.grid(True, linestyle='--', alpha=0.3)
         plt.legend()
         plt.xlim([0,20.])
-        plt.show()
+
+        DIR = 'results/histogram'
+        os.makedirs(DIR, exist_ok=True)
+        plt.savefig(f'{DIR}/histogram_{self.stock_index}_{self.nyears}years.png')
 
 
 
-    def plot_fit_histogram(self, save: bool = False) -> None:
+    def plot_histogram_fit(self, save_data: bool = False) -> None:
         """ plot histogram with variations and the lognormal distribution fit """
 
         filename = f'distribution_fit_{self.stock_index}.png'
@@ -267,7 +270,7 @@ class StockIndexAnalyzer:
 
         df_hist = pd.DataFrame({'x': x_hist, 'y': y_hist})
 
-        if save:
+        if save_data:
             df_hist.to_csv(f"histogram_{self.stock_index}.csv", index=False)
             #self.mu.mu.to_csv(f"histogram_.csv")
 
@@ -281,12 +284,14 @@ class StockIndexAnalyzer:
         plt.xlabel(r"Stock price ratio $\frac{X(t=T)}{X(t=0)}$")
         plt.ylabel("Frequency")
 
-        plt.title(f"{self.stock_index} distribution fit")
+        plt.title(f"{self.stock_index} distribution scipy fit ")
 
         plt.grid()
-        plt.xlim(0,50)
-        #plt.savefig(filename)
-        plt.show()
+        plt.xlim(0,20)
+
+        DIR = 'results/distribution_fit'
+        os.makedirs(DIR, exist_ok=True)
+        plt.savefig(f'{DIR}/distribution_fit_{self.stock_index}_{self.nyears}years.png')
 
 
     def scipy_fit_lognormal(self):
@@ -329,7 +334,7 @@ class StockIndexAnalyzer:
         print("\n")
 
 
-    def pymc3_fit(self, draws: int = 5000, tune: int = 3000) -> None:
+    def pymc3_fit(self, draws: int = 5000, tune: int = 3000) -> dict:
         """ Fit histogram distribution with PyMC3 """
 
         model = pm3.Model()
@@ -388,13 +393,12 @@ class StockIndexAnalyzer:
             print('Mean computed: %0.2f' %(mean_log_))
             print('Median computed: %0.2f' %(median_log_))
             print('Mode computed: %0.2f' %(mode_log_))
-            ##########################################################################
 
-            # plot trace results for mu, sigma and C2
+            ### Plot 1: distribution (KDE) and sampled values for muh, sgmah and sgma ###
             fig, axs = plt.subplots(3, 2)
 
-            plt.subplots_adjust(hspace = 0.6)
-            az.plot_trace(result, axes=axs, figsize=(20,20))
+            plt.subplots_adjust(hspace=0.7, wspace=0.3)
+            az.plot_trace(result, axes=axs, figsize=(20,10))
 
             axs[0,0].axvline(x=stats.iloc[0]['mean'], linestyle='--', c='r', alpha=0.5)
             axs[0,1].axhline(y=stats.iloc[0]['mean'], linestyle='--', c='r', alpha=0.5)
@@ -405,19 +409,40 @@ class StockIndexAnalyzer:
             axs[2,0].axvline(x=stats.iloc[2]['mean'], linestyle='--', c='r', alpha=0.5)
             axs[2,1].axhline(y=stats.iloc[2]['mean'], linestyle='--', c='r', alpha=0.5)
 
-            fig.suptitle(f'{self.stock_index} stats', fontsize=12)
-            plt.savefig(f'pymc3_trace_{self.stock_index}.png')
+            axs[0,0].set_title('mean stock drift')
+            axs[0,1].set_title('mean stock drift')
 
-             # plot trace results for mu, sigma and C2
-            fig, axs = plt.subplots(1, 3)       
-            az.plot_posterior(result, ax=axs,
-                            var_names=["muh", 'sigmah', "sigma"],
-                            #ref_val=0,
-                            hdi_prob=0.95,
-                            figsize=(20, 5))
-            fig.suptitle(f'{self.stock_index} log norm fit', fontsize=12)
-            plt.savefig(f'pymc3_posterior_{self.stock_index}.png')
-            plt.show()
+            axs[1,0].set_title('std stock variation')
+            axs[1,1].set_title('std stock variation')
+
+            axs[2,0].set_title('volatility')
+            axs[2,1].set_title('volatility')
+
+            fig.suptitle(f'{self.stock_index} stats', fontsize=12)
+
+            DIR = 'results/mcmc_plot_trace'
+            os.makedirs(DIR, exist_ok=True)
+            plt.savefig(f'{DIR}/mcmc_trace_{self.stock_index}_{self.nyears}years.png')
+
+
+            ### Plot 2: posterior densities for muh, sgmah and sgma ###
+            fig, axs = plt.subplots(1, 3)
+            plt.subplots_adjust(wspace=2.0)
+            az.plot_posterior(result, 
+                              ax=axs,
+                              var_names=["muh", 'sigmah', "sigma"],
+                              #ref_val=0,
+                              hdi_prob=0.95,
+                              figsize=(20, 10))
+
+            axs[0].set_title(r'mean drift $\hat{\mu}$')
+            axs[1].set_title(r'variation $\hat{\sigma}$')
+            axs[2].set_title(r'volatility $\sigma$')
+
+            fig.suptitle(f'{self.stock_index} posterior densities', fontsize=12, y=1.01)
+            DIR = 'results/mcmc_plot_posterior'
+            os.makedirs(DIR, exist_ok=True)
+            plt.savefig(f'{DIR}/mcmc_posterior_{self.stock_index}_{self.nyears}years.png')
 
         trc = pm3.trace_to_dataframe(result)
 
@@ -430,6 +455,8 @@ class StockIndexAnalyzer:
         print(f'C = {C}')
         print(f'Mean pymc3 fit = {mean_fit}')
         print(f'Median pymc3 fit = {median_fit}')
+
+        return {'hello': 0}
         
     def find_best_distribution(self) -> None:
         """ 
