@@ -40,16 +40,6 @@ Read summary results in a [separate file](https://github.com/maxmarkov/stock-ind
 
 Read literature review in a [separate file](https://github.com/maxmarkov/stock-index/blob/master/LITERATURE.md)
 
-## TODO list
-
-Downloader fixes
-
-* [ ] Update downloader for index-tickers
-* [ ] Fix alive bar downloader
-* [ ] Redownload data with 1 month instead of 1 day interval
-* [ ] Update dvc
-* [ ] How they are different from Vova's data?
-
 Question: why active management outperforms the passive one in India? (see WSJ article below)
 
 References:
