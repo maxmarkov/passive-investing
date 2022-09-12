@@ -50,17 +50,6 @@ Downloader fixes
 * [ ] Update dvc
 * [ ] How they are different from Vova's data?
 
-Analyzer fixes
-
-* [ ] Finish PyMC3 cleanup
-* [ ] Output in the form of table
-* [ ] Jupyter notebook for model
-* [ ] Difference in posterior results
-* [ ] Should we filter off too large returns? (df.mu > 50.)
-* [ ] Scipy fit. Understand var_fit and std.
-* [ ] How to choose number of bins?
-* [ ] How to compute C_expt
-
 Question: why active management outperforms the passive one in India? (see WSJ article below)
 
 References:
