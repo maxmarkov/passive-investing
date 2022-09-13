@@ -89,7 +89,7 @@ class StockIndexAnalyzer:
             return 'Unknown'
 
 
-    def compute_stock_price_variation(self) -> pd.DataFrame:
+    def compute_stock_price_variation(self, exclude_delisted=True) -> pd.DataFrame:
         """ 
         Within the given index, select all stocks with available price data at `self.start_date` and `self.end_date`.
         Compute price ratio and return at given dates and write all ratio values into `dm` dataframe.  
@@ -111,6 +111,13 @@ class StockIndexAnalyzer:
                 # For some index dates day is 29, but not 31.
                 # Here were make it more robust but locating a by year
                 df['year'] = pd.DatetimeIndex(df.index).year
+
+                # Some stocks are delisted because they are acquired by other companies
+                # We want to exclude them from counting.
+                n_unique = sum(abs(df['Close'].diff())>0)
+                if exclude_delisted and n_unique < len(df)-1:
+                    continue
+
                 # stock_analyzer.start_date.year
                 price_stt = df.loc[df['year']==self.start_date.year, 'Open'].iloc[0]
                 price_end = df.loc[df['year']==self.end_date.year, 'Close'].iloc[0]
@@ -302,34 +309,33 @@ class StockIndexAnalyzer:
         return log_fit
 
 
-    def compare_stats(self):
+    def compare_stats(self) -> dict:
         """ 
         Compare distribution parameters: scipy fit vs experiment
+        Reference: https://en.wikipedia.org/wiki/Log-normal_distribution
         """
-        print ("\n")
-        print(" === SCIPY FIT === ")
-        estimated_mu = np.log(self.log_fit[2])
-        estimated_sigma = self.log_fit[0]
-        print('Scipy lognorm mu =', round(estimated_mu,2), ', Scipy lognorm sigma =', round(estimated_sigma,2))
+        logn_mu = np.log(self.log_fit[2])
+        logn_sigma = self.log_fit[0]
 
-        median_fit=np.exp(estimated_mu)
-        print('Scipy lognorm median = %.2f' %(median_fit))
-        
-        # let's check fitted values with empirical ones see https://en.wikipedia.org/wiki/Log-normal_distribution
-        mean_fit=np.exp(estimated_mu+estimated_sigma**2/2)
-        print('Scipy lognorm mean = %.2f' %(mean_fit))
+        logn_median = np.exp(logn_mu)
+        logn_mean = np.exp(logn_mu + 0.5 * logn_sigma**2)
+        logn_mode = np.exp(logn_mu - logn_sigma**2)
 
-        var_fit=(np.exp(0.5*estimated_sigma**2)-1)*np.exp(2.*estimated_mu+estimated_sigma**2)/self.log_fit[2]**2
-        print('Scipy lognorm std = %.2f' %(np.sqrt(var_fit)))
-
-        ### the behaviour of the sum of log normal variable is defined by parameter C 
-        C = np.sqrt(np.exp(estimated_sigma**2)-1)
-        print('Scipy sigma^2 = %.2f, C = %.2f'%(estimated_sigma**2, C)) # moderatly large distribution as estimated_sigma**2>1 but not >>1
+        C = np.sqrt(np.exp(logn_sigma*logn_sigma) - 1.)
         
         ## compare n and C^2
         #print(f"n = {len(self.mu.mu)}, C^2 = {round(estimated_sigma**2,2)}, n >> C^2") # n>>C^2
         #print(f" C^2 = {C**2}, 3/2 C^2 = {3/2*C**2}")
-        print("\n")
+
+        results = {'logn mu': logn_mu,
+                   'logn sigma': logn_sigma,
+                   'logn mean': logn_mean,
+                   'logn median': logn_median,
+                   'logn mode': logn_mode,
+                   'logn sigma2': logn_sigma*logn_sigma,
+                   'C': C
+                  }
+        return results
 
 
     def pymc3_fit(self, draws: int = 5000, tune: int = 3000) -> dict:
@@ -360,7 +366,9 @@ class StockIndexAnalyzer:
 
             # Posterior. Select only last 2000 (most stable)
             ppc = pm3.sample_posterior_predictive(result, 200)
-            trc = pm3.trace_to_dataframe(result[-2000:])
+            # early trial are not very stable. we select last 75%
+            draws_stable = round(0.5*draws) 
+            trc = pm3.trace_to_dataframe(result[-draws_stable:])
 
             # Internal parameters (mean posterior)
             muh_post = trc['muh'].mean()
@@ -461,13 +469,14 @@ class StockIndexAnalyzer:
         fig, ax = plt.subplots(1, 1)
 
         dists = get_common_distributions()
-        f = Fitter(self.mu.mu, distributions=dists, xmin=0, xmax=100)
+        f = Fitter(self.mu.mu, distributions=dists, xmin=0, xmax=20)
         f.fit()
 
         summary = f.summary(10)
 
         DIR = 'results/best_distribution'
         os.makedirs(DIR, exist_ok=True)
+
         plt.savefig(f'{DIR}/distributions_{self.stock_index}_{self.nyears}years.png')
 
         return summary
