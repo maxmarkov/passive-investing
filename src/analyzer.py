@@ -22,6 +22,9 @@ import seaborn as sns
 from scipy import stats as st      
 from scipy.stats import lognorm
 from sklearn.neighbors import KernelDensity
+from seaborn_qqplot import pplot
+from scipy.stats import (gamma, lognorm, powerlognorm,
+                         laplace_asymmetric, skewnorm)
 
 import pymc3 as pm3
 import arviz as az
@@ -489,11 +492,41 @@ class StockIndexAnalyzer:
 
         sm.qqplot(np.log(self.mu.mu), line ='s', ax=ax)  # it is good that the right tail is underestimated
         plt.grid()
-
         DIR = 'results/qqplot'
         os.makedirs(DIR, exist_ok=True)
 
         plt.savefig(f'{DIR}/qqplot_{self.stock_index}_{self.stock_index}.png')
+
+    def plot_qq_seaborn(self) -> None:
+        """ Q-Q plot from searborn """
+
+        DIR = 'results/qqplot_seaborn'
+        os.makedirs(DIR, exist_ok=True)
+
+        ax1 = pplot(self.mu, x="mu", y=powerlognorm, kind='qq', height=4, aspect=2, display_kws={"identity":False, "fit":True,"reg":True, "ci":0.025})
+        title_text='QQ plot for '+self.stock_index+' fit with '+'powerlognorm'
+        plt.title(title_text)
+        plt.savefig(f'{DIR}/qqplot_{self.stock_index}_powerlognorm.png',bbox_inches='tight')
+        
+        ax2 = pplot(self.mu, x="mu", y=lognorm, kind='qq', height=4, aspect=2, display_kws={"identity":False, "fit":True,"reg":True, "ci":0.025})
+        title_text='QQ plot for '+self.stock_index+' fit with '+'lognorm'
+        plt.title(title_text)
+        plt.savefig(f'{DIR}/qqplot_{self.stock_index}_lognorm.png',bbox_inches='tight')
+        
+        ax3 = pplot(self.mu, x="mu", y=gamma, kind='qq', height=4, aspect=2, display_kws={"identity":False, "fit":True,"reg":True, "ci":0.025})
+        title_text='QQ plot for '+self.stock_index+' fit with '+'gamma'
+        plt.title(title_text)
+        plt.savefig(f'{DIR}/qqplot_{self.stock_index}_gamma.png',bbox_inches='tight')
+
+        ax4 = pplot(self.mu, x="mu", y=laplace_asymmetric, kind='qq', height=4, aspect=2, display_kws={"identity":False, "fit":True,"reg":True, "ci":0.025})
+        title_text='QQ plot for '+self.stock_index+' fit with '+'laplace asymmetric'
+        plt.title(title_text)
+        plt.savefig(f'{DIR}/qqplot_{self.stock_index}_laplace asymmetric.png',bbox_inches='tight')
+
+        ax5 = pplot(self.mu, x="mu", y=skewnorm, kind='qq', height=4, aspect=2, display_kws={"identity":False, "fit":True,"reg":True, "ci":0.025})
+        title_text='QQ plot for '+self.stock_index+' fit with '+'skewnorm'
+        plt.title(title_text)
+        plt.savefig(f'{DIR}/qqplot_{self.stock_index}_laplace skenorm.png',bbox_inches='tight')
 
 
     #def plot_stock_evolution(self, folder: str, mode: str = "all") -> None:
