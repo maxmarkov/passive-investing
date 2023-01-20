@@ -34,49 +34,103 @@ import statsmodels.api as sm
 
 from tqdm import tqdm
 
-def cut_left_tail(df: pd.DataFrame) -> float:
-    """ cut left tail of the distribution (zombie stocks) """
+def cut_left_tail(df: pd.DataFrame, threshold: float = 2.) -> float:
+    """ Cut left tail of the distribution (zombie stocks)
+
+    Args:
+        df (pd.DataFrame): dataframe containing the column 'mu' which represents the values to be cut.
+        hreshold (float): logarithmic threshold used to cut the left tail of the distribution. Default is 2, i.e. thresh = log 2.
+    Returns:
+        d_mean (float): Percentage change in mean after cutting left tail, rounded to one decimal place.
+    """
+
     mean = df.mu.mean()
-    
-    df['log_mu'] = np.log(df['mu'].astype(float))
-    df = df.drop(df[df.log_mu < -2].index)
+
+    # threshold for cutting left tail
+    df = df[np.log(df['mu'].astype(float)) > threshold]
+
     mean_cut = df.mu.mean()
+
     d_mean = 100.*(mean_cut-mean)/mean 
     return round(d_mean,1)
 
 def cut_right_tail(df: pd.DataFrame, cut_ratio: float) -> float:
-    """ cut right tail of the distribution (best stocks) """
+    """ Cut right tail of the distribution (best stocks) and returns the percentage change in mean after cutting right tail.
+    Cut ratio in defined as the quantile of the right tail to be cut.
+
+    Args:
+        df (pd.DataFrame): dataframe containing the column 'mu' which represents the values to be cut.
+        cut_ratio (float): ratio of the right tail to be cut.
+    Returns:
+        d_mean (float): Percentage change in mean after cutting right tail, rounded to one decimal place.
+    """
     mean = df.mu.mean()
-    mean_cut = df[df.mu < df.mu.quantile(q=1.-cut_ratio)].mu.mean()
-    
+
+    threshold = df.mu.quantile(q=1.-cut_ratio)
+
+    df = df[df.mu < threshold]
+
+    mean_cut = df.mu.mean()
+
     d_mean = 100.*(mean_cut-mean)/mean     
     return round(d_mean,1)
 
 def scipy_fit(df: pd.DataFrame) -> dict:
-    """ """
-    df['log_mu'] = np.log(df['mu'].astype(float))
-    df = df.drop(df[df.log_mu < -2].index)
+    """ Fit a lognormal distribution to the dataframe column 'mu' and returns various statistics of the fit.
     
-    log_fit = scipy.stats.lognorm.fit(df.mu, floc=0)
-    
-    logn_mu = np.log(log_fit[2])
-    logn_sigma = log_fit[0]
+    Args:
+        df (pd.DataFrame): A dataframe containing the column 'mu' which represents the values to be fitted.
+    Returns:
+        dict: A dictionary containing statistics of the lognormal fit, such as mu, sigma, mean, median, mode, sigma^2, C.
+    """
 
-    logn_median = np.exp(logn_mu)
-    logn_mean = np.exp(logn_mu + 0.5 * logn_sigma**2)
-    logn_mode = np.exp(logn_mu - logn_sigma**2)
+    # threshold for cutting left tail
+    df = df[np.log(df['mu'].astype(float)) >= -2]
+
+    # fit lognormal distribution
+    log_fit = scipy.stats.lognorm.fit(df.mu, floc=0)
+
+    logn_mu, logn_sigma = log_fit[2], log_fit[0]
+    logn_mu = np.log(logn_mu)
+
+    logn_median, logn_mean, logn_mode = np.exp(logn_mu), np.exp(logn_mu + 0.5 * logn_sigma**2), np.exp(logn_mu - logn_sigma**2)
 
     C = np.sqrt(np.exp(logn_sigma*logn_sigma) - 1.)
 
-    results = {'logn mu': logn_mu,
-               'logn sigma': logn_sigma,
-               'logn mean': logn_mean,
-               'logn median': logn_median,
-               'logn mode': logn_mode,
-               'logn sigma2': logn_sigma*logn_sigma,
+    results = {'mu': logn_mu,
+               'sigma': logn_sigma,
+               'mean': logn_mean,
+               'median': logn_median,
+               'mode': logn_mode,
+               'sigma^2': logn_sigma*logn_sigma,
                'C': C}
-
     return results
+
+
+#def scipy_fit(df: pd.DataFrame) -> dict:
+#    df['log_mu'] = np.log(df['mu'].astype(float))
+#    df = df.drop(df[df.log_mu < -2].index)
+#    
+#    log_fit = scipy.stats.lognorm.fit(df.mu, floc=0)
+#    
+#    logn_mu = np.log(log_fit[2])
+#    logn_sigma = log_fit[0]
+#
+#    logn_median = np.exp(logn_mu)
+#    logn_mean = np.exp(logn_mu + 0.5 * logn_sigma**2)
+#    logn_mode = np.exp(logn_mu - logn_sigma**2)
+#
+#    C = np.sqrt(np.exp(logn_sigma*logn_sigma) - 1.)
+#
+#    results = {'logn mu': logn_mu,
+#               'logn sigma': logn_sigma,
+#               'logn mean': logn_mean,
+#               'logn median': logn_median,
+#               'logn mode': logn_mode,
+#               'logn sigma2': logn_sigma*logn_sigma,
+#               'C': C}
+#
+#    return results
 
 
 class StockIndexAnalyzer:

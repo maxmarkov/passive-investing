@@ -21,7 +21,7 @@ QQPLOT_compare/
 geometrical_brownian_motion/
 .ipynb_checkpoints/
 fig/
-#results/
+results/
 results_8years_2006-2013/
 results_8years_2014-2021/
 results_16years_2006-2021/
