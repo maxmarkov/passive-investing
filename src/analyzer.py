@@ -17,6 +17,7 @@ import pandas as pd
 from datetime import datetime
 import matplotlib.pyplot as plt
 import seaborn as sns
+from astropy.visualization import hist
 
 # stat analysis
 from scipy import stats as st      
@@ -33,10 +34,54 @@ import statsmodels.api as sm
 
 from tqdm import tqdm
 
+def cut_left_tail(df: pd.DataFrame) -> float:
+    """ cut left tail of the distribution (zombie stocks) """
+    mean = df.mu.mean()
+    
+    df['log_mu'] = np.log(df['mu'].astype(float))
+    df = df.drop(df[df.log_mu < -2].index)
+    mean_cut = df.mu.mean()
+    d_mean = 100.*(mean_cut-mean)/mean 
+    return round(d_mean,1)
+
+def cut_right_tail(df: pd.DataFrame, cut_ratio: float) -> float:
+    """ cut right tail of the distribution (best stocks) """
+    mean = df.mu.mean()
+    mean_cut = df[df.mu < df.mu.quantile(q=1.-cut_ratio)].mu.mean()
+    
+    d_mean = 100.*(mean_cut-mean)/mean     
+    return round(d_mean,1)
+
+def scipy_fit(df: pd.DataFrame) -> dict:
+    """ """
+    df['log_mu'] = np.log(df['mu'].astype(float))
+    df = df.drop(df[df.log_mu < -2].index)
+    
+    log_fit = scipy.stats.lognorm.fit(df.mu, floc=0)
+    
+    logn_mu = np.log(log_fit[2])
+    logn_sigma = log_fit[0]
+
+    logn_median = np.exp(logn_mu)
+    logn_mean = np.exp(logn_mu + 0.5 * logn_sigma**2)
+    logn_mode = np.exp(logn_mu - logn_sigma**2)
+
+    C = np.sqrt(np.exp(logn_sigma*logn_sigma) - 1.)
+
+    results = {'logn mu': logn_mu,
+               'logn sigma': logn_sigma,
+               'logn mean': logn_mean,
+               'logn median': logn_median,
+               'logn mode': logn_mode,
+               'logn sigma2': logn_sigma*logn_sigma,
+               'C': C}
+
+    return results
+
 
 class StockIndexAnalyzer:
 
-    def __init__(self, prices, stock_index, start_date="2006-12-29", end_date="2021-12-31"):
+    def __init__(self, prices, stock_index, start_date="2006-12-29", end_date="2021-12-31", exclude_delisted=False):
         """
         Class to analyze Stock Index Price data
 
@@ -58,14 +103,15 @@ class StockIndexAnalyzer:
         self.tickers_select = []                      # tickers stock price ratio being at least doubled
 
         # dataframe with price ratio for all indices
-        self.mu = self.compute_stock_price_variation(exclude_delisted=False)
+        self.mu = self.compute_stock_price_variation(exclude_delisted)
 
         n_stocks = len(self.mu.mu)
+        print(f"Number of stocks in {self.stock_index} index: {n_stocks}")
         # index with small number of stocks need less bins. Otherwise, we get a uniformal distribution
         if n_stocks < 30:
             self.bins = int(n_stocks)
         else:
-            self.bins = 2*int(n_stocks)
+            self.bins = int(n_stocks)
 
         # Statistics: experimental results
         self.median_expt = self.mu.mu.median()
@@ -178,8 +224,9 @@ class StockIndexAnalyzer:
         fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(20,5))
 
         # Approach 1: get most frequent value from histogram
-        y, x, _ = ax[0].hist(self.mu.mu, bins = self.bins)
-        ax[0].set_xlim([-1,20])
+        #y, x, _ = ax[0].hist(self.mu.mu, bins = self.bins)
+        y,x,_ = hist(self.mu.mu, bins='freedman', range=(0,20), ax=ax[0], histtype='stepfilled', alpha=0.2, density=True, label='standard histogram')
+        ax[0].set_xlim([0,20])
         ax[0].set_ylim([0,1.1*np.max(y)])
         ax[0].set_title(label='Index return distribution histogram', fontsize=15)
         ax[0].tick_params(axis='both', which='major', labelsize=15)
@@ -230,37 +277,97 @@ class StockIndexAnalyzer:
 
 
     def plot_histogram(self) -> None:
-        """ Plot histogram with variations """
+        """ 
+        Plot histogram with stock return distribution.
+        Highlight the first bin and the last bin which contains the stocks with top 5% returns.
+        """
 
-        fig, ax = plt.subplots(1,1)
+        fig, ax = plt.subplots(1, 1, figsize=(10, 6))
 
-        ax = plt.gca()
-        self.mu.hist(column = 'mu', grid = True, bins = self.bins, ax = ax, label=f"{self.stock_index} index")    # most of stock are around zero while a few increase in value >2 (double) times per year on average
-        ax.tick_params(direction='in', length=6, width=1.0, colors='black', grid_color='grey', grid_alpha=0.8)
+        #threshold_b = 0.20
+        threshold = 4.0
 
-        yh = 2.
+        # returns only
+        r = self.mu.mu.copy()
 
-        plt.vlines(x=self.median_expt, ymin=0, ymax=yh, color='r', linestyle='--', linewidth=0.8)
-        plt.plot(self.median_expt, yh, 'ro', markersize=4, label='Expt median return')
-        plt.text(self.median_expt-2, yh+0.2, f"median {round(self.median_expt,1)}", color='r', fontsize=8)
+        # right tail
+        r_top = len(r[r >= r.quantile(q=0.9)])
+        #print('TOP 5%: ', r_)
+        #r_top = len(r[r >= threshold])
 
-        plt.vlines(x=self.mean_expt, ymin=0, ymax=yh+1.5, color='k', linestyle='--', linewidth=0.8)
-        plt.plot(self.mean_expt, yh+1.5, 'ko', markersize=4, label='Expt mean return')
-        plt.text(self.mean_expt-2, yh+1.7, f"mean {round(self.mean_expt,1)}", color='k', fontsize=8)
+        # left tail
+        r_bottom = len(r[np.log(r) < -2])
+        #r_bottom = len(r[r <= threshold_b])
 
-        plt.xlabel(r"Stock price ratio $\frac{X(t=T)}{X(t=0)}$")
-        plt.ylabel("Frequency")
+        # remove left and right tails from histogram
+        r = r[np.log(r) > -2]
+        #r = r[r > threshold_b]
+        #r = r[r < threshold]
+        r = r[r < r.quantile(q=0.95)]
 
-        plt.title("Stock price ratio distribution")
+        r_max = int(r.max()) + 1
 
-        plt.grid(True, linestyle='--', alpha=0.3)
-        plt.legend()
-        plt.xlim([0,20.])
+        # automatic binning with Freedman-Diaconis rule
+        bin_edges = np.histogram_bin_edges(r, bins='fd')
+        bin_step = (bin_edges[1] - bin_edges[0])/2.
+        bin_edges_middle = [bin_edges[i-1]+ bin_step for i in range(1,len(bin_edges))]
+        bin_edges = sorted(bin_edges.tolist()+bin_edges_middle)
+        #print('bin_edges_middle: ', bin_edges_middle)
+        #print('bin_edges: ', bin_edges, type(bin_edges), len(bin_edges))
+
+        sns.histplot(data=r, kde=False, fill=True, ax=ax, bins=bin_edges, color='blue', alpha=0.2)
+        print('Number of bins: ', len(bin_edges), 'Number of data points: ', len(r))
+        #_, _, patches = ax.hist(r, bins = bin_edges, alpha=0.5, edgecolor='black', linewidth=0.5)
+
+        width = (bin_edges[-1] - bin_edges[-2])
+
+        edge_bottom = bin_edges[0] - 0.5 * width
+        ax.bar(edge_bottom, r_bottom, width=width, color='red', alpha=0.5, edgecolor='black', linewidth=0.5)
+
+        edge_top = bin_edges[-1] + 0.5 * width
+        ax.bar(edge_top, r_top, width=width, color='red', alpha=0.5, edgecolor='black', linewidth=0.5)
+
+        ## highlight the first bin in red
+        #patches[0].set_facecolor('red')
+
+        ax.tick_params(direction='out', length=5., width=1, color = 'grey', labelsize=15)
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        ax.spines['bottom'].set_visible(False)
+        ax.spines['left'].set_visible(False)
+        ax.grid(True)
+
+        plt.xlim([edge_bottom - width, edge_top + width])
+        #plt.ylim([0,100.])
+
+        #ax.set_xticks([0,1,2,3,4])
+        plt.ylabel('Number of stocks', fontsize=15)
+        plt.xlabel(r'$\rho$', fontsize=18)
+        plt.title(f"{self.stock_index} stock total return distribution", fontsize=15)
 
         DIR = 'results/histogram'
         os.makedirs(DIR, exist_ok=True)
-        plt.savefig(f'{DIR}/histogram_{self.stock_index}_{self.nyears}years.png')
+        fig.savefig(f'{DIR}/histogram_{self.stock_index}_{self.nyears}years.png')
 
+
+    def plot_histogram_loglog(self) -> None:
+        """ plot histogram in log-log scale"""
+        fig, ax = plt.subplots(1, 1, figsize=(10, 6))
+        ax.tick_params(direction='in', length=8, width=1)
+        data, bins, _ = hist(self.mu.mu, bins='freedman', ax=ax, histtype='stepfilled', alpha=0.2, density=True, label='standard histogram')
+        plt.grid()
+        ax.set_xscale("log")
+        ax.set_yscale("log")
+
+        ax.set_xlim([0.5,50])
+        #ax.tick_params(direction='in', length=8, width=1)
+
+        plt.xlabel(r"log stock price ratio $\frac{X(t=T)}{X(t=0)}$")
+        plt.ylabel("log frequency")
+
+        DIR = 'results/histogram_loglog'
+        os.makedirs(DIR, exist_ok=True)
+        plt.savefig(f'{DIR}/histogram_loglog_{self.stock_index}_{self.nyears}years.png')
 
 
     def plot_histogram_fit(self, save_data: bool = False) -> None:
@@ -272,7 +379,8 @@ class StockIndexAnalyzer:
 
         f_logn = lognorm.pdf(x, self.log_fit[0], self.log_fit[1], self.log_fit[2])
         ax.plot(x, f_logn, 'r-', lw=3, alpha=0.6, label='lognorm pdf')
-        data = ax.hist(self.mu.mu.values, density=True, histtype='stepfilled', bins=self.bins, alpha=0.2, label="histogram")
+        #data = ax.hist(self.mu.mu.values, density=True, histtype='stepfilled', bins=self.bins, alpha=0.2, label="histogram")
+        data = hist(self.mu.mu, bins='freedman', range=(0,20), ax=ax, histtype='stepfilled', alpha=0.2, density=True, label='standard histogram')
         
         x_hist = [(data[1][i]+data[1][i-1])/2 for i in range(1, len(data[1]))]
         y_hist = data[0].tolist()

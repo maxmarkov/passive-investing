@@ -1,6 +1,6 @@
 # The impact of big winners on passive and active equity investment strategies
 
-This is the code for the paper ("The impact of big winners on passive and active equity investment strategies")[https://arxiv.org/abs/2210.09302].
+This is the code for the paper ["The impact of big winners on passive and active equity investment strategies"](https://arxiv.org/abs/2210.09302).
 
 ## Project description
 
