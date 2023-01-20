@@ -18,11 +18,11 @@ stock-index.code-workspace
 data_example/
 download_data_full/
 src/analyzer_yahoo.py
-results_8years_2006_2013/
-results_8years_2014_2021/
-results_16years_2006_2021/
-results_16years_2006_2021_survived_only/
-results/
+results_8years_2006_2013/**
+results_8years_2014_2021/**
+results_16years_2006_2021/distribution_fit/*
+results_16years_2006_2021_survived_only/*
+results/*
 QQPLOT_compare/
 geometrical_brownian_motion/
 .ipynb_checkpoints/
