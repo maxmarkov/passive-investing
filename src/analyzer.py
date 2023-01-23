@@ -132,51 +132,55 @@ def scipy_fit(df: pd.DataFrame) -> dict:
 #
 #    return results
 
+def add_year_column(df: pd.DataFrame) -> pd.DataFrame:
+    """ Add a column 'year' to the dataframe based on the index column.
+
+    Args:
+        df (pd.DataFrame): A dataframe containing the index which represents the date of the data.
+    Returns:
+        df (pd.DataFrame): A dataframe with a new column 'year' added.
+    """
+    df['Year'] = df.index
+    df['Year'] = df['Year'].apply(lambda x: x.year)
+    return df
 
 class StockIndexAnalyzer:
 
-    def __init__(self, prices, stock_index, start_date="2006-12-29", end_date="2021-12-31", exclude_delisted=False):
+    def __init__(self, prices, stock_index, start_year=2006, end_year=2021, exclude_delisted=False):
         """
         Class to analyze Stock Index Price data
 
         Arguments:
             prices (pd.DataFrame): dataframe with data for all stocks in given index
             stock_index (str): stock index name
+            start_year (int): start year for analysis. Default is 2006.
+            end_year (int): end year for analysis. Default is 2021.
+            exclude_delisted (bool): Delisted stocks are the ones acquired by other companies. 
+                                     if True, delisted stocks are excluded from the analysis. Default is False.
         """
 
         self.stock_index = stock_index
-        self.category = self.get_index_category()
 
-        self.start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
-        self.end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
-        assert self.start_date < self.end_date
-        self.nyears = self.end_date.year - self.start_date.year + 1
+        self.exclude_delisted = exclude_delisted
 
+        assert start_year < end_year
+        self.start_year = start_year
+        self.end_year = end_year
+
+        # prices are yearly data for all stocks in the index
         self.prices = prices
-        self.tickers = list(self.prices.keys())
-        self.tickers_select = []                      # tickers stock price ratio being at least doubled
 
-        # dataframe with price ratio for all indices
-        self.mu = self.compute_stock_price_variation(exclude_delisted)
+        # dataframe with price ratio (defined as total return in the article)
+        self.mu = self._compute_stock_price_variation()
 
-        n_stocks = len(self.mu.mu)
-        print(f"Number of stocks in {self.stock_index} index: {n_stocks}")
-        # index with small number of stocks need less bins. Otherwise, we get a uniformal distribution
-        if n_stocks < 30:
-            self.bins = int(n_stocks)
-        else:
-            self.bins = int(n_stocks)
+        # print emprirical distribution statistics
+        self._compute_expt_stats()
 
-        # Statistics: experimental results
-        self.median_expt = self.mu.mu.median()
-        self.mean_expt = self.mu.mu.mean()
-        self.mode_expt = self.compute_expt_mode(method='kde_seaborn')
-
-        self.log_fit = self.scipy_fit_lognormal()
+        self.log_fit = self._scipy_fit_lognormal()
 
 
-    def get_index_category(self) -> str:
-        """ get geographic/sector category for stock index """
+    def _get_index_category(self) -> str:
+        """ Get geographic/sector category for stock index """
         if self.stock_index in ['SPX','CCMP','RIY','RTY','RAY','RLV','RLG','NBI']:
             return 'US'
         elif self.stock_index in ['S5COND','S5CONS','S5ENRS','S5FINL','S5HLTH','S5INFT','S5MATR','S5RLST','S5TELS','S5UTIL','S5INDU']: 
@@ -192,43 +196,45 @@ class StockIndexAnalyzer:
         else:
             return 'Unknown'
 
+    def _get_tickers(self) -> list:
+        """ Get list of ticks for given stock index """
+        return list(self.prices.keys())
 
-    def compute_stock_price_variation(self, exclude_delisted=True) -> pd.DataFrame:
-        """ 
-        Within the given index, select all stocks with available price data at `self.start_date` and `self.end_date`.
+    def _compute_stock_price_variation(self) -> pd.DataFrame:
+        """ Within the given index, select all stocks with available price data at `self.start_date` and `self.end_date`.
         Compute price ratio and return at given dates and write all ratio values into `dm` dataframe.  
-
-        Arguments:
 
         Returns:
             dm (pd.DataFrame): dataframe with index 
         """
 
+        n_years = self.end_year - self.start_year + 1
+
         mu_dict = {}
 
-        for ticker in tqdm(self.tickers):
+        # indexes with doubled stock price during the period
+        mu_doubled = []
+
+        tickers = self._get_tickers()
+
+        for ticker in tqdm(tickers):
 
             df = self.prices[ticker]
+            df = add_year_column(df)
 
             if all(elem in df.columns.tolist() for elem in ['Open', 'Close']):
+            
+                # stock price change in two consecutive years
+                n_unique = sum(abs(df['Close'].diff()) > 0)
 
-                # For some index dates day is 29, but not 31.
-                # Here were make it more robust but locating a by year
-                df['year'] = pd.DatetimeIndex(df.index).year
-
-                # Some stocks are delisted because they are acquired by other companies
-                # We want to exclude them from counting.
-                n_unique = sum(abs(df['Close'].diff())>0)
-                if exclude_delisted and n_unique < len(df)-1:
+                # After acqiuring by other companies, the stock price remains the same.
+                # If we want to exclude such stocks, we need to check if the stock price changes.
+                if self.exclude_delisted and n_unique < len(df)-1:
                     continue
 
                 # stock_analyzer.start_date.year
-                price_stt = df.loc[df['year']==self.start_date.year, 'Open'].iloc[0]
-                price_end = df.loc[df['year']==self.end_date.year, 'Close'].iloc[0]
-
-                # less robust way requires precise dates everywhere
-                #price_stt = df.loc[self.start_date]['Open']
-                #price_end = df.loc[self.end_date]['Close']
+                price_stt = df.loc[df['Year']==self.start_year, 'Open'].iloc[0]
+                price_end = df.loc[df['Year']==self.end_year, 'Close'].iloc[0]
 
                 if not np.isnan(price_stt) and not np.isnan(price_end):
 
@@ -239,12 +245,13 @@ class StockIndexAnalyzer:
                     mu_dict[ticker] = ratio_value
 
                     if ratio_value > 2:
-                        self.tickers_select.append(ticker)
-                        #print(f'Stock {ticker} more than double on average during {n_years} years')
+                        mu_doubled.append(ticker)
+                else:
+                    print(f'No price data for {ticker} at {self.start_year} and {self.end_year}')
 
-        print(f"Total number of stocks: {len(self.tickers)}")
-        print(f"Number of stocks with data between {self.start_date.year} and {self.end_date.year} ({self.nyears} years): {len(mu_dict)}")
-        print(f"Number of stocks with data between {self.start_date.year} and {self.end_date.year} with at least doubled price ({self.nyears} years): {len(self.tickers_select)}")
+        print(f"Total number of stocks: {len(tickers)}")
+        print(f"Number of stocks with data between {self.start_year} and {self.end_year} ({n_years} years): {len(mu_dict)}")
+        print(f"Number of stocks with data between {self.start_year} and {self.end_year} with at least doubled price ({n_years} years): {len(mu_doubled)}")
 
         if len(mu_dict) == 0:
             raise ValueError(f"No prices found at specified dates for any stock in {self.stock_index}.")
@@ -253,10 +260,25 @@ class StockIndexAnalyzer:
 
         return dm
 
+    def _compute_expt_stats(self, mode_method = 'kde_seaborn') -> None:
+        """ Compute statistics for the distribution of price ratios 
+        Args: 
+            mode_method (str): method to compute distribution mode.
+        """
+        assert mode_method in ['hist', 'kde_sklearn', 'kde_seaborn']
 
-    def compute_expt_mode(self, method: str = 'kde_sklearn') -> float:
-        """ 
-        Compute distribution mode with one of three implemented methods:
+        median_expt = self.mu.mu.median()
+        mean_expt = self.mu.mu.mean()
+        mode_expt = self._compute_expt_mode(method=mode_method)
+
+        print(f"Expt Median: {median_expt:.3f}")
+        print(f"Expt Mean: {mean_expt:.3f}")
+        print(f"Expt Mode: {mode_expt:.3f}")
+
+
+    def _compute_expt_mode(self, method: str = 'kde_sklearn') -> float:
+        """ Compute distribution mode with one of three implemented methods:
+        Shows plots of the distribution and the three methods.
 
             Method 1: find x at most frequent histogram bin
             Method 2: fit histogram with Gaussian KDE [scikit-learn] and find x value at maximum
@@ -274,6 +296,8 @@ class StockIndexAnalyzer:
             indx =  np.argmax(y)
             mode = x[indx]
             return mode
+
+        n_years = self.end_year - self.start_year + 1
 
         fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(20,5))
 
@@ -320,7 +344,7 @@ class StockIndexAnalyzer:
 
         DIR = 'results/kde_mode_fit'
         os.makedirs(DIR, exist_ok=True)
-        plt.savefig(f'{DIR}/KDE_mode_fit_{self.stock_index}_{self.nyears}years.png')
+        plt.savefig(f'{DIR}/KDE_mode_fit_{self.stock_index}_{n_years}years.png')
 
         if method == 'kde_seaborn':
             return mode_sbn
@@ -330,7 +354,7 @@ class StockIndexAnalyzer:
             return mode_hist
 
 
-    def plot_histogram(self) -> None:
+    def _plot_histogram(self) -> None:
         """ 
         Plot histogram with stock return distribution.
         Highlight the first bin and the last bin which contains the stocks with top 5% returns.
@@ -465,7 +489,7 @@ class StockIndexAnalyzer:
         plt.savefig(f'{DIR}/distribution_fit_{self.stock_index}_{self.nyears}years.png')
 
 
-    def scipy_fit_lognormal(self):
+    def _scipy_fit_lognormal(self):
         """
         Fit mu histogram with lognormal distribution
         Help:
