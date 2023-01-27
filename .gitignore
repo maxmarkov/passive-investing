@@ -1,3 +1,6 @@
+LITERATURE.md
+data/*
+index-tickers/*
 src/__pycache__/*
 index-tickers-original/*
 figure_1a.png
