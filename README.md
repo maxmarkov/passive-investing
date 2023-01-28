@@ -1,6 +1,6 @@
 # The impact of big winners on passive and active equity investment strategies
 
-This is the code for the paper ["The impact of big winners on passive and active equity investment strategies"](https://arxiv.org/abs/2210.09302).
+Code for the paper ["The impact of big winners on passive and active equity investment strategies"](https://arxiv.org/abs/2210.09302).
 
 __Code cleanup in progress__
 
@@ -19,17 +19,7 @@ pip intstall -r requirements.txt
 
 Run modeling and analysis in a Jupyter notebook: 'modeling.ipynb'
 
-## Results
-
-Read summary results in a [separate file](https://github.com/maxmarkov/stock-index/blob/master/RESULTS.md).
-
 ## References
-
-Read literature review in a [separate file](https://github.com/maxmarkov/stock-index/blob/master/LITERATURE.md)
-
-Question: why active management outperforms the passive one in India? (see WSJ article below)
-
-References:
 
 - [The single big jump principle](https://www.johndcook.com/blog/2011/08/09/single-big-jump-principle/)
 - [Attribution based on tail probabilities](https://www.johndcook.com/blog/2018/07/17/attribution/)
@@ -37,5 +27,3 @@ References:
 - [Broad distribution effects in sums of lognormal random variables](https://www.researchgate.net/publication/2168231_Broad_distribution_effects_in_sums_of_lognormal_random_variables)
 - [Stock Pickers Are Struggling to Beat the Market](https://www.wsj.com/articles/stock-pickers-are-struggling-to-beat-the-market-11640692983)
 - [Where Active Management Still Dominates ](https://www.wsj.com/amp/articles/where-active-management-still-dominates-11551669060)
-
-We access financial data via Yahoo using [Yahoo Finance Python API](http://theautomatic.net/2018/01/25/coding-yahoo_fin-package/).
