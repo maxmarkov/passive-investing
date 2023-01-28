@@ -410,7 +410,7 @@ class StockIndexAnalyzer:
         return round(delta_mean,1)    
 
 
-    def _reverse_cumulative_histogram(self) -> pd.DataFrame:
+    def _get_reverse_cumulative_histogram(self) -> pd.DataFrame:
         """ Plot cumulative histogram in reverse order, i.e. from the right tail to the left tail.
         Returns:
             df (pd.DataFrame): dataframe with the percentage of the right tail cut and the percentage change in mean after cutting the right tail.
@@ -422,6 +422,34 @@ class StockIndexAnalyzer:
 
         df = pd.DataFrame(cumulative, columns=['percent_cut_tail', 'contribution'])
         return df
+
+    def _plot_reverse_cumulative_histogram(self) -> None:
+        """ Plot and save the cumulative histogram in reverse order """
+        fig, ax = plt.subplots()
+
+        df = self._get_reverse_cumulative_histogram()
+        df.plot.bar(x='percent_cut_tail', y='contribution', rot=0, color='black', alpha=0.35, ax=ax, label='')
+
+        ax.set_xlim([0,100])
+        ax.set_ylim([0,100])
+
+        ax.set_xticks(ticks=[0,25,50,75,100])
+        ax.set_xticklabels([0,25,50,75,100])
+
+        ax.set_xlabel("percentage cut", size=15)
+        ax.set_ylabel("cumulative contribution",size=15)
+
+        plt.title(f"{self.stock_index} cumulative sum contributions")
+
+        ax.tick_params(direction='in', length=6, width=1.0, colors='black', grid_color='grey', grid_alpha=0.5)
+        ax.legend()
+        ax.tick_params(axis='both', which='major', labelsize=15)
+        ax.tick_params(axis='both', which='minor', labelsize=15)
+
+        # save the figure
+        DIR = 'results/cumulative_plots_'
+        os.makedirs(DIR, exist_ok=True)
+        plt.savefig(f'{DIR}/cumulative_{self.stock_index}.png',bbox_inches='tight')
 
 
     def _empirical_distribution_table(self) -> dict:
