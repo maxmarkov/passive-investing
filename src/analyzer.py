@@ -34,46 +34,7 @@ import statsmodels.api as sm
 
 from tqdm import tqdm
 
-def cut_left_tail(df: pd.DataFrame, threshold: float = 2.) -> float:
-    """ Cut left tail of the distribution (zombie stocks)
-
-    Args:
-        df (pd.DataFrame): dataframe containing the column 'mu' which represents the values to be cut.
-        hreshold (float): logarithmic threshold used to cut the left tail of the distribution. Default is 2, i.e. thresh = log 2.
-    Returns:
-        d_mean (float): Percentage change in mean after cutting left tail, rounded to one decimal place.
-    """
-
-    mean = df.mu.mean()
-
-    # threshold for cutting left tail
-    df = df[np.log(df['mu'].astype(float)) > threshold]
-
-    mean_cut = df.mu.mean()
-
-    d_mean = 100.*(mean_cut-mean)/mean 
-    return round(d_mean,1)
-
-def cut_right_tail(df: pd.DataFrame, cut_ratio: float) -> float:
-    """ Cut right tail of the distribution (best stocks) and returns the percentage change in mean after cutting right tail.
-    Cut ratio in defined as the quantile of the right tail to be cut.
-
-    Args:
-        df (pd.DataFrame): dataframe containing the column 'mu' which represents the values to be cut.
-        cut_ratio (float): ratio of the right tail to be cut.
-    Returns:
-        d_mean (float): Percentage change in mean after cutting right tail, rounded to one decimal place.
-    """
-    mean = df.mu.mean()
-
-    threshold = df.mu.quantile(q=1.-cut_ratio)
-
-    df = df[df.mu < threshold]
-
-    mean_cut = df.mu.mean()
-
-    d_mean = 100.*(mean_cut-mean)/mean     
-    return round(d_mean,1)
+from typing import Tuple
 
 def scipy_fit(df: pd.DataFrame) -> dict:
     """ Fit a lognormal distribution to the dataframe column 'mu' and returns various statistics of the fit.
@@ -167,8 +128,11 @@ class StockIndexAnalyzer:
         self.start_year = start_year
         self.end_year = end_year
 
+        self.nyears = self.end_year - self.start_year + 1
+
         # prices are yearly data for all stocks in the index
         self.prices = prices
+        self.tickers = list(self.prices.keys())
 
         # dataframe with price ratio (defined as total return in the article)
         self.mu = self._compute_stock_price_variation()
@@ -204,9 +168,6 @@ class StockIndexAnalyzer:
         Returns:
             dm (pd.DataFrame): dataframe with index 
         """
-
-        n_years = self.end_year - self.start_year + 1
-
         mu_dict = {}
 
         # indexes with doubled stock price during the period
@@ -236,8 +197,8 @@ class StockIndexAnalyzer:
                 if not np.isnan(price_stt) and not np.isnan(price_end):
 
                     # total return and ratio of prices, multiply by 100 if need percentage
-                    return_value = (price_end - price_stt)/price_stt #/n_years
-                    ratio_value = price_end / price_stt #/n_years
+                    return_value = (price_end - price_stt)/price_stt #/self.nyears
+                    ratio_value = price_end / price_stt #/self.nyears
             
                     mu_dict[ticker] = ratio_value
 
@@ -247,8 +208,8 @@ class StockIndexAnalyzer:
                     print(f'No price data for {ticker} at {self.start_year} and {self.end_year}')
 
         print(f"Total number of stocks: {len(tickers)}")
-        print(f"Number of stocks with data between {self.start_year} and {self.end_year} ({n_years} years): {len(mu_dict)}")
-        print(f"Number of stocks with data between {self.start_year} and {self.end_year} with at least doubled price ({n_years} years): {len(mu_doubled)}")
+        print(f"Number of stocks with data between {self.start_year} and {self.end_year} ({self.nyears} years): {len(mu_dict)}")
+        print(f"Number of stocks with data between {self.start_year} and {self.end_year} with at least doubled price ({self.nyears} years): {len(mu_doubled)}")
 
         if len(mu_dict) == 0:
             raise ValueError(f"No prices found at specified dates for any stock in {self.stock_index}.")
@@ -257,7 +218,7 @@ class StockIndexAnalyzer:
 
         return dm
 
-    def _compute_expt_stats(self, mode_method = 'kde_seaborn') -> None:
+    def _compute_expt_stats(self, mode_method = 'kde_seaborn') -> Tuple[float, float, float]:
         """ Compute statistics for the distribution of price ratios 
         Args: 
             mode_method (str): method to compute distribution mode.
@@ -271,6 +232,7 @@ class StockIndexAnalyzer:
         print(f"Expt Median: {median_expt:.3f}")
         print(f"Expt Mean: {mean_expt:.3f}")
         print(f"Expt Mode: {mode_expt:.3f}")
+        return median_expt, mean_expt, mode_expt
 
 
     def _compute_expt_mode(self, method: str = 'kde_sklearn') -> float:
@@ -293,8 +255,6 @@ class StockIndexAnalyzer:
             indx =  np.argmax(y)
             mode = x[indx]
             return mode
-
-        n_years = self.end_year - self.start_year + 1
 
         fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(20,5))
 
@@ -334,7 +294,7 @@ class StockIndexAnalyzer:
         # save figure
         DIR = 'results/kde_mode_fit'
         os.makedirs(DIR, exist_ok=True)
-        plt.savefig(f'{DIR}/KDE_mode_fit_{self.stock_index}_{n_years}years.png')
+        plt.savefig(f'{DIR}/KDE_mode_fit_{self.stock_index}_{self.nyears}years.png')
 
         if method == 'kde_seaborn':
             return mode_sbn
@@ -349,9 +309,6 @@ class StockIndexAnalyzer:
         returns data. Highlight the first and last cumulative bins collected according to specific conditions. 
         Results are saved in the results/historam folder.
         """
-        n_years = self.end_year - self.start_year + 1
-
-        # returns only
         r = self.mu.mu.copy()
 
         # condition for the right tail: top 5% of returns
@@ -404,7 +361,92 @@ class StockIndexAnalyzer:
         # save the figure
         DIR = 'results/histogram'
         os.makedirs(DIR, exist_ok=True)
-        fig.savefig(f'{DIR}/histogram_{self.stock_index}_{n_years}years.png')
+        fig.savefig(f'{DIR}/histogram_{self.stock_index}_{self.nyears}years.png')
+
+
+    def _cut_left_tail(self, threshold: float = 2.) -> float:
+        """ Cut the left tail of the distribution (zombie stocks)
+
+        Args:
+            threshold (float): logarithmic threshold used to cut the left tail of the distribution. Default is 2, i.e. thresh = log 2.
+        Returns:
+            delta_mean (float): Percentage change in mean after cutting left tail, rounded to one decimal place.
+        """
+        # full dataset mean
+        mean = self.mu.mu.mean()
+
+        # threshold for cutting left tail
+        df = self.mu.mu[np.log(self.mu.mu.astype(float)) > threshold]
+
+        # mean after cutting left tail
+        mean_cut = df.mean()
+
+        # percentage change in mean
+        delta_mean = 100.*(mean_cut-mean)/mean 
+        return round(delta_mean,1)
+
+
+    def _cut_right_tail(self, cut_ratio: float) -> float:
+        """ Cut right tail of the distribution (best stocks) and returns the percentage change in mean after cutting right tail.
+        Cut ratio in defined as the quantile of the right tail to be cut.
+
+        Args:
+            cut_ratio (float): ratio of the right tail to be cut.
+        Returns:
+            delta_mean (float): Percentage change in mean after cutting right tail, rounded to one decimal place.
+        """
+        # full dataset mean
+        mean = self.mu.mu.mean()
+
+        # threshold for cutting right tail. 
+        threshold = self.mu.mu.quantile(q=1.-cut_ratio)
+        df = self.mu.mu[self.mu.mu < threshold]
+
+        # mean after cutting right tail
+        mean_cut = df.mean()
+
+        # percentage change in mean
+        delta_mean = 100.*(mean_cut-mean)/mean     
+        return round(delta_mean,1)    
+
+
+    def _reverse_cumulative_histogram(self) -> pd.DataFrame:
+        """ Plot cumulative histogram in reverse order, i.e. from the right tail to the left tail.
+        Returns:
+            df (pd.DataFrame): dataframe with the percentage of the right tail cut and the percentage change in mean after cutting the right tail.
+        """
+        step = 0.01
+
+        # cumulative function of the right tail
+        cumulative = list(zip(range(1,100),[-1.*self._cut_right_tail(cut_ratio=step*i) for i in range(1,100)]))
+
+        df = pd.DataFrame(cumulative, columns=['percent_cut_tail', 'contribution'])
+        return df
+
+
+    def _empirical_distribution_table(self) -> dict:
+        """ Gather results of the empirical distribution analysis in a table. """
+
+        delta_mean_ltail = self._cut_left_tail()
+
+        delta_mean_rtail_5p = self._cut_right_tail(cut_ratio=0.05)
+        delta_mean_rtail_10p = self._cut_right_tail(cut_ratio=0.10)
+        delta_mean_rtail_25p = self._cut_right_tail(cut_ratio=0.25)
+
+        median_expt, mean_expt, mode_expt = self._compute_expt_stats(mode_method='kde_sklearn')
+
+        results = {'category': self._get_index_category(),
+                   'years': self.nyears,
+                   'n_stocks': len(self.tickers),
+                   'n_stocks_data': len(self.mu),
+                   'dmean_ltail': delta_mean_ltail,
+                   'dmean top 5%': delta_mean_rtail_5p,
+                   'dmean top 10%': delta_mean_rtail_10p,
+                   'dmean top 25%': delta_mean_rtail_25p,
+                   'mean': mean_expt,
+                   'median': median_expt,
+                   'mode': mode_expt}
+        return results
 
 
     def plot_histogram_loglog(self) -> None:
@@ -428,7 +470,7 @@ class StockIndexAnalyzer:
 
 
     def plot_histogram_fit(self, save_data: bool = False) -> None:
-        """ plot histogram with variations and the lognormal distribution fit """
+        """ Plot histogram with variations and the lognormal distribution fit """
 
         x = np.linspace(0.001, 50, 1000)
 
