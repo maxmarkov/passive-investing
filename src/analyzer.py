@@ -9,7 +9,7 @@ Inspired by:
 """
 
 import os
-import sys 
+import csv
 import scipy
 import numpy as np
 import pandas as pd
@@ -35,63 +35,6 @@ import statsmodels.api as sm
 from tqdm import tqdm
 
 from typing import Tuple
-
-def scipy_fit(df: pd.DataFrame) -> dict:
-    """ Fit a lognormal distribution to the dataframe column 'mu' and returns various statistics of the fit.
-    
-    Args:
-        df (pd.DataFrame): A dataframe containing the column 'mu' which represents the values to be fitted.
-    Returns:
-        dict: A dictionary containing statistics of the lognormal fit, such as mu, sigma, mean, median, mode, sigma^2, C.
-    """
-
-    # threshold for cutting left tail
-    df = df[np.log(df['mu'].astype(float)) >= -2]
-
-    # fit lognormal distribution
-    log_fit = scipy.stats.lognorm.fit(df.mu, floc=0)
-
-    logn_mu, logn_sigma = log_fit[2], log_fit[0]
-    logn_mu = np.log(logn_mu)
-
-    logn_median, logn_mean, logn_mode = np.exp(logn_mu), np.exp(logn_mu + 0.5 * logn_sigma**2), np.exp(logn_mu - logn_sigma**2)
-
-    C = np.sqrt(np.exp(logn_sigma*logn_sigma) - 1.)
-
-    results = {'mu': logn_mu,
-               'sigma': logn_sigma,
-               'mean': logn_mean,
-               'median': logn_median,
-               'mode': logn_mode,
-               'sigma^2': logn_sigma*logn_sigma,
-               'C': C}
-    return results
-
-
-#def scipy_fit(df: pd.DataFrame) -> dict:
-#    df['log_mu'] = np.log(df['mu'].astype(float))
-#    df = df.drop(df[df.log_mu < -2].index)
-#    
-#    log_fit = scipy.stats.lognorm.fit(df.mu, floc=0)
-#    
-#    logn_mu = np.log(log_fit[2])
-#    logn_sigma = log_fit[0]
-#
-#    logn_median = np.exp(logn_mu)
-#    logn_mean = np.exp(logn_mu + 0.5 * logn_sigma**2)
-#    logn_mode = np.exp(logn_mu - logn_sigma**2)
-#
-#    C = np.sqrt(np.exp(logn_sigma*logn_sigma) - 1.)
-#
-#    results = {'logn mu': logn_mu,
-#               'logn sigma': logn_sigma,
-#               'logn mean': logn_mean,
-#               'logn median': logn_median,
-#               'logn mode': logn_mode,
-#               'logn sigma2': logn_sigma*logn_sigma,
-#               'C': C}
-#
-#    return results
 
 def add_year_column(df: pd.DataFrame) -> pd.DataFrame:
     """ Add a column 'year' to the dataframe based on the index column.
@@ -477,67 +420,6 @@ class StockIndexAnalyzer:
         return results
 
 
-    def plot_histogram_loglog(self) -> None:
-        """ plot histogram in log-log scale"""
-        fig, ax = plt.subplots(1, 1, figsize=(10, 6))
-        ax.tick_params(direction='in', length=8, width=1)
-        data, bins, _ = hist(self.mu.mu, bins='freedman', ax=ax, histtype='stepfilled', alpha=0.2, density=True, label='standard histogram')
-        plt.grid()
-        ax.set_xscale("log")
-        ax.set_yscale("log")
-
-        ax.set_xlim([0.5,50])
-        #ax.tick_params(direction='in', length=8, width=1)
-
-        plt.xlabel(r"log stock price ratio $\frac{X(t=T)}{X(t=0)}$")
-        plt.ylabel("log frequency")
-
-        DIR = 'results/histogram_loglog'
-        os.makedirs(DIR, exist_ok=True)
-        plt.savefig(f'{DIR}/histogram_loglog_{self.stock_index}_{self.nyears}years.png')
-
-
-    def plot_histogram_fit(self, save_data: bool = False) -> None:
-        """ Plot histogram with variations and the lognormal distribution fit """
-
-        x = np.linspace(0.001, 50, 1000)
-
-        fig, ax = plt.subplots(1, 1)
-
-        f_logn = lognorm.pdf(x, self.log_fit[0], self.log_fit[1], self.log_fit[2])
-        ax.plot(x, f_logn, 'r-', lw=3, alpha=0.6, label='lognorm pdf')
-        #data = ax.hist(self.mu.mu.values, density=True, histtype='stepfilled', bins=self.bins, alpha=0.2, label="histogram")
-        data = hist(self.mu.mu, bins='freedman', range=(0,20), ax=ax, histtype='stepfilled', alpha=0.2, density=True, label='standard histogram')
-        
-        x_hist = [(data[1][i]+data[1][i-1])/2 for i in range(1, len(data[1]))]
-        y_hist = data[0].tolist()
-
-        df_hist = pd.DataFrame({'x': x_hist, 'y': y_hist})
-
-        if save_data:
-            df_hist.to_csv(f"histogram_{self.stock_index}.csv", index=False)
-            #self.mu.mu.to_csv(f"histogram_.csv")
-
-            import csv
-            with open(f'lognorm_{self.stock_index}.csv', 'w') as f:
-                writer = csv.writer(f)
-                writer.writerows(zip(x,f_logn))
-    
-        ax.legend(loc='best', frameon=False)
-
-        plt.xlabel(r"Stock price ratio $\frac{X(t=T)}{X(t=0)}$")
-        plt.ylabel("Frequency")
-
-        plt.title(f"{self.stock_index} distribution scipy fit ")
-
-        plt.grid()
-        plt.xlim(0,20)
-
-        DIR = 'results/distribution_fit'
-        os.makedirs(DIR, exist_ok=True)
-        plt.savefig(f'{DIR}/distribution_fit_{self.stock_index}_{self.nyears}years.png')
-
-
     def _scipy_fit_lognormal(self):
         """ Fit mu histogram with lognormal distribution
         """
@@ -545,34 +427,112 @@ class StockIndexAnalyzer:
         return log_fit
 
 
-    def compare_stats(self) -> dict:
-        """ 
-        Compare distribution parameters: scipy fit vs experiment
-        Reference: https://en.wikipedia.org/wiki/Log-normal_distribution
+    def _plot_histogram_fit(self, save_data: bool = False, loglog: bool = False) -> None:
+        """ Plot histogram and its lognormal fit on one plot.
+        Attention: scipyfit is not very good, because it takes into account the whole range of the histogram including the left (zero-inflated) tail.
+        Moreover, it should fit the Diaconis-Freedman histogram, since number of bins changes the fit.
+        See QQ-plot for a better fit quality assesment.
+
+        Args:
+            save_data (bool): if True, save the histogram data and the lognormal fit data
+            loglog (bool): if True, plot the histogram and the fit on loglog scale
+
+        Outputs are saved in the results/histogram_fit directory:
+            histogram_fit_{self.stock_index}_{self.nyears}years.png (png): histogram with lognormal fit on top
+
+            if save_data is True:
+                histogram_{self.stock_index}_{self.nyears}years.csv (csv): raw data of the histogram
+                lognormal_{self.stock_index}_{self.nyears}years.csv (csv): raw data of the lognormal fit
         """
-        logn_mu = np.log(self.log_fit[2])
-        logn_sigma = self.log_fit[0]
+        # fit the lognormal distribution using scipy. Fit parameters from self._set_lognormal_fit() -> self.log_fit
+        x = np.linspace(0.001, 50, 1000)
+        f_logn = lognorm.pdf(x, self.log_fit[0], self.log_fit[1], self.log_fit[2])
 
-        logn_median = np.exp(logn_mu)
-        logn_mean = np.exp(logn_mu + 0.5 * logn_sigma**2)
-        logn_mode = np.exp(logn_mu - logn_sigma**2)
+        # find bin edges using doubled Freedman-Diaconis rule
+        r = self.mu.mu.copy()
+        # automatic binning with the Freedman-Diaconis rule
+        bin_edges = np.histogram_bin_edges(r, bins='fd')
 
+        # double the freedman-diaconis bins
+        bin_step = (bin_edges[1] - bin_edges[0])/2.
+        bin_edges_middle = [bin_edges[i-1] + bin_step for i in range(1,len(bin_edges))]
+        bin_edges = sorted(bin_edges.tolist() + bin_edges_middle)
+
+        fig, ax = plt.subplots(1,1)
+
+        # plot the fit 
+        ax.plot(x, f_logn, 'r-', lw=3, alpha=0.6, label='lognorm pdf')
+
+        # plot the histogram
+        data = hist(self.mu.mu, bins=bin_edges, range=(0,20), ax=ax, histtype='stepfilled', alpha=0.2, density=True, label='standard histogram')
+
+        ax.legend(loc='best', frameon=False)
+
+        plt.xlabel(r"Stock price ratio $\frac{X(t=T)}{X(t=0)}$")
+        plt.ylabel("Frequency")
+
+        plt.title(f"{self.stock_index} distribution scipy fit ")
+
+        if loglog:
+            ax.set_xscale("log")
+            ax.set_yscale("log")
+
+        plt.grid()
+        plt.xlim(0,20)
+
+        # save the figure
+        DIR = 'results/histogram_fit'
+        os.makedirs(DIR, exist_ok=True)
+        plt.savefig(f'{DIR}/histogram_fit_{self.stock_index}_{self.nyears}years.png')
+
+        if save_data:
+            # extract the histogram data
+            x_hist = [(data[1][i]+data[1][i-1])/2 for i in range(1, len(data[1]))]
+            y_hist = data[0].tolist()
+
+            # save the histogram data
+            df_hist = pd.DataFrame({'x': x_hist, 'y': y_hist})
+            df_hist.to_csv(f"{DIR}/histogram_{self.stock_index}_{self.nyears}years.csv", index=False)
+
+            # save the lognormal fit data
+            with open(f'{DIR}/lognorm_{self.stock_index}_{self.nyears}years.csv', 'w') as f:
+                writer = csv.writer(f)
+                writer.writerows(zip(x,f_logn))
+
+
+    def _scipy_fit(self, cut_left_tail: bool=True) -> dict:
+        """ Fit total return emprirical distribution without the left tail.
+    
+        Args:
+            cut_left_tail (bool): if True, cut the left tail of the distribution (i.e. the zero-inflated part)
+        Returns:
+            dict: A dictionary containing statistics of the lognormal fit, such as mu, sigma, mean, median, mode, sigma^2, C.
+        """
+        if cut_left_tail:
+            df = self.mu.mu[np.log(self.mu.mu.astype(float)) >= -2]
+        else:
+            df = self.mu.mu
+
+        # fit lognormal distribution
+        log_fit = scipy.stats.lognorm.fit(df, floc=0)
+
+        logn_mu, logn_sigma = log_fit[2], log_fit[0]
+        logn_mu = np.log(logn_mu)
+
+        logn_median, logn_mean, logn_mode = np.exp(logn_mu), np.exp(logn_mu + 0.5 * logn_sigma**2), np.exp(logn_mu - logn_sigma**2)
+
+        # C parameter from the paper https://doi.org/10.1140/epjb/e2003-00131-6
         C = np.sqrt(np.exp(logn_sigma*logn_sigma) - 1.)
-        
-        ## compare n and C^2
-        #print(f"n = {len(self.mu.mu)}, C^2 = {round(estimated_sigma**2,2)}, n >> C^2") # n>>C^2
-        #print(f" C^2 = {C**2}, 3/2 C^2 = {3/2*C**2}")
 
-        results = {'logn mu': logn_mu,
-                   'logn sigma': logn_sigma,
-                   'logn mean': logn_mean,
-                   'logn median': logn_median,
-                   'logn mode': logn_mode,
-                   'logn sigma2': logn_sigma*logn_sigma,
-                   'C': C
-                  }
+        # dictionary with scipy fit parameters
+        results = {'mu': logn_mu,
+                    'sigma': logn_sigma,
+                    'mean': logn_mean,
+                    'median': logn_median,
+                    'mode': logn_mode,
+                    'sigma^2': logn_sigma*logn_sigma,
+                    'C': C}
         return results
-
 
     def pymc3_fit(self, draws: int = 5000, tune: int = 3000) -> dict:
         """ Fit histogram distribution with PyMC3 """
