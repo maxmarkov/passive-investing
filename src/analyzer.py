@@ -416,7 +416,10 @@ class StockIndexAnalyzer:
                    'dmean top 25%': delta_mean_rtail_25p,
                    'mean': mean_expt,
                    'median': median_expt,
-                   'mode': mode_expt}
+                   'mode': mode_expt,
+                   'mean/median': mean_expt/median_expt,
+                   'mean/mode': mean_expt/mode_expt
+                   }
         return results
 
 
@@ -530,12 +533,23 @@ class StockIndexAnalyzer:
                     'mean': logn_mean,
                     'median': logn_median,
                     'mode': logn_mode,
-                    'sigma^2': logn_sigma*logn_sigma,
+                    'sigma2': logn_sigma*logn_sigma,
                     'C': C}
         return results
 
-    def pymc3_fit(self, draws: int = 5000, tune: int = 3000) -> dict:
-        """ Fit histogram distribution with PyMC3 """
+    def _pymc3_fit(self, draws: int = 5000, tune: int = 3000, cut_left_tail: bool=True) -> dict:
+        """ Fit empirical histogram distribution with PyMC3
+        Args:
+            draws (int): number of draws
+            tune (int): number of tuning steps  
+        Returns:
+            dict: A dictionary containing statistics of the lognormal fit, such as mu, sigma, mean, median, mode, sigma^2, C. 
+        """
+
+        r = self.mu.mu.copy()
+
+        if cut_left_tail:
+            r = r[np.log(r) > -2]
 
         model = pm3.Model()
 
@@ -546,10 +560,9 @@ class StockIndexAnalyzer:
             sgmah = pm3.HalfNormal('sigmah', 1)                       # Std stock variation: \hat{\sigma}
             sgma = pm3.HalfNormal('sigma', 1)                         # Volatility: \sigma
 
-            # define distribution
             x = pm3.LogNormal('x', mu = muh * self.nyears - 0.5 * sgma**2 * self.nyears,
                                    sigma = np.sqrt(sgma**2 * self.nyears + sgmah**2 * self.nyears**2),
-                                   observed = self.mu.mu)
+                                   observed = r)
 
             # instantiate sampler
             step = pm3.NUTS() 
@@ -560,9 +573,9 @@ class StockIndexAnalyzer:
             print(" === PYMC3 FIT === ")
             print(stats)
 
-            # Posterior. Select only last 2000 (most stable)
-            ppc = pm3.sample_posterior_predictive(result, 200)
-            # early trial are not very stable. we select last 75%
+            # Posterior. Select only last 2000 (most stable) since early trials are not very stable
+            ppc = pm3.sample_posterior_predictive(result, 2000)
+
             draws_stable = round(0.5*draws) 
             trc = pm3.trace_to_dataframe(result[-draws_stable:])
 
@@ -571,72 +584,64 @@ class StockIndexAnalyzer:
             sigh_post = trc['sigmah'].mean()
             sig_post = trc['sigma'].mean()
 
-            ### LOGNORMAL distribution statistics
-            logn_mu =  muh_post * self.nyears - 0.5 * sig_post**2 * self.nyears
-            logn_sigma = sig_post**2 * self.nyears + sigh_post**2 * self.nyears**2
-            C = np.sqrt(np.exp(logn_sigma * logn_sigma) - 1.)
+        ### LOGNORMAL distribution statistics
+        logn_mu =  muh_post * self.nyears - 0.5 * sig_post**2 * self.nyears
+        logn_sigma = sig_post**2 * self.nyears + sigh_post**2 * self.nyears**2
+        C = np.sqrt(np.exp(logn_sigma * logn_sigma) - 1.)
 
-            logn_mean = np.exp(logn_mu + 0.5* logn_sigma**2)
-            logn_median = np.exp(logn_mu)
-            logn_mode = np.exp(logn_mu - logn_sigma**2)
+        logn_mean = np.exp(logn_mu + 0.5* logn_sigma**2)
+        logn_median = np.exp(logn_mu)
+        logn_mode = np.exp(logn_mu - logn_sigma**2)
 
-            #### LOGNORMAL POSTERIOR DISTRIBUTION PARAMETERS ################
-            #print('PYMC3 lognorm median %0.2f' % (np.median(ppc['x'])))
-            #print('PYMC3 lognorm mean %0.2f' % (ppc['x'].mean()))
-            #print('PYMC3 lognorm std %0.2f' % (np.sqrt(np.var(ppc['x']))))
+        ### Plot 1: distribution (KDE) and sampled values for muh, sgmah and sgma ###
+        fig, axs = plt.subplots(3, 2)
 
+        plt.subplots_adjust(hspace=0.7, wspace=0.3)
+        az.plot_trace(result, axes=axs, figsize=(20,10))
 
-            ### Plot 1: distribution (KDE) and sampled values for muh, sgmah and sgma ###
-            fig, axs = plt.subplots(3, 2)
+        axs[0,0].axvline(x=stats.iloc[0]['mean'], linestyle='--', c='r', alpha=0.5)
+        axs[0,1].axhline(y=stats.iloc[0]['mean'], linestyle='--', c='r', alpha=0.5)
 
-            plt.subplots_adjust(hspace=0.7, wspace=0.3)
-            az.plot_trace(result, axes=axs, figsize=(20,10))
+        axs[1,0].axvline(x=stats.iloc[1]['mean'], linestyle='--', c='r', alpha=0.5)
+        axs[1,1].axhline(y=stats.iloc[1]['mean'], linestyle='--', c='r', alpha=0.5)
 
-            axs[0,0].axvline(x=stats.iloc[0]['mean'], linestyle='--', c='r', alpha=0.5)
-            axs[0,1].axhline(y=stats.iloc[0]['mean'], linestyle='--', c='r', alpha=0.5)
+        axs[2,0].axvline(x=stats.iloc[2]['mean'], linestyle='--', c='r', alpha=0.5)
+        axs[2,1].axhline(y=stats.iloc[2]['mean'], linestyle='--', c='r', alpha=0.5)
 
-            axs[1,0].axvline(x=stats.iloc[1]['mean'], linestyle='--', c='r', alpha=0.5)
-            axs[1,1].axhline(y=stats.iloc[1]['mean'], linestyle='--', c='r', alpha=0.5)
+        axs[0,0].set_title('mean stock drift')
+        axs[0,1].set_title('mean stock drift')
 
-            axs[2,0].axvline(x=stats.iloc[2]['mean'], linestyle='--', c='r', alpha=0.5)
-            axs[2,1].axhline(y=stats.iloc[2]['mean'], linestyle='--', c='r', alpha=0.5)
+        axs[1,0].set_title('std stock variation')
+        axs[1,1].set_title('std stock variation')
 
-            axs[0,0].set_title('mean stock drift')
-            axs[0,1].set_title('mean stock drift')
+        axs[2,0].set_title('volatility')
+        axs[2,1].set_title('volatility')
 
-            axs[1,0].set_title('std stock variation')
-            axs[1,1].set_title('std stock variation')
+        fig.suptitle(f'{self.stock_index} stats', fontsize=12)
 
-            axs[2,0].set_title('volatility')
-            axs[2,1].set_title('volatility')
-
-            fig.suptitle(f'{self.stock_index} stats', fontsize=12)
-
-            DIR = 'results/mcmc_plot_trace'
-            os.makedirs(DIR, exist_ok=True)
-            plt.savefig(f'{DIR}/mcmc_trace_{self.stock_index}_{self.nyears}years.png')
+        DIR = 'results/mcmc_plot_trace'
+        os.makedirs(DIR, exist_ok=True)
+        plt.savefig(f'{DIR}/mcmc_trace_{self.stock_index}_{self.nyears}years.png')
 
 
-            ### Plot 2: posterior densities for muh, sgmah and sgma ###
-            fig, axs = plt.subplots(1, 3)
-            plt.subplots_adjust(wspace=2.0)
-            az.plot_posterior(result, 
-                              ax=axs,
-                              var_names=["muh", 'sigmah', "sigma"],
-                              #ref_val=0,
-                              hdi_prob=0.95,
-                              figsize=(20, 10))
+        ### Plot 2: posterior densities for muh, sgmah and sgma ###
+        fig, axs = plt.subplots(1, 3)
+        plt.subplots_adjust(wspace=2.0)
+        az.plot_posterior(result, 
+                        ax=axs,
+                        var_names=["muh", 'sigmah', "sigma"],
+                        #ref_val=0,
+                        hdi_prob=0.95,
+                        figsize=(20, 10))
 
-            axs[0].set_title(r'mean drift $\hat{\mu}$')
-            axs[1].set_title(r'variation $\hat{\sigma}$')
-            axs[2].set_title(r'volatility $\sigma$')
+        axs[0].set_title(r'mean drift $\hat{\mu}$')
+        axs[1].set_title(r'variation $\hat{\sigma}$')
+        axs[2].set_title(r'volatility $\sigma$')
 
-            fig.suptitle(f'{self.stock_index} posterior densities', fontsize=12, y=1.01)
-            DIR = 'results/mcmc_plot_posterior'
-            os.makedirs(DIR, exist_ok=True)
-            plt.savefig(f'{DIR}/mcmc_posterior_{self.stock_index}_{self.nyears}years.png')
-
-        trc = pm3.trace_to_dataframe(result)
+        fig.suptitle(f'{self.stock_index} posterior densities', fontsize=12, y=1.01)
+        DIR = 'results/mcmc_plot_posterior'
+        os.makedirs(DIR, exist_ok=True)
+        plt.savefig(f'{DIR}/mcmc_posterior_{self.stock_index}_{self.nyears}years.png')
 
         results = {'muh': trc['muh'].mean(),
                    'muh std': trc['muh'].std(),
@@ -656,27 +661,35 @@ class StockIndexAnalyzer:
         return results
 
 
-    def find_best_distribution(self) -> pd.DataFrame:
-        """ 
-        Find best distribution fit.
+    def _fitter_find_best_distribution(self, cut_left_tail: bool = True) -> pd.DataFrame:
+        """ Find best distribution with Fitter
         Read more: https://medium.com/the-researchers-guide/finding-the-best-distribution-that-fits-your-data-using-pythons-fitter-library-319a5a0972e9
+        Args:
+            cut_left_tail (bool): cut the left tail of the histogram. Default: True
+        Returns:
+            summary (pd.DataFrame): summary of the best distribution
         """
-        
-        fig, ax = plt.subplots(1, 1)
+ 
+        r = self.mu.mu.copy()
 
+        if cut_left_tail:
+            r = r[np.log(r) > -2]
+
+        # run fit over all common distributions
         dists = get_common_distributions()
-        f = Fitter(self.mu.mu, distributions=dists, xmin=0, xmax=20)
+
+        fig, ax = plt.subplots(1,1)
+        f = Fitter(r, distributions=dists, xmin=0, xmax=20)
         f.fit()
 
         summary = f.summary(10)
 
+        # save the best distribution
         DIR = 'results/best_distribution'
         os.makedirs(DIR, exist_ok=True)
-
         plt.savefig(f'{DIR}/distributions_{self.stock_index}_{self.nyears}years.png')
 
         return summary
-
 
 
     def plot_qq(self) -> None:
@@ -689,6 +702,7 @@ class StockIndexAnalyzer:
         os.makedirs(DIR, exist_ok=True)
 
         plt.savefig(f'{DIR}/qqplot_{self.stock_index}_{self.stock_index}.png')
+
 
     def plot_qq_seaborn(self) -> None:
         """ Q-Q plot from searborn """
@@ -724,39 +738,27 @@ class StockIndexAnalyzer:
         plt.savefig(f'{DIR}/qqplot_{self.stock_index}_skewnorm.png',bbox_inches='tight')
 
 
-    #def plot_stock_evolution(self, folder: str, mode: str = "all") -> None:
-    #    """ Plot the time evolution of a stock price for all stock in given index """
+    def _plot_stock_evolution(self, ticker: str) -> None:
+        """ Plot the time evolution of a stock price for all stock in given index
+        Args:
+            ticker (str): ticker of the stock
+        """
+        if not ticker in self.tickers:
+            raise ValueError(f"Ticker {ticker} not in the list of tickers")
 
-    #    path = os.path.join(folder, self.stock_index)
-    #    os.makedirs(path, exist_ok = True)
+        fig, ax = plt.subplots()
 
-    #    # start and end date for ploting 
-    #    start_date = datetime.strptime("01/01/2004", '%m/%d/%Y').date()
-    #    end_date = datetime.strptime("08/06/2022", '%m/%d/%Y').date()
-    #    
-    #    if mode == "selected":
-    #        tickers = self.tickers_select
-    #    else:
-    #        tickers = self.tickers
+        sns.lineplot(x = 'Year', y = 'Close', data = self.prices[ticker], label = f"Index {self.stock_index}, stock {ticker}", ax=ax)
+        sns.scatterplot(x = 'Year', y = 'Close', data = self.prices[ticker], ax=ax)
+        ax.set_ylim(bottom=0)
 
-    #    fig, ax = plt.subplots()
-    #    for ticker in tickers:
+        ax.tick_params(direction='in', length=6, width=1.0, colors='black', grid_color='grey', grid_alpha=0.5)
 
-    #        #fig, ax = plt.subplots()
-    #        sns.lineplot(x = 'date', y = 'adjclose', data = self.prices[self.prices['ticker']==ticker], label = f"Index {self.stock_index}, stock {ticker}", ax=ax)
+        plt.xlabel("time")
+        plt.ylabel("Closing price after adjustments")
 
-    #        ax.set_xlim(left=start_date, right=end_date)
-    #        ax.set_ylim(bottom=0)
+        plt.title(f"Evolution of {ticker} price")
 
-    #        ax.tick_params(direction='in', length=6, width=1.0, colors='black', grid_color='grey', grid_alpha=0.5)
-
-    #        plt.xlabel("time")
-    #        plt.ylabel("Closing price after adjustments")
-
-    #        plt.title(f"Evolution of {ticker} price")
-
-    #        plt.grid(True, linestyle='--', alpha=0.3)
-    #        plt.legend()
-    #        #plt.savefig(os.path.join(path, f"stock_evolution_{ticker}.png"))
-    #        plt.show()
-    #        plt.cla()
+        plt.grid(True, linestyle='--', alpha=0.3)
+        plt.legend()
+        plt.show()
