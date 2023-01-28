@@ -173,9 +173,6 @@ class StockIndexAnalyzer:
         # dataframe with price ratio (defined as total return in the article)
         self.mu = self._compute_stock_price_variation()
 
-        # print emprirical distribution statistics
-        self._compute_expt_stats()
-
         self.log_fit = self._scipy_fit_lognormal()
 
 
@@ -302,18 +299,10 @@ class StockIndexAnalyzer:
         fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(20,5))
 
         # Approach 1: get most frequent value from histogram
-        #y, x, _ = ax[0].hist(self.mu.mu, bins = self.bins)
         y,x,_ = hist(self.mu.mu, bins='freedman', range=(0,20), ax=ax[0], histtype='stepfilled', alpha=0.2, density=True, label='standard histogram')
-        ax[0].set_xlim([0,20])
-        ax[0].set_ylim([0,1.1*np.max(y)])
-        ax[0].set_title(label='Index return distribution histogram', fontsize=15)
-        ax[0].tick_params(axis='both', which='major', labelsize=15)
-        ax[0].tick_params(direction='in', length=8, width=1)
         mode_hist = get_mode(x, y)
 
         # Approach 2: fit with Gaussian Kernel Density Estimation [scikit-learn]
-        #             large bandwidth parameter is required to smooth the curve 
-        #             and make curve unimodal
         kde_skln = KernelDensity(kernel="gaussian", bandwidth=5.0)
         kde_skln.fit(self.mu.mu.to_numpy()[:, np.newaxis])
 
@@ -321,27 +310,28 @@ class StockIndexAnalyzer:
         y_skln = np.exp(kde_skln.score_samples(x_skln))
 
         ax[1].plot(x_skln, y_skln, c='cyan')
-        ax[1].set_xlim([-1,20])
-        ax[1].set_ylim([0,1.1*np.max(y_skln)])
-        ax[1].set_title(label='Kernel Density Estimation [sklearn]', fontsize=15)
-        ax[1].tick_params(axis='both', which='major', labelsize=15)
-        ax[1].tick_params(direction='in', length=8, width=1)
         mode_skln = get_mode(x_skln, y_skln)[0]
 
         # Approach 3: fit with iGaussian Kernel Density Estimation [seaborn]
-        #             bandwidth parameter is estimated automatically:
-        #             Ref: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.gaussian_kde.html#scipy.stats.gaussian_kde
         kde_sbn = sns.kdeplot(data=self.mu.mu, legend=False)
         x_sbn, y_sbn = kde_sbn.get_lines()[0].get_data()
-        ax[2].set_xlim([-1,20])
-        ax[2].set_ylim([0,1.1*np.max(y_sbn)])
-        ax[2].set_title(label='Kernel Density Estimation [seaborn]', fontsize=15)
-        ax[2].tick_params(axis='both', which='major', labelsize=15)
-        ax[2].set_ylabel('')
-        ax[2].set_xlabel('')
-        ax[2].tick_params(direction='in', length=8, width=1)
         mode_sbn = get_mode(x_sbn, y_sbn)
 
+        y_list = [y, y_skln, y_sbn]
+        labels = ['standard histogram', 'Kernel Density Estimation [sklearn]', 'Kernel Density Estimation [seaborn]']
+        for i in range(3):
+            ax[i].set_title(label=labels[i], fontsize=15)
+
+            ax[i].set_ylabel('')
+            ax[i].set_xlabel('')
+
+            ax[i].set_xlim([-1,20])
+            ax[i].set_ylim([0,1.1*np.max(y_list[i])])
+
+            ax[i].tick_params(direction='in', length=8, width=1)
+            ax[i].tick_params(axis='both', which='major', labelsize=15)
+
+        # save figure
         DIR = 'results/kde_mode_fit'
         os.makedirs(DIR, exist_ok=True)
         plt.savefig(f'{DIR}/KDE_mode_fit_{self.stock_index}_{n_years}years.png')
@@ -355,77 +345,66 @@ class StockIndexAnalyzer:
 
 
     def _plot_histogram(self) -> None:
-        """ 
-        Plot histogram with stock return distribution.
-        Highlight the first bin and the last bin which contains the stocks with top 5% returns.
+        """ Plot histogram with stock return distribution using the Freedman-Diaconis rule to perform automatic binning on the filtered
+        returns data. Highlight the first and last cumulative bins collected according to specific conditions. 
+        Results are saved in the results/historam folder.
         """
-
-        fig, ax = plt.subplots(1, 1, figsize=(10, 6))
-
-        #threshold_b = 0.20
-        threshold = 4.0
+        n_years = self.end_year - self.start_year + 1
 
         # returns only
         r = self.mu.mu.copy()
 
-        # right tail
+        # condition for the right tail: top 5% of returns
         r_top = len(r[r >= r.quantile(q=0.9)])
-        #print('TOP 5%: ', r_)
-        #r_top = len(r[r >= threshold])
 
-        # left tail
+        # condition for the left tail
         r_bottom = len(r[np.log(r) < -2])
-        #r_bottom = len(r[r <= threshold_b])
 
-        # remove left and right tails from histogram
+        # remove left and right tails from the main histogram
         r = r[np.log(r) > -2]
-        #r = r[r > threshold_b]
-        #r = r[r < threshold]
-        r = r[r < r.quantile(q=0.95)]
+        r = r[r < r.quantile(q=0.9)]
 
-        r_max = int(r.max()) + 1
-
-        # automatic binning with Freedman-Diaconis rule
+        # automatic binning with the Freedman-Diaconis rule
         bin_edges = np.histogram_bin_edges(r, bins='fd')
+
+        # double the freedman-diaconis bins
         bin_step = (bin_edges[1] - bin_edges[0])/2.
-        bin_edges_middle = [bin_edges[i-1]+ bin_step for i in range(1,len(bin_edges))]
-        bin_edges = sorted(bin_edges.tolist()+bin_edges_middle)
-        #print('bin_edges_middle: ', bin_edges_middle)
-        #print('bin_edges: ', bin_edges, type(bin_edges), len(bin_edges))
+        bin_edges_middle = [bin_edges[i-1] + bin_step for i in range(1,len(bin_edges))]
+        bin_edges = sorted(bin_edges.tolist() + bin_edges_middle)
+
+        # width of each bin
+        width = (bin_edges[-1] - bin_edges[-2])
+
+        # define the edges of the first bin and the last bin
+        edge_bottom = bin_edges[0] - 0.5 * width
+        edge_top = bin_edges[-1] + 0.5 * width
+
+        fig, ax = plt.subplots(1, 1, figsize=(10, 6))
 
         sns.histplot(data=r, kde=False, fill=True, ax=ax, bins=bin_edges, color='blue', alpha=0.2)
         print('Number of bins: ', len(bin_edges), 'Number of data points: ', len(r))
-        #_, _, patches = ax.hist(r, bins = bin_edges, alpha=0.5, edgecolor='black', linewidth=0.5)
 
-        width = (bin_edges[-1] - bin_edges[-2])
-
-        edge_bottom = bin_edges[0] - 0.5 * width
+        # plot the first bin and the last cumulative bins
         ax.bar(edge_bottom, r_bottom, width=width, color='red', alpha=0.5, edgecolor='black', linewidth=0.5)
-
-        edge_top = bin_edges[-1] + 0.5 * width
         ax.bar(edge_top, r_top, width=width, color='red', alpha=0.5, edgecolor='black', linewidth=0.5)
 
-        ## highlight the first bin in red
-        #patches[0].set_facecolor('red')
-
         ax.tick_params(direction='out', length=5., width=1, color = 'grey', labelsize=15)
-        ax.spines['top'].set_visible(False)
-        ax.spines['right'].set_visible(False)
-        ax.spines['bottom'].set_visible(False)
-        ax.spines['left'].set_visible(False)
+
+        for axis in ['top','bottom','left','right']:
+            ax.spines[axis].set_visible(False)
+        
         ax.grid(True)
 
         plt.xlim([edge_bottom - width, edge_top + width])
-        #plt.ylim([0,100.])
 
-        #ax.set_xticks([0,1,2,3,4])
         plt.ylabel('Number of stocks', fontsize=15)
         plt.xlabel(r'$\rho$', fontsize=18)
         plt.title(f"{self.stock_index} stock total return distribution", fontsize=15)
 
+        # save the figure
         DIR = 'results/histogram'
         os.makedirs(DIR, exist_ok=True)
-        fig.savefig(f'{DIR}/histogram_{self.stock_index}_{self.nyears}years.png')
+        fig.savefig(f'{DIR}/histogram_{self.stock_index}_{n_years}years.png')
 
 
     def plot_histogram_loglog(self) -> None:
@@ -490,10 +469,7 @@ class StockIndexAnalyzer:
 
 
     def _scipy_fit_lognormal(self):
-        """
-        Fit mu histogram with lognormal distribution
-        Help:
-            https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.html
+        """ Fit mu histogram with lognormal distribution
         """
         log_fit = scipy.stats.lognorm.fit(self.mu.mu, floc=0)
         return log_fit
