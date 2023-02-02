@@ -24,9 +24,8 @@ from scipy import stats as st
 from scipy.stats import lognorm
 from sklearn.neighbors import KernelDensity
 from seaborn_qqplot import pplot
-from scipy.stats import (gamma, lognorm, powerlognorm, loglaplace,
-                         laplace_asymmetric, skewnorm)
-
+from scipy.stats import (lognorm, powerlognorm, laplace, laplace_asymmetric, skewnorm, norm, genhyperbolic)
+import statsmodels.api as sm
 import pymc3 as pm3
 import arviz as az
 from fitter import Fitter, get_common_distributions
@@ -691,18 +690,64 @@ class StockIndexAnalyzer:
 
         return summary
 
+    def _plot_qq_distribution(self, dist: str, dist_name: str, cut_tail: bool=True, package: str = 'statsmodels') -> None:
+        """ Q-Q plot of the quantiles of x versus the quantiles/ppf of a distribution
+        Args:
+            dist (str): distribution object from scipy.stats
+            dist_name (str): distribution name
+            cut_tail (bool): cut the left tail of the histogram. Default: True
+            package (str): package to use for plotting. Default: statsmodels
+        """
+        data = self.mu.copy()
 
-    def plot_qq(self) -> None:
-        """ Q-Q plot of the quantiles of x versus the quantiles/ppf of a distribution """
-        fig, ax = plt.subplots(1, 1)
+        data['log_mu'] = np.log(data['mu'])
 
-        sm.qqplot(np.log(self.mu.mu), line ='s', ax=ax)  # it is good that the right tail is underestimated
-        plt.grid()
-        DIR = 'results/qqplot'
+        if cut_tail:
+            data = data[data['log_mu'] > -2.0]
+
+        fig, ax = plt.subplots(figsize=(8,5))
+
+        if package == 'seaborn':
+            ax = pplot(data, x = "log_mu", y = dist, kind = 'qq', height = 4, aspect = 2, display_kws = {"identity":False, "fit":True,"reg":True, "ci":0.025})
+        elif package=='statsmodels':
+            sm.qqplot(data["log_mu"], dist, fit=True, line="45", ax=ax)
+        else:
+            raise ValueError(f'package {package} not supported')
+    
+        plt.xlabel('Theoretical distribution', fontsize=12)
+        plt.ylabel(r'Empirical distribution of $\ln(\rho)$',fontsize=12)
+
+        ax.tick_params(axis='both', which='major', labelsize=12, direction='in', length=6, width=1.5)
+
+        plt.title(f'QQ plot for {self.stock_index}. Fit with {dist_name} distribution', fontsize=14)
+        plt.grid()  
+
+        # save the figure
+        DIR = f'results/qqplot_logmu_{package}'
         os.makedirs(DIR, exist_ok=True)
+        fig.savefig(f'{DIR}/QQPlot_{self.stock_index}_{dist_name}.png')
 
-        plt.savefig(f'{DIR}/qqplot_{self.stock_index}_{self.stock_index}.png')
+    def _generate_qq_plots(self, cut_tail: bool=True, package: str = 'statsmodel') -> None:
+        """ Generate Q-Q plot with seaborn and statsmodels
+        Args:
+            dist (str): distribution object from scipy.stats
+            dist_name (str): distribution name
+            cut_tail (bool): cut the left tail of the histogram. Default: True
+        """
 
+        if package not in ['seaborn', 'statsmodels']:
+            raise ValueError(f'Package {package} not supported')
+
+        distributions = {'normal': norm, 
+                         'laplace': laplace,
+                         'laplace asymmetric': laplace_asymmetric,
+                         'skewnorm': skewnorm}
+                        #'powerlognorm': powerlognorm} <- linear, not logaritmic
+
+        for dist_name, dist in distributions.items():
+            print(f'Plotting {dist_name} distribution')
+            print(type(dist))
+            self._plot_qq_distribution(dist, dist_name, cut_tail, package)
 
     def plot_qq_seaborn(self) -> None:
         """ Q-Q plot from searborn """
