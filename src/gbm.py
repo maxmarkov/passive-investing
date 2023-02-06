@@ -61,10 +61,9 @@ def compute_gbm_params(data: defaultdict, index_name: str) -> pd.DataFrame:
     df_dict = {}
 
     for ticker in data[index_name].keys():
-
         df = data[index_name][ticker]
-        n_years_traded = sum(abs(df['Close'].diff()) > 0)
         try:
+            n_years_traded = sum(abs(df['Close'].diff()) > 0)
             prices = data[index_name][ticker]
             rho = prices['Close'].iloc[-1] / prices['Open'].iloc[0]
             # cut the left tail
@@ -104,8 +103,8 @@ def plot_kde(df: pd.Series, title: str, xlabel: str, index_name: str, double_bin
         bin_edges_middle = [bin_edges[i-1] + bin_step for i in range(1,len(bin_edges))]
         bin_edges = sorted(bin_edges.tolist() + bin_edges_middle)
 
-    ax.hist(df, color='blue', alpha=0.3, density=True, bins=bin_edges)
-    sns.kdeplot(df, fill=True, color='red', ax=ax)
+    ax.hist(df, color='blue', alpha=0.3, density=True, bins=bin_edges, label='Histogram')
+    sns.kdeplot(df, fill=True, color='red', label='KDE', ax=ax)
 
     ax.set_xlabel(xlabel, fontsize=16)
     ax.set_ylabel('Density', fontsize=16)
@@ -115,7 +114,7 @@ def plot_kde(df: pd.Series, title: str, xlabel: str, index_name: str, double_bin
     ax.set_title(title, fontsize=20)
 
     ax.tick_params(axis='both', which='major', labelsize=15, direction='in', length=8, width=1)
-
+    plt.legend(fontsize=12)
     plt.grid()
     DIR_KDE = 'results/gbm_parameters/kde_{}'.format(xlabel)
     os.makedirs(DIR_KDE, exist_ok=True)
@@ -204,7 +203,7 @@ def linear_regression_fit(df: pd.DataFrame, index_name: str, fit_intercept: bool
     return a, b, r2, corr
 
 def fit_drift_skewnormal(df: pd.DataFrame) -> tuple:
-    """ Fit a distribution to the given data """
+    """ Fit skewnormal distribution to the drift data """
 
     def your_density(x):
         return -stats.skewnorm.pdf(x,*params)
@@ -219,10 +218,10 @@ def fit_drift_skewnormal(df: pd.DataFrame) -> tuple:
 
     mode = minimize(your_density,0).x
 
-    results = {'drift_mean': mean,
+    results = {'drift_mean': mean.item(0),
                 'drift_mode': mode[0],
                 'drift_std': np.sqrt(var),
-                'drift_skew': skew,
+                'drift_skew': skew.item(0),
                 'drift_skewp': params[0],
                 'drift_loc': params[1],
                 'drift_scale': params[2],
@@ -233,56 +232,85 @@ def fit_drift_skewnormal(df: pd.DataFrame) -> tuple:
                 'mu_std_to_mean': np.std(data)/np.mean(data)}
     return results
 
-def plot_drift_distribution_fits(df: pd.DataFrame, index_name: str) -> None:
-    """ Plot the distribution of the drift and the fitted skewnorm distribution """
+def fit_volatility_gamma(df: pd.DataFrame) -> tuple:
+    """ Fit Gamma distribution to the volatility data """
+
+    def your_density(x):
+        return -stats.gamma.pdf(x,*params)
+
+    # draw a histogram and kde of the given data
+    data=np.array(df, dtype=float) 
+    
+    bounds = {'a':(0, 10),'loc':(-1,1),'scale':(0.05,1)}
+    res3 = stats.fit(stats.gamma, data, bounds)
+    params=res3.params
+
+    mean, var, skew, kurt = stats.gamma.stats(*params, moments='mvsk')    
+    
+    mode = minimize(your_density,0).x
+
+    results = {'sigma_mean': mean.item(0),
+               'sigma_sample_mean': np.mean(data),
+               'sigma_mode': (params[0]-1)*params[2],
+               'sigma_std': np.sqrt(var.item(0)),
+               'sigma_skew': skew.item(0),
+               'sigma_alpha': params[0],
+               'sigma_beta': 1/params[2]}
+    return results
+
+def plot_gbm_parameter_distribution(df: pd.DataFrame, index_name: str, mode: str) -> None:
+    """ Plot the distribution of one of the GBM parameters (drift or volatility) for a given index. 
+    
+    Args:
+        df (pd.DataFrame): dataframe with the index data
+        index_name (str): name of the index
+        mode (str): 'drift' or 'volatility'
+    """
+
+    assert mode in ['drift', 'volatility'], 'mode must be either drift or volatility'
 
     fig, ax = plt.subplots(figsize=(10, 8))
 
     data=np.array(df, dtype=float) 
 
-    sns.distplot(data, kde_kws={'label': 'KDE plot'}, label='histogram', ax=ax)
+    # automatic binning with the Freedman-Diaconis rule
+    bin_edges = np.histogram_bin_edges(df, bins='fd')
+
+    #sns.hist(data, kde_kws={'label': 'KDE plot'}, fill=True, label='histogram', bins=bin_edges, ax=ax)
+    ax.hist(df, color='blue', alpha=0.3, density=True, bins=bin_edges, label='histogram')
 
     xmin, xmax = plt.xlim()
     x = np.linspace(xmin, xmax, 100)
 
-    # distribution fitting                
-    params_skew = stats.skewnorm.fit(data)
-    params_alapl = stats.laplace_asymmetric.fit(data)
+    sns.kdeplot(df, fill=True, color='red', label='KDE', ax=ax)
+
+    if mode=='drift':
+        # skewnormal and laplace asymmetric distributions for the drift            
+        params_skew = stats.skewnorm.fit(data)
+        params_alapl = stats.laplace_asymmetric.fit(data)
  
-    ax.plot(x, stats.skewnorm.pdf(x, *params_skew), label='skewnorm fit')
-    ax.plot(x, stats.laplace_asymmetric.pdf(x, *params_alapl), label='laplace_asymmetric fit')
+        ax.plot(x, stats.skewnorm.pdf(x, *params_skew), label='Skewnormal distribution', linewidth=2)
+        ax.plot(x, stats.laplace_asymmetric.pdf(x, *params_alapl), label='Laplace Asymmetric distribution', linewidth=2)
+        ax.fill_between(x, 0, stats.skewnorm.pdf(x, *params_skew), color='yellow', alpha=0.2)   
+        ax.fill_between(x, 0, stats.laplace_asymmetric.pdf(x, *params_alapl), color='green', alpha=0.2)
+    else:
+        # gamma distribution for the volatility
+        # must be defined on x>0
+        bounds = {'a':(0, 10),'loc':(-1,1),'scale':(0.05,1)}
+        res3 = stats.fit(stats.gamma, data, bounds)
+        params_gamma = res3.params
 
-    plt.legend()
-    plt.title('Distribution of percentage drift $\mu$ for '+index_name)
-    plt.xlabel('Percentage drift $\mu$')
+        ax.plot(x, stats.gamma.pdf(x, *params_gamma), color='yellow', label='Gamma distribution', linewidth=2) 
+        ax.fill_between(x, 0, stats.gamma.pdf(x, *params_gamma), color='yellow', alpha=0.2)       
 
-    plt.grid()
-    #plt.savefig(fig_dir+'drift for index '+index_name+'.png')
-    plt.show()
+    ax.tick_params(axis='both', which='major', labelsize=15, direction='in', length=8, width=1)
 
-def plot_sigma_distribution_fits(df: pd.DataFrame, index_name: str) -> None:
-    """"""
-
-    fig, ax = plt.subplots(figsize=(10, 8))
-    
-    # draw a histogram and kde of the given data
-    data=np.array(df, dtype=float)
-
-    ax = sns.distplot(data, kde_kws={'label':'KDE plot'}, label='histogram', ax=ax)
-
-    xmin, xmax = plt.xlim()
-    x = np.linspace(xmin, xmax, 100)  
-
-    bounds = {'a':(0, 10),'loc':(-1,1),'scale':(0.05,1)}
-    res3 = stats.fit(stats.gamma, data, bounds)
-    params=res3.params
-
-    ax.plot(x, stats.gamma.pdf(x, *params), label='approximated gamma')
-
-    plt.legend()
-    plt.title('Distribution of percentage volatility $\sigma$ for '+index_name)
-    plt.xlabel('Percentage volatility $\sigma$')
+    plt.legend(fontsize=12)
+    plt.title('GBM {} distribution for {} index'.format(mode, index_name), fontsize=16)
+    plt.xlabel('Percentage {}'.format(mode),fontsize=14)
+    plt.ylabel('Frequency',fontsize=14)
 
     plt.grid()
-    #plt.savefig(fig_dir+'sigma for index '+index_name+'.png')
-    plt.show()   
+    DIR = 'results/{}_distribution'.format(mode)
+    os.makedirs(DIR, exist_ok=True) 
+    plt.savefig(f'{DIR}/gbm_{mode}_distribution_{index_name}.png')
