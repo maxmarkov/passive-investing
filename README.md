@@ -17,7 +17,7 @@ pip intstall -r requirements.txt
 
 ## Dataset
 
-We do not provide the actual dataset here. Mocking data will be provided in the data folder shortly.
+We do not provide the actual dataset here. Mocking data is provided in data folder. Please note that this dataset does not represent real data, so the plots are different from those presented in the article.
 
 ## Modeling
 
